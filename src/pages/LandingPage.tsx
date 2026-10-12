@@ -173,41 +173,9 @@ export default function LandingPage() {
   return (
     <PageLoader>
       <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col justify-between">
-        {/* Top Announcement Bar */}
         <div>
-          <div className="bg-[#ffcc00] text-[hsl(220,50%,12%)] px-4 py-2 text-center text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2">
-            <span>⚡ Instant MoMo Loans approved within minutes in Uganda · No paperwork required!</span>
-          </div>
-
-          {/* Navigation Bar */}
-          <nav className="container mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
-              <Logo size="sm" />
-              <span className="font-extrabold text-xl sm:text-2xl tracking-tight">
-                MoMo <span className="text-[#ffcc00]">Business Loans</span>
-              </span>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <button
-                id="nav-signin-btn"
-                onClick={() => navigate('/signin')}
-                className="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition"
-              >
-                Sign In
-              </button>
-              <button
-                id="nav-apply-btn"
-                onClick={() => navigate('/apply')}
-                className="px-4 py-2 rounded-xl bg-[#ffcc00] text-[hsl(220,50%,12%)] text-xs sm:text-sm font-extrabold hover:bg-[#ffcc00]/90 transition shadow-sm"
-              >
-                Apply Now
-              </button>
-            </div>
-          </nav>
-
-          {/* Hero Section */}
-          <section className="container mx-auto max-w-6xl px-4 py-12 sm:py-20 flex flex-col items-center text-center">
+          {/* Hero Section without top header */}
+          <section className="container mx-auto max-w-6xl px-4 py-16 sm:py-24 flex flex-col items-center text-center">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[hsl(220,50%,18%)] border border-[hsl(220,30%,28%)] text-xs sm:text-sm font-bold text-[#ffcc00] mb-6 shadow-sm">
               <Sparkles className="w-4 h-4" />
               <span>Fast & Affordable Mobile Money Financing in Uganda</span>
@@ -223,24 +191,23 @@ export default function LandingPage() {
               Get quick funding directly to your Mobile Money wallet in Uganda. Fast disbursements, transparent terms, and zero collateral required.
             </p>
 
-            {/* Action Buttons: Apply for Loan before signing up, and Sign Up */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+            {/* Action Button: Apply for Loan */}
+            <div className="flex flex-col items-center justify-center gap-4 w-full sm:w-auto">
               <button
                 id="hero-apply-btn"
                 onClick={() => navigate('/apply')}
-                className="w-full sm:w-auto px-10 py-4 rounded-full bg-[#ffcc00] text-[hsl(220,50%,12%)] font-extrabold text-base hover:bg-[#ffcc00]/90 transition shadow-2xl flex items-center justify-center gap-2 group cursor-pointer"
+                className="w-full sm:w-auto px-10 py-4 rounded-full bg-[#ffcc00] text-[hsl(220,50%,12%)] font-extrabold text-base sm:text-lg hover:bg-[#ffcc00]/90 transition shadow-2xl flex items-center justify-center gap-2 group cursor-pointer"
               >
                 <span>Apply for Loan</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
 
               <button
-                id="hero-signup-btn"
-                onClick={() => navigate('/signup')}
-                className="w-full sm:w-auto px-10 py-4 rounded-full bg-white text-[hsl(220,50%,12%)] font-extrabold text-base hover:bg-gray-100 transition shadow-2xl flex items-center justify-center gap-2 group cursor-pointer"
+                id="link-signin-btn"
+                onClick={() => navigate('/signin')}
+                className="text-xs sm:text-sm font-semibold text-gray-400 hover:text-white transition mt-1 underline underline-offset-4"
               >
-                <span>Sign Up</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                Already registered? Sign In
               </button>
             </div>
           </section>

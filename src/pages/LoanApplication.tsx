@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
 import PageLoader from '../components/PageLoader';
@@ -117,7 +117,28 @@ export default function LoanApplication() {
 
   // UI Flow state: 'questionnaire' | 'form' | 'loading' | 'congratulations'
   const [flowState, setFlowState] = useState<'questionnaire' | 'form' | 'loading' | 'congratulations'>('questionnaire');
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    if (flowState !== 'loading') {
+      setLoadingProgress(0);
+      return;
+    }
+
+    const startTime = Date.now();
+    const duration = 7000;
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min(Math.round((elapsed / duration) * 100), 99);
+      setLoadingProgress(pct);
+      if (elapsed >= duration) {
+        clearInterval(interval);
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [flowState]);
 
   // Parsed amount number
   const numericAmount = parseInt(amountRaw.replace(/\D/g, ''), 10) || 0;
@@ -212,10 +233,11 @@ export default function LoanApplication() {
       repaymentPeriod: repayment,
     }).catch(() => {});
 
-    // Transition after realistic loading delay to congratulations
+    // Transition after 7 seconds loading delay to congratulations
     setTimeout(() => {
+      setLoadingProgress(100);
       setFlowState('congratulations');
-    }, 2500);
+    }, 7000);
   };
 
   // State 0: Quick Questions Questionnaire
@@ -439,7 +461,7 @@ export default function LoanApplication() {
     );
   }
 
-  // State 1: Loading Page while assessing approval
+  // State 1: Loading Page while assessing approval (7 seconds)
   if (flowState === 'loading') {
     return (
       <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
@@ -448,13 +470,30 @@ export default function LoanApplication() {
           MoMo <span className="text-[#ffcc00]">Business Loans</span>
         </h2>
         <Loader2 className="w-12 h-12 text-[#ffcc00] animate-spin" />
-        <div className="space-y-2 max-w-sm">
-          <p className="text-white text-lg sm:text-xl font-extrabold">
-            Reviewing & Approving Your Application...
-          </p>
-          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
-            Connecting with Mobile Money automated credit scoring for instant approval. Please wait a moment.
-          </p>
+        <div className="space-y-4 max-w-sm w-full">
+          <div>
+            <p className="text-white text-lg sm:text-xl font-extrabold">
+              Reviewing & Approving Your Application...
+            </p>
+            <p className="text-gray-300 text-xs sm:text-sm leading-relaxed mt-1">
+              {loadingProgress < 25 && 'Connecting with Mobile Money automated scoring system...'}
+              {loadingProgress >= 25 && loadingProgress < 50 && 'Assessing business and income underwriting criteria...'}
+              {loadingProgress >= 50 && loadingProgress < 75 && 'Verifying identity records and repayment terms...'}
+              {loadingProgress >= 75 && 'Finalizing instant approval and disbursement allocation...'}
+            </p>
+          </div>
+
+          {/* 7-second Progress Bar */}
+          <div className="w-full bg-[hsl(220,50%,18%)] rounded-full h-3 border border-[hsl(220,30%,28%)] overflow-hidden p-0.5">
+            <div
+              className="bg-[#ffcc00] h-full rounded-full transition-all duration-150 ease-out"
+              style={{ width: `${Math.min(loadingProgress, 100)}%` }}
+            />
+          </div>
+          <div className="flex justify-between items-center text-[11px] text-gray-400 font-semibold px-1">
+            <span>Automated Scoring</span>
+            <span className="text-[#ffcc00] font-bold">{loadingProgress}%</span>
+          </div>
         </div>
       </div>
     );

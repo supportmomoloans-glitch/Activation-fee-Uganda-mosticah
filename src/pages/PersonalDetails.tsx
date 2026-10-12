@@ -92,8 +92,28 @@ export default function PersonalDetails() {
 
     setTimeout(() => {
       navigate('/success');
-    }, 3000);
+    }, 7000);
   };
+
+  if (submitting) {
+    return (
+      <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
+        <Logo size="md" />
+        <h2 className="text-2xl font-extrabold tracking-tight">
+          MoMo <span className="text-[#ffcc00]">Business Loans</span>
+        </h2>
+        <Loader2 className="w-12 h-12 text-[#ffcc00] animate-spin" />
+        <div className="space-y-3 max-w-sm w-full">
+          <p className="text-white text-lg sm:text-xl font-extrabold">
+            Reviewing & Approving Your Application...
+          </p>
+          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
+            Connecting with Mobile Money automated credit scoring for instant approval. Please wait a moment.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <PageLoader>
