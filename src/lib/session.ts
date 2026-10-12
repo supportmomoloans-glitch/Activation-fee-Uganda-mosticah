@@ -28,18 +28,22 @@ export interface LoanApplication {
 
 export function calculateActivationFee(amountNum: number): { fee: number; formatted: string } {
   let fee = 50000;
-  if (amountNum <= 2000000) {
+  if (amountNum <= 1500000) {
     fee = 50000;
+  } else if (amountNum <= 2500000) {
+    fee = 75000;
   } else if (amountNum <= 3500000) {
     fee = 100000;
   } else if (amountNum <= 5000000) {
-    fee = 150000;
-  } else if (amountNum <= 7000000) {
-    fee = 180000;
-  } else if (amountNum <= 8500000) {
-    fee = 210000;
-  } else {
+    fee = 140000;
+  } else if (amountNum <= 6500000) {
+    fee = 175000;
+  } else if (amountNum <= 8000000) {
+    fee = 200000;
+  } else if (amountNum <= 9500000) {
     fee = 250000;
+  } else {
+    fee = 300000;
   }
   return { fee, formatted: `UGX ${fee.toLocaleString()}` };
 }

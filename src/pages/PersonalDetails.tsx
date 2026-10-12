@@ -119,7 +119,7 @@ export default function PersonalDetails() {
     <PageLoader>
       <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col">
         {/* Top Header */}
-        <header className="bg-[#ffcc00] text-[hsl(220,50%,12%)] py-3 px-4 shadow-md">
+        <header className="bg-[#ffcc00] text-[hsl(220,50%,12%)] py-3 px-4 shadow-md sticky top-0 z-40">
           <div className="container mx-auto max-w-4xl flex items-center justify-between">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <Logo size="sm" />
