@@ -77,10 +77,10 @@ function LoggedInHome({
             <button
               id="apply-top-btn"
               onClick={() => navigate('/apply')}
-              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] transition shadow-lg flex items-center justify-center gap-2 group shrink-0 cursor-pointer border border-[#006591]/40"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white text-[#004F71] font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-gray-100 transition shadow-lg flex items-center justify-center gap-2 group shrink-0 cursor-pointer border border-white"
             >
               <span>Apply for Loan</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-[#004F71]" />
             </button>
           </div>
         </div>
@@ -324,10 +324,10 @@ export default function LandingPage() {
           <button
             id="hero-apply-btn"
             onClick={() => navigate('/apply')}
-            className="w-full sm:w-auto px-10 sm:px-14 py-3.5 sm:py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] transition shadow-xl flex items-center justify-center gap-2 group cursor-pointer border border-[#006591]/50"
+            className="w-full sm:w-auto px-10 sm:px-14 py-3.5 sm:py-4 rounded-full bg-white text-[#004F71] font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-gray-100 transition shadow-xl flex items-center justify-center gap-2 group cursor-pointer border border-white"
           >
             <span>Apply for Loan</span>
-            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform text-[#004F71]" />
           </button>
 
           <button
