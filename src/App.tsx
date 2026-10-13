@@ -26,21 +26,29 @@ function ScrollToTop() {
   return null;
 }
 
+function AppRoutes() {
+  const location = useLocation();
+
+  return (
+    <Routes location={location}>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/signup" element={<SignUpFlow />} />
+      <Route path="/signin" element={<SignInPage />} />
+      <Route path="/apply" element={<LoanApplication />} />
+      <Route path="/personal-details" element={<PersonalDetails />} />
+      <Route path="/payment" element={<PaymentPage />} />
+      <Route path="/withdraw" element={<PaymentPage />} />
+      <Route path="/success" element={<SuccessPage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/signup" element={<SignUpFlow />} />
-        <Route path="/signin" element={<SignInPage />} />
-        <Route path="/apply" element={<LoanApplication />} />
-        <Route path="/personal-details" element={<PersonalDetails />} />
-        <Route path="/payment" element={<PaymentPage />} />
-        <Route path="/withdraw" element={<PaymentPage />} />
-        <Route path="/success" element={<SuccessPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <AppRoutes />
     </BrowserRouter>
   );
 }
