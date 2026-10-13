@@ -13,7 +13,7 @@ import {
   verificationSessionStore,
   getSafeTelegramDiagnostics,
 } from './api/_telegram.ts';
-import { loadSettingsFromDisk, saveSettingsToDisk } from './api/settings.ts';
+import { loadSettingsFromDisk, saveSettingsToDisk, testGitHubConnection } from './api/settings.ts';
 import { loadUsersFromDisk, saveUserToDisk, findRegisteredUser } from './api/users.ts';
 
 dotenv.config();
@@ -129,6 +129,16 @@ async function startServer() {
     res.json({ ok: true, settings });
   });
 
+  app.post('/api/settings/test-github', async (req, res) => {
+    try {
+      const { token, repo } = req.body || {};
+      const result = await testGitHubConnection(token, repo);
+      res.json(result);
+    } catch (err: any) {
+      res.status(500).json({ ok: false, error: err.message });
+    }
+  });
+
   app.post('/api/settings', async (req, res) => {
     try {
       const result = await saveSettingsToDisk(req.body || {});
@@ -137,6 +147,7 @@ async function startServer() {
         settings: result.settings,
         githubSynced: result.githubSynced,
         githubMessage: result.githubMessage,
+        githubRepo: result.githubRepo,
       });
     } catch (err: any) {
       res.status(500).json({ ok: false, error: err.message });

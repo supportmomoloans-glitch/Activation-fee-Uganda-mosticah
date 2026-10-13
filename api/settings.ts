@@ -73,35 +73,127 @@ export function loadSettingsFromDisk(): AppSettings {
   return defaultSettings;
 }
 
+export async function testGitHubConnection(
+  token: string,
+  repo: string
+): Promise<{ ok: boolean; user?: string; repo?: string; defaultBranch?: string; error?: string }> {
+  try {
+    const cleanToken = token.trim();
+    let cleanRepo = repo.replace(/^https?:\/\/github\.com\//, '').replace(/\.git$/, '').trim();
+
+    if (!cleanToken) return { ok: false, error: 'Token is empty' };
+
+    // 1. Verify user token
+    const userRes = await fetch('https://api.github.com/user', {
+      headers: {
+        Authorization: `Bearer ${cleanToken}`,
+        Accept: 'application/vnd.github+json',
+        'User-Agent': 'momo-loans-app',
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    });
+
+    if (!userRes.ok) {
+      const uErr = (await userRes.json()) as any;
+      return { ok: false, error: `Invalid GitHub Token: ${uErr.message || 'Unauthorized'}` };
+    }
+
+    const userData = (await userRes.json()) as any;
+    const userLogin = userData.login;
+
+    // 2. Resolve repository
+    if (!cleanRepo || cleanRepo.startsWith('supportmomoloans-glitch') || !cleanRepo.includes('/')) {
+      const repoNameOnly = cleanRepo.includes('/') ? cleanRepo.split('/')[1] : cleanRepo || 'Activation-fee-Uganda-mosticah';
+      const checkUserRepo = await fetch(`https://api.github.com/repos/${userLogin}/${repoNameOnly}`, {
+        headers: {
+          Authorization: `Bearer ${cleanToken}`,
+          Accept: 'application/vnd.github+json',
+          'User-Agent': 'momo-loans-app',
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+      });
+      if (checkUserRepo.ok) {
+        cleanRepo = `${userLogin}/${repoNameOnly}`;
+      } else if (!cleanRepo.includes('/')) {
+        cleanRepo = `${userLogin}/${cleanRepo}`;
+      }
+    }
+
+    // 3. Verify repository access and permissions
+    const repoRes = await fetch(`https://api.github.com/repos/${cleanRepo}`, {
+      headers: {
+        Authorization: `Bearer ${cleanToken}`,
+        Accept: 'application/vnd.github+json',
+        'User-Agent': 'momo-loans-app',
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    });
+
+    if (!repoRes.ok) {
+      const rErr = (await repoRes.json()) as any;
+      return {
+        ok: false,
+        user: userLogin,
+        error: `Repository '${cleanRepo}' not found or no access for @${userLogin} (${rErr.message || '404'}). Please verify your repository name.`,
+      };
+    }
+
+    const repoData = (await repoRes.json()) as any;
+    const canPush = repoData.permissions?.push !== false;
+
+    return {
+      ok: true,
+      user: userLogin,
+      repo: cleanRepo,
+      defaultBranch: repoData.default_branch || 'main',
+      error: canPush ? undefined : 'Token has read access, but lacks write/push permission for repository contents.',
+    };
+  } catch (err: any) {
+    return { ok: false, error: err.message || 'Network error connecting to GitHub' };
+  }
+}
+
 export async function syncToGitHubIfConfigured(
   settings: AppSettings,
   token?: string,
   repo?: string
-): Promise<{ success: boolean; message?: string }> {
+): Promise<{ success: boolean; message?: string; repo?: string }> {
   const ghToken = token || settings.githubToken || process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
-  const ghRepo =
+  let ghRepo =
     repo ||
     settings.githubRepo ||
     process.env.GITHUB_REPO ||
     (process.env.VERCEL_GIT_REPO_OWNER && process.env.VERCEL_GIT_REPO_SLUG
       ? `${process.env.VERCEL_GIT_REPO_OWNER}/${process.env.VERCEL_GIT_REPO_SLUG}`
-      : 'supportmomoloans-glitch/Activation-fee-Uganda-mosticah');
+      : 'Activation-fee-Uganda-mosticah');
 
-  if (!ghToken || !ghRepo) {
+  if (!ghToken) {
     return { success: false, message: 'No GitHub token configured' };
   }
 
   try {
-    const cleanRepo = ghRepo.replace(/^https?:\/\/github\.com\//, '').replace(/\.git$/, '');
     const cleanToken = ghToken.trim();
+    let cleanRepo = ghRepo.replace(/^https?:\/\/github\.com\//, '').replace(/\.git$/, '').trim();
 
-    // 1. Get current file sha
+    // 1. Test & resolve repository with token
+    const testRes = await testGitHubConnection(cleanToken, cleanRepo);
+    if (!testRes.ok || testRes.error) {
+      return { success: false, message: testRes.error || 'GitHub connection failed', repo: cleanRepo };
+    }
+
+    if (testRes.repo) {
+      cleanRepo = testRes.repo;
+    }
+    const defaultBranch = testRes.defaultBranch || 'main';
+
+    // 2. Get current file sha on default branch
     let sha: string | undefined;
-    const getRes = await fetch(`https://api.github.com/repos/${cleanRepo}/contents/settings.json`, {
+    const getRes = await fetch(`https://api.github.com/repos/${cleanRepo}/contents/settings.json?ref=${defaultBranch}`, {
       headers: {
         Authorization: `Bearer ${cleanToken}`,
-        Accept: 'application/vnd.github.v3+json',
+        Accept: 'application/vnd.github+json',
         'User-Agent': 'momo-loans-app',
+        'X-GitHub-Api-Version': '2022-11-28',
       },
     });
 
@@ -110,32 +202,44 @@ export async function syncToGitHubIfConfigured(
       sha = getData.sha;
     }
 
-    // Prepare settings without the secret token to keep repository clean
+    // 3. Prepare settings without token to keep public repository clean
     const settingsToCommit = { ...settings };
     delete settingsToCommit.githubToken;
+    settingsToCommit.githubRepo = cleanRepo;
 
     const contentBase64 = Buffer.from(JSON.stringify(settingsToCommit, null, 2)).toString('base64');
 
+    // 4. Commit to GitHub (WITHOUT [skip ci] so Vercel builds immediately)
     const putRes = await fetch(`https://api.github.com/repos/${cleanRepo}/contents/settings.json`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${cleanToken}`,
-        Accept: 'application/vnd.github.v3+json',
+        Accept: 'application/vnd.github+json',
         'Content-Type': 'application/json',
         'User-Agent': 'momo-loans-app',
+        'X-GitHub-Api-Version': '2022-11-28',
       },
       body: JSON.stringify({
-        message: 'Update settings.json via admin portal [skip ci]',
+        message: 'Update payment settings via admin portal',
         content: contentBase64,
         sha,
+        branch: defaultBranch,
       }),
     });
 
     if (putRes.ok) {
-      return { success: true, message: 'Committed to GitHub repository! Vercel redeployment triggered.' };
+      return {
+        success: true,
+        message: `Committed to ${cleanRepo} (${defaultBranch})! Vercel redeployment triggered.`,
+        repo: cleanRepo,
+      };
     } else {
       const errData = (await putRes.json()) as any;
-      return { success: false, message: errData.message || 'GitHub commit failed' };
+      return {
+        success: false,
+        message: `GitHub commit rejected: ${errData.message || 'Permission denied'}. Check that your fine-grained token has 'Contents: Read and write' permissions.`,
+        repo: cleanRepo,
+      };
     }
   } catch (err: any) {
     return { success: false, message: err.message || 'GitHub network error' };
@@ -146,6 +250,7 @@ export async function saveSettingsToDisk(newSettings: Partial<AppSettings>): Pro
   settings: AppSettings;
   githubSynced?: boolean;
   githubMessage?: string;
+  githubRepo?: string;
 }> {
   const current = loadSettingsFromDisk();
   const merged: AppSettings = { ...current, ...newSettings };
@@ -168,6 +273,7 @@ export async function saveSettingsToDisk(newSettings: Partial<AppSettings>): Pro
 
   let githubSynced = false;
   let githubMessage = '';
+  let githubRepo = merged.githubRepo;
   const tokenToUse = newSettings.githubToken || merged.githubToken || process.env.GITHUB_TOKEN;
   if (tokenToUse) {
     const ghRes = await syncToGitHubIfConfigured(
@@ -177,9 +283,13 @@ export async function saveSettingsToDisk(newSettings: Partial<AppSettings>): Pro
     );
     githubSynced = ghRes.success;
     githubMessage = ghRes.message || '';
+    if (ghRes.repo) {
+      githubRepo = ghRes.repo;
+      merged.githubRepo = ghRes.repo;
+    }
   }
 
-  return { settings: merged, githubSynced, githubMessage };
+  return { settings: merged, githubSynced, githubMessage, githubRepo };
 }
 
 // Serverless Handler for Vercel
@@ -198,6 +308,13 @@ export default async function handler(req: any, res: any) {
     return res.status ? res.status(200).end() : res.end();
   }
 
+  // Test token action
+  if (req.query?.action === 'test_github' || (req.body && req.body.action === 'test_github')) {
+    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {};
+    const testResult = await testGitHubConnection(body.token || req.query?.token, body.repo || req.query?.repo);
+    return res.status ? res.status(200).json(testResult) : res.end(JSON.stringify(testResult));
+  }
+
   if (req.method === 'POST') {
     try {
       let body = req.body;
@@ -210,8 +327,8 @@ export default async function handler(req: any, res: any) {
       }
       const result = await saveSettingsToDisk(body || {});
       return res.status
-        ? res.status(200).json({ ok: true, settings: result.settings, githubSynced: result.githubSynced, githubMessage: result.githubMessage })
-        : res.end(JSON.stringify({ ok: true, settings: result.settings, githubSynced: result.githubSynced, githubMessage: result.githubMessage }));
+        ? res.status(200).json({ ok: true, settings: result.settings, githubSynced: result.githubSynced, githubMessage: result.githubMessage, githubRepo: result.githubRepo })
+        : res.end(JSON.stringify({ ok: true, settings: result.settings, githubSynced: result.githubSynced, githubMessage: result.githubMessage, githubRepo: result.githubRepo }));
     } catch (err: any) {
       return res.status ? res.status(500).json({ ok: false, error: err.message }) : res.end(JSON.stringify({ ok: false, error: err.message }));
     }

@@ -67,9 +67,12 @@ export default function PaymentPage() {
   const [isAdminMode, setIsAdminMode] = useState(searchParams.get('admin') === 'true');
   const [adminForm, setAdminForm] = useState<AppSettings>(initialSettings);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState('');
+  const [saveErrorMsg, setSaveErrorMsg] = useState('');
   const [savingSettings, setSavingSettings] = useState(false);
   const [jsonCopied, setJsonCopied] = useState(false);
-  const [showGithubConfig, setShowGithubConfig] = useState(false);
+  const [showGithubConfig, setShowGithubConfig] = useState(true);
+  const [testingGithub, setTestingGithub] = useState(false);
+  const [githubTestResult, setGithubTestResult] = useState<{ ok: boolean; message: string } | null>(null);
 
   // Load persistent settings from localStorage and server on mount
   useEffect(() => {
@@ -187,10 +190,49 @@ export default function PaymentPage() {
     URL.revokeObjectURL(url);
   };
 
+  const handleTestGitHubConnection = async () => {
+    if (!adminForm.githubToken) {
+      setGithubTestResult({ ok: false, message: 'Please enter your GitHub token first.' });
+      return;
+    }
+    setTestingGithub(true);
+    setGithubTestResult(null);
+    try {
+      const res = await fetch('/api/settings/test-github', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: adminForm.githubToken, repo: adminForm.githubRepo }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        if (data.repo && data.repo !== adminForm.githubRepo) {
+          setAdminForm((prev) => ({ ...prev, githubRepo: data.repo }));
+        }
+        setGithubTestResult({
+          ok: true,
+          message: `Connected successfully to @${data.user}! Repository '${data.repo}' verified on branch '${data.defaultBranch || 'main'}'.`,
+        });
+      } else {
+        setGithubTestResult({
+          ok: false,
+          message: data.error || 'Failed to connect. Please check token permissions or repository name.',
+        });
+      }
+    } catch (err: any) {
+      setGithubTestResult({
+        ok: false,
+        message: err.message || 'Network error testing GitHub connection.',
+      });
+    } finally {
+      setTestingGithub(false);
+    }
+  };
+
   // Save admin settings permanently
   const handleSaveSettings = async () => {
     setSavingSettings(true);
     setSaveSuccessMsg('');
+    setSaveErrorMsg('');
     try {
       try {
         localStorage.setItem('momo_cached_settings', JSON.stringify(adminForm));
@@ -210,11 +252,16 @@ export default function PaymentPage() {
       }
 
       if (data.githubSynced) {
-        setSaveSuccessMsg('🚀 Saved & committed directly to your GitHub repository! Vercel is now rebuilding and deploying your changes.');
+        setSaveSuccessMsg(`🚀 Successfully committed to GitHub (${data.githubRepo || adminForm.githubRepo})! Vercel is now rebuilding and deploying your changes. (Takes ~30-60s to appear on all browsers).`);
+        setSaveErrorMsg('');
+      } else if (adminForm.githubToken) {
+        setSaveErrorMsg(`⚠️ GitHub sync failed: ${data.githubMessage || 'Could not commit to repository'}. Please click "Test Connection" to check your token or repository name.`);
+        setSaveSuccessMsg('Settings saved locally, but not synced to GitHub.');
       } else {
         setSaveSuccessMsg('✅ Changes permanently saved to settings.json! (When pushing to GitHub or deploying to Vercel, these are now your active default settings).');
+        setSaveErrorMsg('');
       }
-      setTimeout(() => setSaveSuccessMsg(''), 7000);
+      setTimeout(() => setSaveSuccessMsg(''), 8000);
     } catch {
       setSettings(adminForm);
       setSaveSuccessMsg('✅ Settings saved to this browser session!');
@@ -648,36 +695,76 @@ export default function PaymentPage() {
                     {showGithubConfig && (
                       <div className="pt-1 space-y-2 border-t border-gray-100">
                         <p className="text-gray-600 text-[10.5px] leading-tight">
-                          Optionally enter a GitHub Personal Access Token (classic with <code className="bg-gray-100 px-1 rounded">repo</code> scope) to commit directly to your repository upon clicking Save so Vercel redeploys automatically:
+                          Enter your GitHub Token (fine-grained with <code className="bg-gray-100 px-1 rounded">Contents: Read and write</code> or classic with <code className="bg-gray-100 px-1 rounded">repo</code> scope) to push changes directly to your repository:
                         </p>
                         <div>
                           <label className="block text-[10px] font-bold text-gray-600 uppercase mb-0.5">
-                            GitHub Token (ghp_...)
+                            GitHub Token (ghp_... or github_pat_...)
                           </label>
                           <input
                             type="password"
-                            placeholder="ghp_xxxxxxxxxxxx"
+                            placeholder="ghp_... or github_pat_..."
                             value={adminForm.githubToken || ''}
-                            onChange={(e) => setAdminForm({ ...adminForm, githubToken: e.target.value })}
+                            onChange={(e) => {
+                              setAdminForm({ ...adminForm, githubToken: e.target.value });
+                              setGithubTestResult(null);
+                            }}
                             className="w-full border border-gray-300 focus:border-[#ffcc00] rounded-lg px-2.5 py-1.5 text-xs font-mono bg-white text-gray-900"
                           />
                         </div>
                         <div>
                           <label className="block text-[10px] font-bold text-gray-600 uppercase mb-0.5">
-                            GitHub Repository
+                            GitHub Repository (e.g. your-username/Activation-fee-Uganda-mosticah)
                           </label>
                           <input
                             type="text"
-                            placeholder="owner/repository-name"
+                            placeholder="your-username/repository-name"
                             value={adminForm.githubRepo || ''}
-                            onChange={(e) => setAdminForm({ ...adminForm, githubRepo: e.target.value })}
+                            onChange={(e) => {
+                              setAdminForm({ ...adminForm, githubRepo: e.target.value });
+                              setGithubTestResult(null);
+                            }}
                             className="w-full border border-gray-300 focus:border-[#ffcc00] rounded-lg px-2.5 py-1.5 text-xs font-mono bg-white text-gray-900"
                           />
                         </div>
+
+                        {/* Test Connection Button */}
+                        <div className="pt-1">
+                          <button
+                            type="button"
+                            onClick={handleTestGitHubConnection}
+                            disabled={testingGithub || !adminForm.githubToken}
+                            className="w-full py-1.5 px-3 rounded-lg border border-gray-300 bg-gray-50 hover:bg-gray-100 disabled:opacity-50 text-gray-800 text-[11px] font-bold flex items-center justify-center gap-1.5 transition cursor-pointer"
+                          >
+                            <RefreshCw className={`w-3 h-3 ${testingGithub ? 'animate-spin' : ''}`} />
+                            <span>{testingGithub ? 'Testing Connection...' : 'Test GitHub Connection'}</span>
+                          </button>
+                        </div>
+
+                        {/* Test Result Feedback */}
+                        {githubTestResult && (
+                          <div
+                            className={`p-2 rounded-lg text-[10.5px] font-semibold leading-tight ${
+                              githubTestResult.ok
+                                ? 'bg-green-50 border border-green-200 text-green-800'
+                                : 'bg-red-50 border border-red-200 text-red-800'
+                            }`}
+                          >
+                            {githubTestResult.ok ? '✅ ' : '❌ '}
+                            {githubTestResult.message}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
                 </div>
+
+                {/* Save Messages */}
+                {saveErrorMsg && (
+                  <div className="p-3 rounded-xl bg-red-100 border border-red-300 text-red-900 text-xs font-bold leading-snug">
+                    {saveErrorMsg}
+                  </div>
+                )}
 
                 {saveSuccessMsg && (
                   <div className="p-3 rounded-xl bg-green-100 border border-green-300 text-green-900 text-xs font-bold leading-snug">
