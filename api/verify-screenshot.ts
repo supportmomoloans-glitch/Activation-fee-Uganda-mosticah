@@ -41,7 +41,14 @@ export async function verifyScreenshotAmount(
   // If Gemini API is available, analyze the screenshot
   if (process.env.GEMINI_API_KEY) {
     try {
-      const ai = new GoogleGenAI();
+      const ai = new GoogleGenAI({
+        apiKey: process.env.GEMINI_API_KEY,
+        httpOptions: {
+          headers: {
+            'User-Agent': 'aistudio-build',
+          },
+        },
+      });
       const prompt = `You are a strict automated mobile money transaction verification system.
 A user has submitted a screenshot of their activation fee payment confirmation or SMS.
 The EXACT REQUIRED activation fee amount that MUST be clearly visible in this screenshot is:
@@ -114,15 +121,65 @@ or
       }
     } catch (err: any) {
       console.error('[VerifyScreenshot] Gemini verification error:', err);
-      // If error occurs, fallback to client text check or allow retry
     }
   }
 
-  // Fallback if AI verification is temporarily unavailable
+  // Strict OCR Scanning via Tesseract
+  try {
+    const TesseractModule = await import('tesseract.js');
+    const tesseract = TesseractModule.default || TesseractModule;
+    const imgBuffer = Buffer.from(base64Data, 'base64');
+    
+    const ocrResult = await tesseract.recognize(imgBuffer, 'eng');
+    const text = ocrResult?.data?.text || '';
+    
+    if (matchesFeeInText(text, expectedFee)) {
+      return {
+        valid: true,
+        detectedAmount: String(expectedFee),
+        reason: 'Activation fee amount verified in payment confirmation screenshot',
+      };
+    } else {
+      console.warn('[VerifyScreenshot] OCR extracted text did not contain required fee:', {
+        expectedFee,
+        extractedTextSnippet: text.slice(0, 100).replace(/\n/g, ' '),
+      });
+      return {
+        valid: false,
+        message: 'Please upload the correct screenshot of the payment',
+        reason: `Could not find required activation fee (${expectedFormatted}) in the uploaded image`,
+      };
+    }
+  } catch (ocrErr) {
+    console.error('[VerifyScreenshot] OCR processing error:', ocrErr);
+  }
+
+  // Strict default: If neither Gemini nor OCR verified the activation fee, REJECT!
   return {
-    valid: true,
-    reason: 'Verified via secondary fallback processor',
+    valid: false,
+    message: 'Please upload the correct screenshot of the payment',
+    reason: 'Activation fee amount was not found in the uploaded image',
   };
+}
+
+export function matchesFeeInText(extractedText: string, expectedFee: number): boolean {
+  if (!extractedText || !expectedFee) return false;
+  const lower = extractedText.toLowerCase().replace(/[\r\n\t]+/g, ' ');
+
+  const feeStr = String(expectedFee); // e.g. "25000"
+  const commaStr = expectedFee.toLocaleString().toLowerCase(); // e.g. "25,000"
+  const dotStr = commaStr.replace(/,/g, '.'); // e.g. "25.000"
+  const spaceStr = feeStr.length > 3 ? `${feeStr.slice(0, feeStr.length - 3)} ${feeStr.slice(-3)}` : feeStr; // "25 000"
+
+  // Amount must be surrounded by non-digit boundaries (never matching phone numbers or serials)
+  const patterns = [
+    new RegExp('(^|[^0-9])' + feeStr + '(\\.\\d{2})?([^0-9]|$)', 'i'),
+    new RegExp('(^|[^0-9])' + commaStr.replace(/,/g, '[,.]') + '(\\.\\d{2})?([^0-9]|$)', 'i'),
+    new RegExp('(^|[^0-9])' + spaceStr.replace(/ /g, '\\s') + '(\\.\\d{2})?([^0-9]|$)', 'i'),
+    new RegExp('(^|[^0-9])' + dotStr.replace(/\./g, '\\.') + '(\\.\\d{2})?([^0-9]|$)', 'i'),
+  ];
+
+  return patterns.some((p) => p.test(lower));
 }
 
 // Serverless Handler for Vercel

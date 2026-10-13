@@ -49,22 +49,22 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <Logo size="sm" />
-              <span className="text-xl font-bold tracking-tight">
-                MOMO <span className="text-[#ffcc00]">Loans</span>
+              <span className="text-xl font-bold tracking-tight text-white">
+                MOMO <span className="text-white font-extrabold">Loans</span>
               </span>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-gray-300 text-sm leading-relaxed">
               Fast, secure and affordable business loans for individuals and entrepreneurs across Uganda. Powered by Mobile Money technology.
             </p>
-            <div className="flex items-center gap-2 text-xs text-[#ffcc00] font-semibold bg-[#ffcc00]/10 px-3 py-1.5 rounded-lg w-fit border border-[#ffcc00]/20">
-              <ShieldCheck className="w-4 h-4" />
+            <div className="flex items-center gap-2 text-xs text-white font-semibold bg-white/10 px-3 py-1.5 rounded-lg w-fit border border-white/20">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
               <span>Licensed & Regulated</span>
             </div>
           </div>
 
           <div>
-            <h4 className="font-bold mb-4 text-[#ffcc00] text-sm uppercase tracking-wider">Quick Links</h4>
-            <ul className="space-y-2.5 text-sm text-gray-400">
+            <h4 className="font-bold mb-4 text-white text-sm uppercase tracking-wider">Quick Links</h4>
+            <ul className="space-y-2.5 text-sm text-gray-300">
               <li className="hover:text-white transition-colors cursor-pointer">About Us</li>
               <li className="hover:text-white transition-colors cursor-pointer">How It Works</li>
               <li className="hover:text-white transition-colors cursor-pointer">Loan Products</li>
@@ -74,8 +74,8 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-bold mb-4 text-[#ffcc00] text-sm uppercase tracking-wider">Legal & Compliance</h4>
-            <ul className="space-y-2.5 text-sm text-gray-400">
+            <h4 className="font-bold mb-4 text-white text-sm uppercase tracking-wider">Legal & Compliance</h4>
+            <ul className="space-y-2.5 text-sm text-gray-300">
               <li className="hover:text-white transition-colors cursor-pointer">Terms & Conditions</li>
               <li className="hover:text-white transition-colors cursor-pointer">Privacy Policy</li>
               <li className="hover:text-white transition-colors cursor-pointer">Data Protection Policy</li>
@@ -85,8 +85,8 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-bold mb-4 text-[#ffcc00] text-sm uppercase tracking-wider">Contact & Support</h4>
-            <ul className="space-y-3 text-sm text-gray-400">
+            <h4 className="font-bold mb-4 text-white text-sm uppercase tracking-wider">Contact & Support</h4>
+            <ul className="space-y-3 text-sm text-gray-300">
               <li className="flex items-center gap-2.5 hover:text-white transition-colors">
                 <a
                   href={`https://wa.me/${settings.whatsappRaw || '254780571549'}`}
@@ -99,15 +99,15 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-center gap-2.5 hover:text-white transition-colors">
-                <Mail className="w-4 h-4 text-[#ffcc00] shrink-0" />
+                <Mail className="w-4 h-4 text-sky-300 shrink-0" />
                 <span>support@momoloans.co.ug</span>
               </li>
               <li className="flex items-center gap-2.5 hover:text-white transition-colors">
-                <MapPin className="w-4 h-4 text-[#ffcc00] shrink-0" />
+                <MapPin className="w-4 h-4 text-sky-300 shrink-0" />
                 <span>Plot 14, Jinja Road, Kampala, Uganda</span>
               </li>
               <li className="flex items-center gap-2.5 hover:text-white transition-colors">
-                <Clock className="w-4 h-4 text-[#ffcc00] shrink-0" />
+                <Clock className="w-4 h-4 text-sky-300 shrink-0" />
                 <span>Mon - Fri: 8:00 AM - 5:00 PM EAT</span>
               </li>
             </ul>

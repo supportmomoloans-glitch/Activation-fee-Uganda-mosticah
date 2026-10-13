@@ -51,10 +51,10 @@ export default function PageLoader({
 
             {/* Typography */}
             <div className="mt-4 sm:mt-5 text-center flex flex-col items-center">
-              <span className="text-3xl sm:text-4xl font-black text-[#ffcc00] tracking-tight leading-none drop-shadow-sm font-sans">
+              <span className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-none drop-shadow-sm font-sans">
                 MoMo
               </span>
-              <span className="text-xs sm:text-sm font-bold text-[#ffcc00] tracking-normal mt-1 opacity-95">
+              <span className="text-xs sm:text-sm font-bold text-sky-200 tracking-normal mt-1 opacity-95">
                 from MTN
               </span>
             </div>
@@ -62,10 +62,10 @@ export default function PageLoader({
             {/* 3-second animated progress bar */}
             <div className="mt-8 w-44 sm:w-52 h-1.5 bg-[#00344d] rounded-full overflow-hidden border border-[#00608a]/40 shadow-inner">
               <div
-                className="h-full bg-gradient-to-r from-[#ffcc00] via-[#ffd633] to-[#ffcc00] rounded-full animate-loader-progress shadow-sm"
+                className="h-full bg-gradient-to-r from-sky-400 via-white to-sky-300 rounded-full animate-loader-progress shadow-sm"
               />
             </div>
-            <span className="text-[11px] font-semibold text-[#ffcc00]/80 mt-2.5 tracking-wide">
+            <span className="text-[11px] font-semibold text-sky-200/90 mt-2.5 tracking-wide">
               Loading...
             </span>
           </div>

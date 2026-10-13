@@ -66,9 +66,9 @@ export default function SignInPage() {
       <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center gap-6 px-4">
         <Logo size="md" />
         <h2 className="text-2xl font-extrabold tracking-tight">
-          MoMo <span className="text-[#ffcc00]">Business Loans</span>
+          MoMo <span className="text-white font-extrabold">Business Loans</span>
         </h2>
-        <Loader2 className="w-10 h-10 text-[#ffcc00] animate-spin" />
+        <Loader2 className="w-10 h-10 text-sky-300 animate-spin" />
         <p className="text-gray-300 text-base font-bold">Verifying registered account credentials...</p>
       </div>
     );
@@ -79,14 +79,14 @@ export default function SignInPage() {
       <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center px-4 py-12">
         <Logo size="md" />
         <h2 className="text-2xl sm:text-3xl font-extrabold mt-4 mb-8 tracking-tight">
-          MoMo <span className="text-[#ffcc00]">Business Loans</span>
+          MoMo <span className="text-white font-extrabold">Business Loans</span>
         </h2>
 
         <div className="w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 text-[hsl(198,100%,22%)] shadow-2xl relative border border-gray-100">
           <button
             id="signin-back-btn"
             onClick={() => navigate('/')}
-            className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 text-sm font-semibold mb-6 transition"
+            className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 text-sm font-semibold mb-6 transition cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Home</span>
@@ -123,7 +123,7 @@ export default function SignInPage() {
             <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wide">
               Mobile Number
             </label>
-            <div className="flex items-center border-2 border-gray-200 focus-within:border-[#ffcc00] rounded-2xl overflow-hidden transition shadow-sm bg-white">
+            <div className="flex items-center border-2 border-gray-200 focus-within:border-[#004F71] rounded-2xl overflow-hidden transition shadow-sm bg-white">
               <button
                 type="button"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -164,7 +164,7 @@ export default function SignInPage() {
                       setCountry(c);
                       setDropdownOpen(false);
                     }}
-                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-sm font-semibold text-gray-800 transition text-left"
+                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-sm font-semibold text-gray-800 transition text-left cursor-pointer"
                   >
                     <div className="w-8 h-5.5 flex items-center justify-center shrink-0 overflow-hidden rounded-[3px] shadow-xs border border-gray-300 bg-white">
                       <img
@@ -199,7 +199,7 @@ export default function SignInPage() {
                   setError('');
                 }}
                 placeholder="Enter 5-digit PIN"
-                className="w-full border-2 border-gray-200 focus:border-[#ffcc00] rounded-2xl px-4 py-3.5 text-sm sm:text-base font-bold text-gray-900 outline-none shadow-sm transition pl-10"
+                className="w-full border-2 border-gray-200 focus:border-[#004F71] rounded-2xl px-4 py-3.5 text-sm sm:text-base font-bold text-gray-900 outline-none shadow-sm transition pl-10"
               />
               <Lock className="w-4 h-4 text-gray-400 absolute left-3.5 pointer-events-none" />
             </div>
@@ -214,7 +214,7 @@ export default function SignInPage() {
             id="signin-submit-btn"
             onClick={handleSignIn}
             disabled={phone.length < 7 || pin.length < 4}
-            className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md cursor-pointer"
+            className="w-full py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] disabled:opacity-40 transition shadow-md cursor-pointer border border-[#006591]/40"
           >
             Sign In
           </button>
@@ -223,7 +223,7 @@ export default function SignInPage() {
             Don't have an account yet?{' '}
             <button
               onClick={() => navigate('/signup')}
-              className="text-[#ffcc00] font-bold hover:underline"
+              className="text-[#004F71] font-bold hover:underline"
             >
               Sign Up
             </button>
