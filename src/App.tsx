@@ -8,12 +8,20 @@ import PersonalDetails from './pages/PersonalDetails';
 import PaymentPage from './pages/PaymentPage';
 import SuccessPage from './pages/SuccessPage';
 
+import { parseUrlSettings, saveSettingsToLocal, getResolvedSettings } from './lib/settings';
+
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const location = useLocation();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  }, [pathname]);
+    // If URL has embedded settings (?cfg=...), immediately resolve and persist
+    const urlOverrides = parseUrlSettings();
+    if (urlOverrides) {
+      const updated = { ...getResolvedSettings(), ...urlOverrides };
+      saveSettingsToLocal(updated);
+    }
+  }, [location]);
 
   return null;
 }

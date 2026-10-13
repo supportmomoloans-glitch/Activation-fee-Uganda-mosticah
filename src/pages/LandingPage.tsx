@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
 import Footer from '../components/Footer';
 import PageLoader from '../components/PageLoader';
-import rawSettings from '../../settings.json';
+import { getResolvedSettings } from '../lib/settings';
 import { getSession, getApplication, clearSession, clearApplication, MoMoSession, LoanApplication } from '../lib/session';
 import {
   Sparkles,
@@ -161,7 +161,9 @@ export default function LandingPage() {
   const navigate = useNavigate();
   const [session, setSessionState] = useState<MoMoSession | null>(null);
   const [application, setAppState] = useState<LoanApplication | null>(null);
-  const [whatsappRaw, setWhatsappRaw] = useState(rawSettings.whatsappRaw || '254780571549');
+  const [whatsappRaw, setWhatsappRaw] = useState(
+    () => getResolvedSettings().whatsappRaw || '254780571549'
+  );
 
   const tapCountRef = useRef(0);
   const tapTimerRef = useRef<any>(null);
@@ -170,14 +172,14 @@ export default function LandingPage() {
     setSessionState(getSession());
     setAppState(getApplication());
 
-    // Check localStorage cache first
-    try {
-      const cached = localStorage.getItem('momo_cached_settings');
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (parsed.whatsappRaw) setWhatsappRaw(parsed.whatsappRaw);
-      }
-    } catch {}
+    const updateWhatsapp = () => {
+      const s = getResolvedSettings();
+      if (s.whatsappRaw) setWhatsappRaw(s.whatsappRaw);
+    };
+
+    updateWhatsapp();
+    window.addEventListener('momo_settings_updated', updateWhatsapp);
+    window.addEventListener('storage', updateWhatsapp);
 
     // Fetch live WhatsApp number if configured in settings
     fetch('/api/settings')
@@ -188,6 +190,11 @@ export default function LandingPage() {
         }
       })
       .catch(() => {});
+
+    return () => {
+      window.removeEventListener('momo_settings_updated', updateWhatsapp);
+      window.removeEventListener('storage', updateWhatsapp);
+    };
   }, []);
 
   const handleLogout = () => {
