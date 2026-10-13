@@ -129,10 +129,15 @@ async function startServer() {
     res.json({ ok: true, settings });
   });
 
-  app.post('/api/settings', (req, res) => {
+  app.post('/api/settings', async (req, res) => {
     try {
-      const updated = saveSettingsToDisk(req.body || {});
-      res.json({ ok: true, settings: updated });
+      const result = await saveSettingsToDisk(req.body || {});
+      res.json({
+        ok: true,
+        settings: result.settings,
+        githubSynced: result.githubSynced,
+        githubMessage: result.githubMessage,
+      });
     } catch (err: any) {
       res.status(500).json({ ok: false, error: err.message });
     }

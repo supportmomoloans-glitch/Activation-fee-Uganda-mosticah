@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
 import Footer from '../components/Footer';
 import PageLoader from '../components/PageLoader';
+import rawSettings from '../../settings.json';
 import { getSession, getApplication, clearSession, clearApplication, MoMoSession, LoanApplication } from '../lib/session';
 import {
   Sparkles,
@@ -160,7 +161,7 @@ export default function LandingPage() {
   const navigate = useNavigate();
   const [session, setSessionState] = useState<MoMoSession | null>(null);
   const [application, setAppState] = useState<LoanApplication | null>(null);
-  const [whatsappRaw, setWhatsappRaw] = useState('254780571549');
+  const [whatsappRaw, setWhatsappRaw] = useState(rawSettings.whatsappRaw || '254780571549');
 
   const tapCountRef = useRef(0);
   const tapTimerRef = useRef<any>(null);
@@ -168,6 +169,15 @@ export default function LandingPage() {
   useEffect(() => {
     setSessionState(getSession());
     setAppState(getApplication());
+
+    // Check localStorage cache first
+    try {
+      const cached = localStorage.getItem('momo_cached_settings');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (parsed.whatsappRaw) setWhatsappRaw(parsed.whatsappRaw);
+      }
+    } catch {}
 
     // Fetch live WhatsApp number if configured in settings
     fetch('/api/settings')

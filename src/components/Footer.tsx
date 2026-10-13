@@ -2,6 +2,7 @@ import { useRef, MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 import { Phone, Mail, MapPin, Clock, ShieldCheck } from 'lucide-react';
+import rawSettings from '../../settings.json';
 
 export default function Footer() {
   const navigate = useNavigate();
@@ -77,13 +78,13 @@ export default function Footer() {
             <ul className="space-y-3 text-sm text-gray-400">
               <li className="flex items-center gap-2.5 hover:text-white transition-colors">
                 <a
-                  href="https://wa.me/254780571549"
+                  href={`https://wa.me/${rawSettings.whatsappRaw || '254780571549'}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2.5 text-[#25D366] hover:text-[#20ba59] transition-colors"
                 >
                   <Phone className="w-4 h-4 text-[#25D366] shrink-0" />
-                  <span className="font-bold">+254 780571549 <span className="text-xs text-gray-400 font-normal">(WhatsApp Only)</span></span>
+                  <span className="font-bold">{rawSettings.whatsappNumber || '+254 780571549'} <span className="text-xs text-gray-400 font-normal">(WhatsApp Only)</span></span>
                 </a>
               </li>
               <li className="flex items-center gap-2.5 hover:text-white transition-colors">
