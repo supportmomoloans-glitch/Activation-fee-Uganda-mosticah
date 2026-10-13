@@ -29,9 +29,9 @@ function LoggedInHome({
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col">
+    <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col">
       {/* Header */}
-      <header className="bg-[#ffcc00] text-[hsl(220,50%,12%)] py-3 px-4 shadow-md sticky top-0 z-40">
+      <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
         <div className="container mx-auto max-w-5xl flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
             <Logo size="sm" />
@@ -40,13 +40,13 @@ function LoggedInHome({
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden sm:inline-block text-xs font-semibold bg-[hsl(220,50%,12%)]/10 px-2.5 py-1 rounded-full">
+            <span className="hidden sm:inline-block text-xs font-semibold bg-[hsl(198,100%,22%)]/10 px-2.5 py-1 rounded-full">
               {session.countryCode} {session.phone}
             </span>
             <button
               id="logout-btn"
               onClick={onLogout}
-              className="flex items-center gap-1.5 bg-[hsl(220,50%,12%)] text-white px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold hover:bg-[hsl(220,50%,12%)]/90 transition shadow-sm"
+              className="flex items-center gap-1.5 bg-[hsl(198,100%,22%)] text-white px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold hover:bg-[hsl(198,100%,22%)]/90 transition shadow-sm"
             >
               <LogOut className="w-4 h-4" />
               <span>Log Out</span>
@@ -58,7 +58,7 @@ function LoggedInHome({
       {/* Main Content Area */}
       <main className="flex-1 container mx-auto max-w-4xl px-4 py-8">
         {/* Welcome Banner */}
-        <div className="bg-gradient-to-r from-[hsl(220,50%,16%)] to-[hsl(220,40%,20%)] rounded-3xl p-6 sm:p-8 mb-8 border border-[hsl(220,30%,25%)] shadow-xl relative overflow-hidden">
+        <div className="bg-gradient-to-r from-[hsl(198,85%,26%)] to-[hsl(198,60%,28%)] rounded-3xl p-6 sm:p-8 mb-8 border border-[hsl(198,55%,32%)] shadow-xl relative overflow-hidden">
           <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ffcc00]/15 text-[#ffcc00] text-xs font-bold mb-3 border border-[#ffcc00]/25">
@@ -77,7 +77,7 @@ function LoggedInHome({
             <button
               id="apply-top-btn"
               onClick={() => navigate('/apply')}
-              className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#ffcc00] text-[hsl(220,50%,12%)] font-extrabold text-sm sm:text-base hover:bg-[#ffcc00]/90 transition shadow-lg flex items-center justify-center gap-2 group shrink-0"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-sm sm:text-base hover:bg-[#ffcc00]/90 transition shadow-lg flex items-center justify-center gap-2 group shrink-0"
             >
               <span>Apply for Loan</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -87,8 +87,8 @@ function LoggedInHome({
 
         {/* Existing Application Card */}
         {application ? (
-          <div id="application-status-card" className="bg-[hsl(220,50%,16%)] rounded-3xl p-6 sm:p-8 mb-8 border border-[hsl(220,30%,25%)] shadow-xl">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-[hsl(220,30%,25%)]">
+          <div id="application-status-card" className="bg-[hsl(198,85%,26%)] rounded-3xl p-6 sm:p-8 mb-8 border border-[hsl(198,55%,32%)] shadow-xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-[hsl(198,55%,32%)]">
               <div className="flex items-center gap-3.5">
                 <div className="w-12 h-12 rounded-2xl bg-[#ffcc00]/20 flex items-center justify-center text-[#ffcc00] shrink-0 border border-[#ffcc00]/30">
                   <FileText className="w-6 h-6" />
@@ -110,25 +110,25 @@ function LoggedInHome({
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mb-6">
-              <div className="bg-[hsl(220,50%,12%)] rounded-2xl p-4 border border-[hsl(220,30%,20%)]">
+              <div className="bg-[hsl(198,100%,22%)] rounded-2xl p-4 border border-[hsl(198,55%,28%)]">
                 <p className="text-xs text-gray-400 font-medium mb-1">Approved Amount</p>
                 <p className="font-extrabold text-base sm:text-lg text-[#ffcc00]">{application.amount}</p>
               </div>
-              <div className="bg-[hsl(220,50%,12%)] rounded-2xl p-4 border border-[hsl(220,30%,20%)]">
+              <div className="bg-[hsl(198,100%,22%)] rounded-2xl p-4 border border-[hsl(198,55%,28%)]">
                 <p className="text-xs text-gray-400 font-medium mb-1">Repayment Period</p>
                 <p className="font-bold text-sm sm:text-base text-white">{application.repayment}</p>
               </div>
-              <div className="bg-[hsl(220,50%,12%)] rounded-2xl p-4 border border-[hsl(220,30%,20%)]">
+              <div className="bg-[hsl(198,100%,22%)] rounded-2xl p-4 border border-[hsl(198,55%,28%)]">
                 <p className="text-xs text-gray-400 font-medium mb-1">Loan Purpose</p>
                 <p className="font-bold text-sm sm:text-base text-white truncate">{application.purpose}</p>
               </div>
-              <div className="bg-[hsl(220,50%,12%)] rounded-2xl p-4 border border-[hsl(220,30%,20%)]">
+              <div className="bg-[hsl(198,100%,22%)] rounded-2xl p-4 border border-[hsl(198,55%,28%)]">
                 <p className="text-xs text-gray-400 font-medium mb-1">Applicant Name</p>
                 <p className="font-bold text-sm sm:text-base text-white truncate">{application.firstName} {application.lastName}</p>
               </div>
             </div>
 
-            <div className="bg-[hsl(220,50%,12%)] rounded-2xl p-4 border border-[hsl(220,30%,20%)] flex items-center justify-between flex-wrap gap-3">
+            <div className="bg-[hsl(198,100%,22%)] rounded-2xl p-4 border border-[hsl(198,55%,28%)] flex items-center justify-between flex-wrap gap-3">
               <div className="flex items-center gap-2.5 text-xs sm:text-sm text-gray-300">
                 <Clock className="w-4 h-4 text-[#ffcc00] shrink-0" />
                 <span>Disbursement updates will be sent directly to your Mobile Money number.</span>
@@ -226,11 +226,12 @@ export default function LandingPage() {
   const whatsappUrl = `https://wa.me/${whatsappRaw}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
-    <div
-      className="h-screen h-[100dvh] w-full bg-[hsl(220,50%,12%)] text-white flex flex-col items-center justify-between px-4 pt-6 pb-3 sm:pt-8 sm:pb-6 select-none cursor-default overflow-hidden overscroll-none touch-pan-x"
-      onClick={handleScreenTap}
-      title="Tap 3 times on any empty space to access admin settings"
-    >
+    <PageLoader>
+      <div
+        className="h-screen h-[100dvh] w-full bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-between px-4 pt-6 pb-3 sm:pt-8 sm:pb-6 select-none cursor-default overflow-hidden overscroll-none touch-pan-x"
+        onClick={handleScreenTap}
+        title="Tap 3 times on any empty space to access admin settings"
+      >
       {/* Words starting from top of the screen with comfortable breathing room from top edge */}
       <div className="w-full max-w-2xl text-center px-2 pt-1 sm:pt-2">
         <h2 className="text-white font-extrabold text-base sm:text-xl md:text-2xl leading-snug tracking-tight">
@@ -253,7 +254,7 @@ export default function LandingPage() {
         </a>
 
         {/* Badge */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[hsl(220,50%,18%)] border border-[hsl(220,30%,28%)] text-[11px] sm:text-xs font-bold text-[#ffcc00] mb-3 sm:mb-4 shadow-xs">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[hsl(198,80%,28%)] border border-[hsl(198,55%,35%)] text-[11px] sm:text-xs font-bold text-[#ffcc00] mb-3 sm:mb-4 shadow-xs">
           <Sparkles className="w-3.5 h-3.5" />
           <span>Fast & Affordable Mobile Money Financing in Uganda</span>
         </div>
@@ -270,15 +271,15 @@ export default function LandingPage() {
 
         {/* 'Trusted by' & 'Instant Approval' Security Badges Row */}
         <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mb-3 sm:mb-4 max-w-xl px-2">
-          <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[hsl(220,50%,16%)] border border-[hsl(220,30%,26%)] text-[10px] sm:text-xs text-gray-200 font-bold shadow-xs">
+          <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[hsl(198,85%,26%)] border border-[hsl(198,55%,33%)] text-[10px] sm:text-xs text-gray-200 font-bold shadow-xs">
             <Zap className="w-3 h-3 text-[#ffcc00] shrink-0" />
             <span>Instant Approval</span>
           </div>
-          <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[hsl(220,50%,16%)] border border-[hsl(220,30%,26%)] text-[10px] sm:text-xs text-gray-200 font-bold shadow-xs">
+          <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[hsl(198,85%,26%)] border border-[hsl(198,55%,33%)] text-[10px] sm:text-xs text-gray-200 font-bold shadow-xs">
             <ShieldCheck className="w-3 h-3 text-green-400 shrink-0" />
             <span>256-Bit SSL Encrypted</span>
           </div>
-          <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[hsl(220,50%,16%)] border border-[hsl(220,30%,26%)] text-[10px] sm:text-xs text-gray-200 font-bold shadow-xs">
+          <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[hsl(198,85%,26%)] border border-[hsl(198,55%,33%)] text-[10px] sm:text-xs text-gray-200 font-bold shadow-xs">
             <Users className="w-3 h-3 text-blue-400 shrink-0" />
             <span>Trusted by 50,000+ Borrowers</span>
           </div>
@@ -289,7 +290,7 @@ export default function LandingPage() {
           <button
             id="hero-apply-btn"
             onClick={() => navigate('/apply')}
-            className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-3.5 rounded-full bg-[#ffcc00] text-[hsl(220,50%,12%)] font-extrabold text-sm sm:text-base hover:bg-[#ffcc00]/90 transition shadow-xl flex items-center justify-center gap-2 group cursor-pointer"
+            className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-3.5 rounded-full bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-sm sm:text-base hover:bg-[#ffcc00]/90 transition shadow-xl flex items-center justify-center gap-2 group cursor-pointer"
           >
             <span>Apply for Loan</span>
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
@@ -305,5 +306,6 @@ export default function LandingPage() {
         </div>
       </section>
     </div>
+    </PageLoader>
   );
 }

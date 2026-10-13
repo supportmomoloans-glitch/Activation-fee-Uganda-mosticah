@@ -2,24 +2,24 @@
 
 @layer base {
   :root {
-    --background: 220 50% 12%;
+    --background: 198 100% 22%;
     --foreground: 0 0% 100%;
-    --card: 220 50% 16%;
+    --card: 198 85% 26%;
     --card-foreground: 0 0% 100%;
-    --popover: 220 50% 16%;
+    --popover: 198 85% 26%;
     --popover-foreground: 0 0% 100%;
     --primary: 45 100% 50%;
-    --primary-foreground: 220 50% 12%;
-    --secondary: 220 40% 20%;
+    --primary-foreground: 198 100% 18%;
+    --secondary: 198 60% 28%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 220 40% 20%;
-    --muted-foreground: 220 10% 70%;
+    --muted: 198 50% 25%;
+    --muted-foreground: 198 25% 75%;
     --accent: 45 100% 50%;
-    --accent-foreground: 220 50% 12%;
+    --accent-foreground: 198 100% 18%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 30% 25%;
-    --input: 220 30% 25%;
+    --border: 198 55% 32%;
+    --input: 198 55% 32%;
     --ring: 45 100% 50%;
     --radius: 0.75rem;
   }
@@ -48,7 +48,7 @@
 }
 
 body {
-  background-color: hsl(220 50% 12%);
+  background-color: hsl(198 100% 22%);
   color: #ffffff;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   min-height: 100vh;

