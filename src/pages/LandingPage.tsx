@@ -128,18 +128,45 @@ function LoggedInHome({
               </div>
             </div>
 
-            <div className="bg-[hsl(198,100%,22%)] rounded-2xl p-4 border border-[hsl(198,55%,28%)] flex items-center justify-between flex-wrap gap-3">
-              <div className="flex items-center gap-2.5 text-xs sm:text-sm text-gray-300">
-                <Clock className="w-4 h-4 text-[#ffcc00] shrink-0" />
-                <span>Disbursement updates will be sent directly to your Mobile Money number.</span>
+            {application.status === 'withdrawn' ? (
+              <div className="mt-4 p-4 rounded-2xl bg-amber-500/15 border border-amber-400/30 flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-[#ffcc00] flex items-center justify-center shrink-0">
+                    <Clock className="w-5 h-5 animate-pulse" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-extrabold text-white">
+                      24-Hour Loan Withdrawal Queue Active
+                    </h4>
+                    <p className="text-[11px] text-gray-300">
+                      Your funds are in the automated clearing queue. Track real-time progress.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => navigate('/withdrawal-status')}
+                  className="px-4 py-2.5 rounded-xl bg-[#ffcc00] text-gray-950 font-black text-xs hover:bg-[#ffcc00]/90 transition shadow-sm flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>Track 24hr Progress</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
-              <button
-                onClick={() => navigate('/apply')}
-                className="text-xs font-bold text-[#ffcc00] hover:underline"
-              >
-                Apply for another loan
-              </button>
-            </div>
+            ) : (
+              <div className="bg-[hsl(198,100%,22%)] rounded-2xl p-4 border border-[hsl(198,55%,28%)] flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-2.5 text-xs sm:text-sm text-gray-300">
+                  <Clock className="w-4 h-4 text-[#ffcc00] shrink-0" />
+                  <span>Disbursement updates will be sent directly to your Mobile Money number.</span>
+                </div>
+                <button
+                  onClick={() => navigate('/apply')}
+                  className="text-xs font-bold text-[#ffcc00] hover:underline"
+                >
+                  Apply for another loan
+                </button>
+              </div>
+            )}
           </div>
         ) : null}
       </main>

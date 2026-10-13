@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Logo from '../components/Logo';
 import PageLoader from '../components/PageLoader';
 import { momoCountries, MoMoCountry } from '../data/countries';
@@ -9,6 +9,7 @@ import { ArrowLeft, ChevronDown, Loader2, ShieldCheck, Lock, AlertCircle, UserPl
 
 export default function SignInPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [country, setCountry] = useState<MoMoCountry>(momoCountries[0]);
   const [phone, setPhone] = useState('');
   const [pin, setPin] = useState('');
@@ -52,7 +53,12 @@ export default function SignInPage() {
     }
 
     setSession({ phone, country: country.name, countryCode: country.code, loggedIn: true });
-    setTimeout(() => navigate('/'), 1800);
+
+    const target =
+      location.state?.returnTo ||
+      (localStorage.getItem('momo_withdrawal_initiated_at') ? '/withdrawal-status' : '/');
+
+    setTimeout(() => navigate(target), 1800);
   };
 
   if (loading) {

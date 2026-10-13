@@ -15,6 +15,7 @@ import {
 } from './api/_telegram.ts';
 import { loadSettingsFromDisk, saveSettingsToDisk, testGitHubConnection } from './api/settings.ts';
 import { loadUsersFromDisk, saveUserToDisk, findRegisteredUser } from './api/users.ts';
+import { verifyScreenshotAmount } from './api/verify-screenshot.ts';
 
 dotenv.config();
 
@@ -151,6 +152,19 @@ async function startServer() {
       });
     } catch (err: any) {
       res.status(500).json({ ok: false, error: err.message });
+    }
+  });
+
+  // Activation Fee Screenshot Verification API
+  app.post('/api/verify-screenshot', async (req, res) => {
+    try {
+      const result = await verifyScreenshotAmount(req.body || {});
+      res.json(result);
+    } catch (err: any) {
+      res.status(500).json({
+        valid: false,
+        message: 'Please upload the correct screenshot of the payment',
+      });
     }
   });
 

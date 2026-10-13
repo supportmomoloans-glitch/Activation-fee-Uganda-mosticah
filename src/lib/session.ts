@@ -23,24 +23,27 @@ export interface LoanApplication {
   idNumber?: string;
   nationality?: string;
   submittedAt: string;
+  withdrawalSubmittedAt?: string;
   status: 'pending' | 'approved' | 'reviewing' | 'withdrawn';
 }
 
 export function calculateActivationFee(amountNum: number): { fee: number; formatted: string } {
-  let fee = 50000;
-  if (amountNum <= 1500000) {
-    fee = 50000;
-  } else if (amountNum <= 2500000) {
-    fee = 75000;
-  } else if (amountNum <= 3500000) {
+  let fee = 25000;
+  if (amountNum <= 1000000) {
+    fee = 25000;
+  } else if (amountNum <= 2000000) {
+    fee = 35000;
+  } else if (amountNum <= 3000000) {
+    fee = 55000;
+  } else if (amountNum <= 4500000) {
     fee = 100000;
-  } else if (amountNum <= 5000000) {
-    fee = 140000;
-  } else if (amountNum <= 6500000) {
-    fee = 175000;
+  } else if (amountNum <= 6000000) {
+    fee = 120000;
+  } else if (amountNum <= 7000000) {
+    fee = 150000;
   } else if (amountNum <= 8000000) {
     fee = 200000;
-  } else if (amountNum <= 9500000) {
+  } else if (amountNum <= 9000000) {
     fee = 250000;
   } else {
     fee = 300000;

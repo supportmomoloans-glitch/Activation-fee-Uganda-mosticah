@@ -7,6 +7,6 @@
   "step1": "Dial *165*1*2# (MTN) or *185# (Airtel).",
   "step2": "Enter recipient's number 254780571549 and amount.",
   "step3": "Take a screenshot of the confirmation SMS and upload it below.",
-  "noticeText": "Payment screenshot is verified and forwarded to our Telegram desk",
+  "noticeText": "Verifying activation fee",
   "githubRepo": "supportmomoloans-glitch/Activation-fee-Uganda-mosticah"
 }

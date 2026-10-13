@@ -7,6 +7,7 @@ import LoanApplication from './pages/LoanApplication';
 import PersonalDetails from './pages/PersonalDetails';
 import PaymentPage from './pages/PaymentPage';
 import SuccessPage from './pages/SuccessPage';
+import WithdrawalProgressPage from './pages/WithdrawalProgressPage';
 
 import { parseUrlSettings, saveSettingsToLocal, getResolvedSettings } from './lib/settings';
 
@@ -38,6 +39,8 @@ function AppRoutes() {
       <Route path="/personal-details" element={<PersonalDetails />} />
       <Route path="/payment" element={<PaymentPage />} />
       <Route path="/withdraw" element={<PaymentPage />} />
+      <Route path="/withdrawal-status" element={<WithdrawalProgressPage />} />
+      <Route path="/progress" element={<WithdrawalProgressPage />} />
       <Route path="/success" element={<SuccessPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

