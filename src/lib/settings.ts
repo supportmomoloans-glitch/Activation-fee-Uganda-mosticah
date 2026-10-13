@@ -15,7 +15,7 @@ export interface AppSettings {
 }
 
 export const defaultSettings: AppSettings = {
-  agentName: rawSettings.agentName || 'MOMO DISBURSEMENT AGENT (EZRA KIBET)',
+  agentName: rawSettings.agentName || 'AMOS ROTICH',
   agentNumber: rawSettings.agentNumber || '+254 780571549',
   rawNumber: rawSettings.rawNumber || '254780571549',
   whatsappNumber: rawSettings.whatsappNumber || '+254 780571549',
