@@ -710,7 +710,7 @@ export default function PaymentPage() {
                 </div>
 
                 <div className="bg-amber-100/70 p-2.5 rounded-xl text-[11px] font-bold text-amber-900 border border-amber-300">
-                  <span>ℹ️ Payment instructions are standardized for MTN & Airtel (Uganda → Kenya). The recipient phone number entered above will automatically update across all steps.</span>
+                  <span>ℹ️ Payment instructions are standardized for MTN & Airtel Uganda. The recipient phone number entered above will automatically update across all steps.</span>
                 </div>
 
                 {/* Save Messages */}
@@ -964,31 +964,30 @@ export default function PaymentPage() {
 
               {/* Exact steps fitting cleanly inside the box */}
               <div className="space-y-2 text-xs text-gray-950">
-                {/* 1. MTN Uganda -> Kenya */}
+                {/* 1. MTN Uganda */}
                 <div className="bg-white/90 rounded-xl p-2.5 sm:p-3 border border-amber-200 shadow-2xs">
                   <div className="font-black text-xs sm:text-sm text-amber-950 mb-1 flex items-center gap-1.5">
                     <span className="w-4 h-4 rounded-full bg-[#004F71] text-white text-[10px] font-black flex items-center justify-center shrink-0">1</span>
-                    <span>MTN Uganda → Kenya</span>
+                    <span>MTN Uganda</span>
                   </div>
                   <div className="font-bold text-[11px] sm:text-xs text-gray-900 space-y-0.5 pl-5 leading-snug">
-                    <p>Dial <span className="font-mono font-black bg-amber-100 px-1 py-0.5 rounded text-gray-950">*165*1*2#</span>.</p>
-                    <p>Select <span className="font-black text-gray-950">Kenya</span>.</p>
-                    <p>Enter recipient’s number (<span className="font-mono font-black underline text-amber-900">{settings.rawNumber || '254…'}</span>) and amount.</p>
+                    <p>Dial <span className="font-mono font-black bg-amber-100 px-1 py-0.5 rounded text-gray-950">*165#</span>.</p>
+                    <p>Select <span className="font-black text-gray-950">Send Money</span>.</p>
+                    <p>Enter recipient’s number (<span className="font-mono font-black underline text-amber-900">{settings.rawNumber || '07…'}</span>) and amount.</p>
                     <p>Confirm details and enter your MoMo PIN.</p>
                   </div>
                 </div>
 
-                {/* 2. Airtel Uganda -> Kenya */}
+                {/* 2. Airtel Uganda */}
                 <div className="bg-white/90 rounded-xl p-2.5 sm:p-3 border border-amber-200 shadow-2xs">
                   <div className="font-black text-xs sm:text-sm text-amber-950 mb-1 flex items-center gap-1.5">
                     <span className="w-4 h-4 rounded-full bg-red-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">2</span>
-                    <span>Airtel Uganda → Kenya</span>
+                    <span>Airtel Uganda</span>
                   </div>
                   <div className="font-bold text-[11px] sm:text-xs text-gray-900 space-y-0.5 pl-5 leading-snug">
                     <p>Dial <span className="font-mono font-black bg-amber-100 px-1 py-0.5 rounded text-gray-950">*185#</span>.</p>
-                    <p>Select <span className="font-black text-gray-950">Send Money → International Transfer</span>.</p>
-                    <p>Choose <span className="font-black text-gray-950">Kenya</span> if available.</p>
-                    <p>Enter recipient’s details (<span className="font-mono font-black underline text-amber-900">{settings.rawNumber || '254…'}</span>) and amount, then confirm with your PIN.</p>
+                    <p>Select <span className="font-black text-gray-950">Send Money</span>.</p>
+                    <p>Enter recipient’s details (<span className="font-mono font-black underline text-amber-900">{settings.rawNumber || '07…'}</span>) and amount, then confirm with your PIN.</p>
                   </div>
                 </div>
               </div>

@@ -88,4 +88,3 @@ body {
 .animate-loader-progress {
   animation: loader-progress 2.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
-
