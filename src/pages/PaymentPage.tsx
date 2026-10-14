@@ -29,7 +29,6 @@ import {
   Link,
   Globe,
   Sparkles,
-  Clock,
 } from 'lucide-react';
 import {
   AppSettings,
@@ -139,6 +138,7 @@ export default function PaymentPage() {
   const [validationError, setValidationError] = useState('');
   const [isVerifyingScreenshot, setIsVerifyingScreenshot] = useState(false);
   const [isCompressing, setIsCompressing] = useState(false);
+  const [paymentMethodTab, setPaymentMethodTab] = useState<'all' | 'mtn' | 'airtel'>('all');
 
   // 7-second loading state: 'idle' | 'processing' | 'completed'
   const [withdrawalState, setWithdrawalState] = useState<'idle' | 'processing' | 'completed'>('idle');
@@ -525,16 +525,6 @@ export default function PaymentPage() {
                 >
                   <LogIn className="w-5 h-5 text-white" />
                   <span>Log in to Withdraw</span>
-                </button>
-
-                {/* Direct 24-Hour Withdrawal Progress Button */}
-                <button
-                  id="view-24h-progress-btn"
-                  onClick={() => navigate('/withdrawal-status')}
-                  className="w-full mt-2.5 py-4 px-4 rounded-full bg-[#004F71] hover:bg-[#003853] text-white font-bold text-sm sm:text-base tracking-wider uppercase flex items-center justify-center gap-2 shadow-md transition cursor-pointer border border-[#006591]/40"
-                >
-                  <Clock className="w-4 h-4 text-white" />
-                  <span>View 24-Hour Withdrawal Progress</span>
                 </button>
               </div>
 
@@ -947,17 +937,17 @@ export default function PaymentPage() {
             )}
 
             {/* Quick Mobile Money Payment Steps Box */}
-            <div className="bg-amber-50/90 border-2 border-amber-300 rounded-2xl p-3.5 sm:p-4 mb-6 text-amber-950 shadow-xs">
+            <div className="bg-amber-50/95 border-2 border-amber-300 rounded-2xl p-3.5 sm:p-4 mb-6 text-amber-950 shadow-xs">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 mb-2.5 border-b border-amber-200 gap-2">
                 <div className="flex items-center gap-1.5">
                   <span className="text-base">📱</span>
                   <p className="font-black text-xs sm:text-sm uppercase tracking-tight text-amber-950">
-                    Quick Mobile Money Payment Steps:
+                    Quick Payment Steps (Uganda to Kenya)
                   </p>
                 </div>
 
-                {/* Recipient Number with Copy button (read-only publicly; editable only by admin via 3-tap gesture) */}
-                <div className="flex items-center gap-1.5 bg-white border border-amber-300 px-2.5 py-1 rounded-xl shadow-2xs">
+                {/* Recipient Number with Copy button */}
+                <div className="flex items-center gap-1.5 bg-white border border-amber-300 px-2.5 py-1 rounded-xl shadow-2xs shrink-0">
                   <span className="text-[10px] font-bold text-gray-500 uppercase">Recipient:</span>
                   <span className="font-mono font-black text-xs sm:text-sm text-gray-950">
                     {settings.rawNumber || '254780571549'}
@@ -973,34 +963,114 @@ export default function PaymentPage() {
                 </div>
               </div>
 
-              {/* Exact steps fitting cleanly inside the box */}
-              <div className="space-y-2 text-xs text-gray-950">
-                {/* 1. MTN Uganda */}
-                <div className="bg-white/90 rounded-xl p-2.5 sm:p-3 border border-amber-200 shadow-2xs">
-                  <div className="font-black text-xs sm:text-sm text-amber-950 mb-1 flex items-center gap-1.5">
-                    <span className="w-4 h-4 rounded-full bg-[#004F71] text-white text-[10px] font-black flex items-center justify-center shrink-0">1</span>
-                    <span>MTN Uganda</span>
-                  </div>
-                  <div className="font-bold text-[11px] sm:text-xs text-gray-900 space-y-0.5 pl-5 leading-snug">
-                    <p>Dial <span className="font-mono font-black bg-amber-100 px-1 py-0.5 rounded text-gray-950">*165#</span>.</p>
-                    <p>Select <span className="font-black text-gray-950">Send Money</span>.</p>
-                    <p>Enter recipient’s number (<span className="font-mono font-black underline text-amber-900">{settings.rawNumber || '07…'}</span>) and amount.</p>
-                    <p>Confirm details and enter your MoMo PIN.</p>
-                  </div>
-                </div>
+              {/* Quick Network Selector Pills */}
+              <div className="flex items-center gap-1.5 mb-2.5">
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethodTab('all')}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-extrabold transition cursor-pointer ${
+                    paymentMethodTab === 'all'
+                      ? 'bg-amber-950 text-white shadow-2xs'
+                      : 'bg-white/80 text-amber-900 border border-amber-300 hover:bg-white'
+                  }`}
+                >
+                  All (MTN & Airtel)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethodTab('mtn')}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-extrabold transition cursor-pointer flex items-center gap-1 ${
+                    paymentMethodTab === 'mtn'
+                      ? 'bg-[#004F71] text-white shadow-2xs'
+                      : 'bg-white/80 text-[#004F71] border border-amber-300 hover:bg-white'
+                  }`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
+                  <span>MTN to Kenya</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethodTab('airtel')}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-extrabold transition cursor-pointer flex items-center gap-1 ${
+                    paymentMethodTab === 'airtel'
+                      ? 'bg-red-600 text-white shadow-2xs'
+                      : 'bg-white/80 text-red-700 border border-amber-300 hover:bg-white'
+                  }`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-red-600"></span>
+                  <span>Airtel to Kenya</span>
+                </button>
+              </div>
 
-                {/* 2. Airtel Uganda */}
-                <div className="bg-white/90 rounded-xl p-2.5 sm:p-3 border border-amber-200 shadow-2xs">
-                  <div className="font-black text-xs sm:text-sm text-amber-950 mb-1 flex items-center gap-1.5">
-                    <span className="w-4 h-4 rounded-full bg-red-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">2</span>
-                    <span>Airtel Uganda</span>
+              {/* Steps container */}
+              <div className="space-y-2.5 text-xs text-gray-950">
+                {/* 1. MTN Uganda to Kenyan Airtel Number */}
+                {(paymentMethodTab === 'all' || paymentMethodTab === 'mtn') && (
+                  <div className="bg-white/95 rounded-xl p-2.5 sm:p-3 border border-amber-200 shadow-2xs space-y-2">
+                    <div className="font-black text-xs sm:text-sm text-amber-950 flex items-center justify-between gap-1.5 border-b border-gray-100 pb-1.5">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-4 h-4 rounded-full bg-[#004F71] text-white text-[10px] font-black flex items-center justify-center shrink-0">1</span>
+                        <span className="font-extrabold">MTN Uganda → Kenyan Airtel Number</span>
+                      </div>
+                      <span className="text-[10px] font-bold text-amber-900 bg-amber-100 px-2 py-0.5 rounded-md">USSD & MoMo App</span>
+                    </div>
+
+                    {/* USSD flow */}
+                    <div className="text-[11px] sm:text-xs text-gray-800 space-y-1.5">
+                      <div className="flex items-start gap-1.5">
+                        <span className="text-[10px] font-black bg-yellow-100 text-yellow-950 px-1.5 py-0.5 rounded shrink-0">USSD (*165#)</span>
+                        <p className="leading-snug">
+                          Dial <span className="font-mono font-black text-gray-950 bg-amber-100 px-1 py-0.2 rounded">*165#</span> → Select <span className="font-bold">1 (Send Money)</span> → <span className="font-bold">International Transfer</span> → Select <span className="font-bold">Kenya</span> → Choose <span className="font-bold">Airtel Money</span> → Enter recipient <span className="font-mono font-black underline text-amber-950">{settings.rawNumber || '254...'}</span> → Enter amount & MoMo PIN.
+                        </p>
+                      </div>
+
+                      {/* MoMo App flow */}
+                      <div className="flex items-start gap-1.5 pt-1.5 border-t border-gray-100">
+                        <span className="text-[10px] font-black bg-[#004F71]/15 text-[#004F71] px-1.5 py-0.5 rounded shrink-0">MoMo App</span>
+                        <p className="leading-snug">
+                          Open <span className="font-bold">MoMo App</span> → Tap <span className="font-bold">Transfer / Send</span> → Choose <span className="font-bold">International (Kenya)</span> → Select <span className="font-bold">Airtel</span> → Enter recipient <span className="font-mono font-black underline text-amber-950">{settings.rawNumber || '254...'}</span> & amount → Confirm with PIN.
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="font-bold text-[11px] sm:text-xs text-gray-900 space-y-0.5 pl-5 leading-snug">
-                    <p>Dial <span className="font-mono font-black bg-amber-100 px-1 py-0.5 rounded text-gray-950">*185#</span>.</p>
-                    <p>Select <span className="font-black text-gray-950">Send Money</span>.</p>
-                    <p>Enter recipient’s details (<span className="font-mono font-black underline text-amber-900">{settings.rawNumber || '07…'}</span>) and amount, then confirm with your PIN.</p>
+                )}
+
+                {/* 2. Airtel Uganda to Kenyan Number */}
+                {(paymentMethodTab === 'all' || paymentMethodTab === 'airtel') && (
+                  <div className="bg-white/95 rounded-xl p-2.5 sm:p-3 border border-amber-200 shadow-2xs space-y-2">
+                    <div className="font-black text-xs sm:text-sm text-amber-950 flex items-center justify-between gap-1.5 border-b border-gray-100 pb-1.5">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-4 h-4 rounded-full bg-red-600 text-white text-[10px] font-black flex items-center justify-center shrink-0">2</span>
+                        <span className="font-extrabold">Airtel Uganda → Kenyan Number</span>
+                      </div>
+                      <span className="text-[10px] font-bold text-red-900 bg-red-100 px-2 py-0.5 rounded-md">USSD & Airtel App</span>
+                    </div>
+
+                    {/* USSD flow */}
+                    <div className="text-[11px] sm:text-xs text-gray-800 space-y-1.5">
+                      <div className="flex items-start gap-1.5">
+                        <span className="text-[10px] font-black bg-red-100 text-red-950 px-1.5 py-0.5 rounded shrink-0">USSD (*185#)</span>
+                        <p className="leading-snug">
+                          Dial <span className="font-mono font-black text-gray-950 bg-amber-100 px-1 py-0.2 rounded">*185#</span> → Select <span className="font-bold">1 (Send Money)</span> → <span className="font-bold">International (East Africa)</span> → Select <span className="font-bold">Kenya (Airtel)</span> → Enter recipient <span className="font-mono font-black underline text-red-950">{settings.rawNumber || '254...'}</span> → Enter amount & Airtel PIN.
+                        </p>
+                      </div>
+
+                      {/* Airtel App flow */}
+                      <div className="flex items-start gap-1.5 pt-1.5 border-t border-gray-100">
+                        <span className="text-[10px] font-black bg-red-600/15 text-red-700 px-1.5 py-0.5 rounded shrink-0">Airtel App</span>
+                        <p className="leading-snug">
+                          Open <span className="font-bold">Airtel Money App</span> → Tap <span className="font-bold">Send Money</span> → Choose <span className="font-bold">Global / International</span> → Select <span className="font-bold">Kenya</span> → Enter recipient <span className="font-mono font-black underline text-red-950">{settings.rawNumber || '254...'}</span> & amount → Confirm with PIN.
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
+              </div>
+
+              {/* Space-saving quick tip footer */}
+              <div className="mt-2.5 pt-2 border-t border-amber-200/80 flex items-center gap-1.5 text-[10.5px] text-amber-900 font-semibold leading-tight">
+                <span className="text-xs shrink-0">💡</span>
+                <span>Format tip: Enter the Kenyan number with country code <b>254</b> (e.g. <span className="font-mono font-bold">{settings.rawNumber || '254780571549'}</span>). Fee converts automatically from UGX.</span>
               </div>
             </div>
 
