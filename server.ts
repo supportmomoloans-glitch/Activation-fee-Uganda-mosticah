@@ -15,7 +15,7 @@ import {
 } from './api/_telegram.ts';
 import { loadSettingsFromDisk, saveSettingsToDisk, testGitHubConnection } from './api/settings.ts';
 import { loadUsersFromDisk, saveUserToDisk, findRegisteredUser } from './api/users.ts';
-import { verifyScreenshotAmount } from './api/verify-screenshot.ts';
+import { verifyScreenshotAmount, warmUpVerificationEngine } from './api/verify-screenshot.ts';
 
 dotenv.config();
 
@@ -114,6 +114,9 @@ async function startServer() {
 
   // Start background Telegram poller for development
   startTelegramPoller().catch((err) => console.error('Poller error:', err));
+
+  // Pre-warm OCR verification engine in the background for instant verification
+  warmUpVerificationEngine();
 
   // Health check & Diagnostics API
   app.get('/api/health', async (req, res) => {
